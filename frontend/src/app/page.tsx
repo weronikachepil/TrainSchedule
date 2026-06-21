@@ -70,7 +70,7 @@ const toolbarStyles = {
 const tableStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: '4px clamp(0px,3vw,24px) 0' } as React.CSSProperties,
   scrollWrap: { overflowX: 'auto', paddingBottom: 4 } as React.CSSProperties,
-  numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' } as React.CSSProperties,
+  numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', minWidth: 64, textAlign: 'center' } as React.CSSProperties,
   directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
   cityName: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 } as React.CSSProperties,
   cityLabel: { fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' } as React.CSSProperties,
