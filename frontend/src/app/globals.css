@@ -166,6 +166,27 @@ body {
 .badge-rose    { background: var(--rose); color: var(--cream); }
 .badge-cream   { background: var(--cream); color: var(--text-d); }
 
+/* ── CTA button (nav register) ── */
+.btn-cta {
+  padding: 8px 20px;
+  background: var(--rose);
+  border-radius: 100px;
+  color: var(--cream);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  display: inline-block;
+  transition: opacity 0.18s;
+}
+
+.btn-cta:hover { opacity: 0.85; }
+
+[data-theme="light"] .btn-cta {
+  background: var(--dark);
+  color: #FFFFFF;
+}
+
 /* ── Filter tabs ── */
 .filter-tab {
   padding: 8px 18px;

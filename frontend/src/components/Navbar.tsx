@@ -130,20 +130,7 @@ export default function Navbar() {
               >
                 Увійти
               </Link>
-              <Link
-                href="/register"
-                style={{
-                  padding: '8px 20px',
-                  background: 'var(--rose)',
-                  borderRadius: 100,
-                  color: 'var(--cream)',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--font-sans)',
-                  transition: 'opacity 0.18s',
-                }}
-              >
+              <Link href="/register" className="btn-cta">
                 Реєстрація
               </Link>
             </>
