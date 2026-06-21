@@ -30,10 +30,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const trainsApi = {
-  getAll: () => request<Train[]>('/trains'),
-  create: (data: Omit<Train, 'id' | 'createdAt'>) =>
+  getAll: (search?: string) => {
+    const url = search ? `/trains?search=${encodeURIComponent(search)}` : '/trains';
+    return request<Train[]>(url);
+  },
+  create: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) =>
     request<Train>('/trains', { method: 'POST', body: JSON.stringify(data) }),
-  update: (id: number, data: Partial<Omit<Train, 'id' | 'createdAt'>>) =>
+  update: (id: number, data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) =>
     request<Train>(`/trains/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
   delete: (id: number) => request<void>(`/trains/${id}`, { method: 'DELETE' }),
 };

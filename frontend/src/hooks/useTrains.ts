@@ -8,35 +8,36 @@ interface UseTrainsReturn {
   trains: Train[];
   loading: boolean;
   error: string | null;
-  create: (data: Omit<Train, 'id' | 'createdAt'>) => Promise<void>;
-  update: (id: number, data: Omit<Train, 'id' | 'createdAt'>) => Promise<void>;
+  create: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
+  update: (id: number, data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
   remove: (id: number) => Promise<void>;
 }
 
-export function useTrains(): UseTrainsReturn {
+export function useTrains(search: string): UseTrainsReturn {
   const [trains, setTrains] = useState<Train[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
+      setLoading(true);
       setError(null);
-      setTrains(await trainsApi.getAll());
+      setTrains(await trainsApi.getAll(search || undefined));
     } catch {
       setError('Не вдалося завантажити розклад');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [search]);
 
   useEffect(() => { load(); }, [load]);
 
-  const create = useCallback(async (data: Omit<Train, 'id' | 'createdAt'>) => {
+  const create = useCallback(async (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => {
     const created = await trainsApi.create(data);
     setTrains(prev => [...prev, created]);
   }, []);
 
-  const update = useCallback(async (id: number, data: Omit<Train, 'id' | 'createdAt'>) => {
+  const update = useCallback(async (id: number, data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => {
     const updated = await trainsApi.update(id, data);
     setTrains(prev => prev.map(t => t.id === id ? updated : t));
   }, []);

@@ -11,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -30,8 +31,8 @@ export class TrainsController {
   constructor(private readonly trainsService: TrainsService) {}
 
   @Get()
-  findAll() {
-    return this.trainsService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.trainsService.findAll(search);
   }
 
   @ApiBearerAuth()

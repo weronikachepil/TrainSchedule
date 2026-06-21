@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { Train } from './entities/train.entity';
 import { CreateTrainDto } from './dto/create-train.dto';
@@ -18,8 +18,19 @@ export class TrainsService {
     private trainsRepository: Repository<Train>,
   ) {}
 
-  findAll(): Promise<Train[]> {
-    return this.trainsRepository.find({ order: { departureTime: 'ASC' } });
+  findAll(search?: string): Promise<Train[]> {
+    if (!search?.trim()) {
+      return this.trainsRepository.find({ order: { departureTime: 'ASC' } });
+    }
+    const q = `%${search.trim()}%`;
+    return this.trainsRepository.find({
+      where: [
+        { trainNumber: ILike(q) },
+        { direction:   ILike(q) },
+        { station:     ILike(q) },
+      ],
+      order: { departureTime: 'ASC' },
+    });
   }
 
   async findOne(id: number): Promise<Train> {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import TrainModal from '@/components/TrainModal';
 import ConfirmModal from '@/components/ConfirmModal';
@@ -37,17 +37,25 @@ const fmtDate = (d: string) =>
 interface ToastState { msg: string; type: 'success' | 'error' }
 
 export default function HomePage() {
+  const [filter,          setFilter]          = useState<Filter>('all');
+  const [search,          setSearch]          = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [modal,           setModal]           = useState(false);
+  const [editing,         setEditing]         = useState<Train | null>(null);
+  const [toast,           setToast]           = useState<ToastState | null>(null);
+  const [confirmId,       setConfirmId]       = useState<number | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search), 350);
+    return () => clearTimeout(t);
+  }, [search]);
+
   const { isAuthenticated, role, userId } = useAuth();
   const isAdmin = role === 'admin';
   const canManage = (createdById: number | null) =>
     isAdmin || (isAuthenticated && createdById === userId);
-  const { trains, loading, error, create, update, remove } = useTrains();
 
-  const [filter,    setFilter]    = useState<Filter>('all');
-  const [modal,     setModal]     = useState(false);
-  const [editing,   setEditing]   = useState<Train | null>(null);
-  const [toast,     setToast]     = useState<ToastState | null>(null);
-  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const { trains, loading, error, create, update, remove } = useTrains(debouncedSearch);
 
   const showToast = (msg: string, type: ToastState['type'] = 'success') => {
     setToast({ msg, type });
@@ -119,24 +127,61 @@ export default function HomePage() {
         <div className="section-divider" />
 
         {/* Toolbar */}
-        {!loading && (
-          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: 0, fontFamily: 'var(--font-sans)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 16px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          {/* Search */}
+          <div style={{ position: 'relative', flex: '1 1 240px', minWidth: 0 }}>
+            <span style={{
+              position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)',
+              fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.4,
+            }}>🔍</span>
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Пошук за номером, напрямком або станцією..."
+              style={{
+                width: '100%',
+                padding: '9px 14px 9px 36px',
+                background: 'rgba(236,232,223,0.08)',
+                border: '1.5px solid rgba(236,232,223,0.12)',
+                borderRadius: 100,
+                color: 'var(--cream)',
+                fontSize: '0.85rem',
+                fontFamily: 'var(--font-sans)',
+                outline: 'none',
+                transition: 'border-color 0.18s, background 0.18s',
+              }}
+              onFocus={e => {
+                e.target.style.borderColor = 'rgba(196,145,138,0.5)';
+                e.target.style.background = 'rgba(236,232,223,0.12)';
+              }}
+              onBlur={e => {
+                e.target.style.borderColor = 'rgba(236,232,223,0.12)';
+                e.target.style.background = 'rgba(236,232,223,0.08)';
+              }}
+            />
+          </div>
+
+          {/* Count */}
+          {!loading && (
+            <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: 0, fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}>
               {visible.length > 0
                 ? `${visible.length} маршрут${visible.length === 1 ? '' : visible.length < 5 ? 'и' : 'ів'}`
                 : 'Нічого не знайдено'}
             </p>
-            {isAuthenticated && (
-              <button
-                onClick={openAdd}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
-              >
-                <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
-                Додати маршрут
-              </button>
-            )}
-          </div>
-        )}
+          )}
+
+          {/* Add button */}
+          {isAuthenticated && (
+            <button
+              onClick={openAdd}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}
+            >
+              <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+              Додати маршрут
+            </button>
+          )}
+        </div>
 
         {/* Table */}
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
