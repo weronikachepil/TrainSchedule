@@ -63,7 +63,7 @@ const toolbarStyles = {
   dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
   clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
-  addBtn: { display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
+  addBtn: { display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--accent)', color: '#FFFFFF', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   addBtnIcon: { fontSize: '1rem', lineHeight: 1 } as React.CSSProperties,
 };
 
