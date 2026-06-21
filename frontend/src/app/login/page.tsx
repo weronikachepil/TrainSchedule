@@ -87,7 +87,7 @@ export default function LoginPage() {
           З поверненням
         </h1>
         <p style={{ color: 'var(--muted-d)', fontSize: '0.875rem', margin: '0 0 30px', fontFamily: 'var(--font-sans)' }}>
-          Увійди, щоб керувати розкладом
+          Увійди, щоб зберігати улюблені маршрути
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

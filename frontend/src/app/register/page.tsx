@@ -89,7 +89,7 @@ export default function RegisterPage() {
           Реєстрація
         </h1>
         <p style={{ color: 'var(--muted-d)', fontSize: '0.875rem', margin: '0 0 30px', fontFamily: 'var(--font-sans)' }}>
-          Зареєструйся, щоб додавати і редагувати маршрути
+          Зареєструйся, щоб зберігати улюблені маршрути
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
