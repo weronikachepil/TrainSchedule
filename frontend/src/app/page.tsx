@@ -85,14 +85,13 @@ const tableStyles = {
 
 const favStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' } as React.CSSProperties,
-  sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
+  sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   list: { display: 'flex', flexDirection: 'column', gap: 8 } as React.CSSProperties,
   card: { background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' } as React.CSSProperties,
   numberBadge: { padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 } as React.CSSProperties,
   directionRow: { display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' } as React.CSSProperties,
   cityText: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as React.CSSProperties,
-  arrowText: { color: 'var(--rose)', fontWeight: 700, flexShrink: 0 } as React.CSSProperties,
-  timeText: { fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 } as React.CSSProperties,
+  arrowText: { color: 'var(--accent)', fontWeight: 700, flexShrink: 0 } as React.CSSProperties,
 };
 
 const skeletonStyles = {
@@ -411,9 +410,6 @@ export default function HomePage() {
                         <span style={favStyles.arrowText}>→</span>
                         <span style={favStyles.cityText}>{to}</span>
                       </div>
-                      <span style={favStyles.timeText}>
-                        {fmtTime(t.departureTime)}
-                      </span>
                       <button
                         className="icon-btn"
                         onClick={() => handleToggleFavorite(t.id)}
