@@ -232,7 +232,7 @@ export default function HomePage() {
             </div>
 
             {(['departure', 'arrival'] as const).map(type => (
-              <div key={type} style={toolbarStyles.datePill}>
+              <div key={type} style={toolbarStyles.datePill} className="date-filter-item">
                 <span className="datepill-label">
                   {type === 'departure' ? 'Відправлення' : 'Прибуття'}
                 </span>
@@ -307,86 +307,137 @@ export default function HomePage() {
               )}
             </div>
           ) : (
-            <div style={{ ...tableStyles.scrollWrap, WebkitOverflowScrolling: 'touch' as const }}>
-              <table className="schedule-table" style={{ minWidth: 580 }}>
-                <thead>
-                  <tr>
-                    <th>Номер</th>
-                    <th>Напрямок</th>
-                    <th className="col-station">Станція</th>
-                    <th>Відправлення</th>
-                    <th>Прибуття</th>
-                    {isAuthenticated && <th />}
-                  </tr>
-                </thead>
-                <tbody>
-                  {visible.map(t => {
-                    const [from, to] = t.direction.split(' → ');
-                    const isFav = favoriteIds.has(t.id);
-                    return (
-                      <tr key={t.id}>
-                        <td>
-                          <span style={tableStyles.numberBadge}>
-                            {t.trainNumber}
-                          </span>
-                        </td>
-                        <td>
-                          <div style={tableStyles.directionCell}>
-                            <div>
-                              <div style={tableStyles.cityName}>{from}</div>
-                              <div style={tableStyles.cityLabel}>Відправлення</div>
-                            </div>
-                            <div style={tableStyles.arrow}>→</div>
-                            <div>
-                              <div style={tableStyles.cityName}>{to}</div>
-                              <div style={tableStyles.cityLabel}>Прибуття</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="col-station">
-                          <div style={tableStyles.stationCell}>
-                            <span style={tableStyles.stationIcon}>
-                              📍
-                            </span>
-                            <span style={tableStyles.stationName}>{t.station}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div style={tableStyles.timeValue}>{fmtTime(t.departureTime)}</div>
-                          <div style={tableStyles.timeDate}>{fmtDate(t.departureTime)}</div>
-                        </td>
-                        <td>
-                          <div style={tableStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
-                          <div style={tableStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
-                        </td>
-                        {isAuthenticated && (
+            <>
+              {/* Desktop table */}
+              <div className="desktop-table-wrap" style={{ ...tableStyles.scrollWrap, WebkitOverflowScrolling: 'touch' as const }}>
+                <table className="schedule-table" style={{ minWidth: 580 }}>
+                  <thead>
+                    <tr>
+                      <th>Номер</th>
+                      <th>Напрямок</th>
+                      <th className="col-station">Станція</th>
+                      <th>Відправлення</th>
+                      <th>Прибуття</th>
+                      {isAuthenticated && <th />}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {visible.map(t => {
+                      const [from, to] = t.direction.split(' → ');
+                      const isFav = favoriteIds.has(t.id);
+                      return (
+                        <tr key={t.id}>
                           <td>
-                            <div style={tableStyles.actionsCell}>
-                              <button
-                                className="icon-btn"
-                                onClick={() => handleToggleFavorite(t.id)}
-                                title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
-                                aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
-                              >
-                                <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>
-                                  {isFav ? '♥' : '♡'}
-                                </span>
-                              </button>
-                              {isAdmin && (
-                                <>
-                                  <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
-                                  <button className="icon-btn danger" onClick={() => handleDelete(t.id)} title="Видалити" aria-label="Видалити">🗑️</button>
-                                </>
-                              )}
+                            <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
+                          </td>
+                          <td>
+                            <div style={tableStyles.directionCell}>
+                              <div>
+                                <div style={tableStyles.cityName}>{from}</div>
+                                <div style={tableStyles.cityLabel}>Відправлення</div>
+                              </div>
+                              <div style={tableStyles.arrow}>→</div>
+                              <div>
+                                <div style={tableStyles.cityName}>{to}</div>
+                                <div style={tableStyles.cityLabel}>Прибуття</div>
+                              </div>
                             </div>
                           </td>
+                          <td className="col-station">
+                            <div style={tableStyles.stationCell}>
+                              <span style={tableStyles.stationIcon}>📍</span>
+                              <span style={tableStyles.stationName}>{t.station}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={tableStyles.timeValue}>{fmtTime(t.departureTime)}</div>
+                            <div style={tableStyles.timeDate}>{fmtDate(t.departureTime)}</div>
+                          </td>
+                          <td>
+                            <div style={tableStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
+                            <div style={tableStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
+                          </td>
+                          {isAuthenticated && (
+                            <td>
+                              <div style={tableStyles.actionsCell}>
+                                <button
+                                  className="icon-btn"
+                                  onClick={() => handleToggleFavorite(t.id)}
+                                  title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                                  aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                                >
+                                  <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>
+                                    {isFav ? '♥' : '♡'}
+                                  </span>
+                                </button>
+                                {isAdmin && (
+                                  <>
+                                    <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
+                                    <button className="icon-btn danger" onClick={() => handleDelete(t.id)} title="Видалити" aria-label="Видалити">🗑️</button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile cards */}
+              <div className="mobile-cards">
+                {visible.map(t => {
+                  const [from, to] = t.direction.split(' → ');
+                  const isFav = favoriteIds.has(t.id);
+                  return (
+                    <div key={t.id} className="train-card-mobile">
+                      {/* Header: badge + route + actions */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
+                        <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
+                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                            <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {from?.trim()}
+                            </span>
+                            <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
+                            <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {to?.trim()}
+                            </span>
+                          </div>
+                        </div>
+                        {isAuthenticated && (
+                          <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+                            <button className="icon-btn" onClick={() => handleToggleFavorite(t.id)} title={isFav ? 'Видалити з обраних' : 'Додати до обраних'} aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}>
+                              <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>{isFav ? '♥' : '♡'}</span>
+                            </button>
+                            {isAdmin && (
+                              <>
+                                <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
+                                <button className="icon-btn danger" onClick={() => handleDelete(t.id)} title="Видалити" aria-label="Видалити">🗑️</button>
+                              </>
+                            )}
+                          </div>
                         )}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                      {/* Times */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                        <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em' }}>{fmtTime(t.departureTime)}</span>
+                        <span style={{ color: 'var(--muted-d)', fontSize: '0.8rem' }}>→</span>
+                        <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em' }}>{fmtTime(t.arrivalTime)}</span>
+                        <span style={{ color: 'var(--muted-d)', fontSize: '0.72rem', marginLeft: 4 }}>· {fmtDate(t.departureTime)}</span>
+                      </div>
+                      {/* Station */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.75rem', color: 'var(--muted-d)' }}>
+                        <span>📍</span>
+                        <span>{t.station}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </section>
 

@@ -443,6 +443,16 @@ body {
   letter-spacing: 0.04em;
 }
 
+/* Mobile cards: hidden on desktop, revealed by mobile breakpoint */
+.mobile-cards { display: none; }
+
+.train-card-mobile {
+  background: var(--cream);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
 /* ── Responsive breakpoints ── */
 @media (max-width: 768px) {
   .schedule-table th,
@@ -450,20 +460,35 @@ body {
 }
 
 @media (max-width: 640px) {
-  /* Toolbar: search goes full-width on its own row */
+  /* Toolbar: search full-width */
   .toolbar-search { flex: 1 1 100%; min-width: 0; }
 
-  /* Hide verbose date-pill labels, keep the input */
-  .datepill-label { display: none; }
+  /* Date filters: label visible, stacked column */
+  .date-filter-item {
+    flex: 1 1 calc(50% - 5px) !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    border-radius: 12px !important;
+    padding: 8px 14px !important;
+    gap: 2px !important;
+    min-width: 0;
+  }
+  .datepill-label {
+    font-size: 0.62rem;
+    opacity: 0.65;
+    white-space: normal;
+  }
 
-  /* Table: compact cells, no page-level horizontal padding */
-  .schedule-table th,
-  .schedule-table td { padding: 14px 10px; }
+  /* Table: hide on mobile, show cards */
+  .desktop-table-wrap { display: none; }
+  .mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 16px;
+  }
 
-  /* Table: hide Station column — redundant with Direction on small screens */
-  .col-station { display: none; }
-
-  /* Modal: slide up from bottom edge */
+  /* Modal: slide up from bottom */
   .modal-backdrop { align-items: flex-end; padding: 0; }
   .modal-card {
     border-radius: 24px 24px 0 0;
@@ -472,7 +497,7 @@ body {
     padding: 28px 20px 32px;
   }
 
-  /* Toast: full width, centered */
+  /* Toast: full width */
   .toast {
     left: 16px;
     right: 16px;
@@ -487,9 +512,9 @@ body {
     to   { opacity: 1; transform: translateY(0);   }
   }
 
-  /* FAB: closer to edge */
+  /* FAB */
   .fab { bottom: 20px; right: 16px; width: 52px; height: 52px; font-size: 22px; }
 
-  /* Divider: no side margins on mobile */
+  /* Divider */
   .section-divider { margin-left: 0; margin-right: 0; }
 }
