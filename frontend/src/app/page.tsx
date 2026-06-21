@@ -37,10 +37,10 @@ const fmtDate = (d: string) =>
 const ghostInput: React.CSSProperties = {
   width: '100%',
   padding: '9px 14px 9px 36px',
-  background: 'rgba(236,232,223,0.08)',
-  border: '1.5px solid rgba(236,232,223,0.12)',
+  background: 'var(--input-bg)',
+  border: '1.5px solid var(--border-l)',
   borderRadius: 100,
-  color: 'var(--cream)',
+  color: 'var(--text-l)',
   fontSize: '0.85rem',
   fontFamily: 'var(--font-sans)',
   outline: 'none',
@@ -50,7 +50,7 @@ const ghostInput: React.CSSProperties = {
 const heroStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' } as React.CSSProperties,
   eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
-  h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--cream)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
+  h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--text-l)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
 };
 
 const toolbarStyles = {
@@ -58,9 +58,9 @@ const toolbarStyles = {
   row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
   searchWrap: { position: 'relative', flex: '0 1 300px', minWidth: 180 } as React.CSSProperties,
   searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
-  datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(236,232,223,0.08)', border: '1.5px solid rgba(236,232,223,0.12)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
-  datePillLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'rgba(236,232,223,0.4)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' } as React.CSSProperties,
-  dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--cream)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none', colorScheme: 'dark' } as React.CSSProperties,
+  datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
+  datePillLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--muted-l)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' } as React.CSSProperties,
+  dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
   clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   addBtn: { display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
@@ -97,7 +97,7 @@ const favStyles = {
 
 const skeletonStyles = {
   list: { display: 'flex', flexDirection: 'column', gap: 7 } as React.CSSProperties,
-  row: (i: number): React.CSSProperties => ({ background: '#1F1613', borderRadius: 14, padding: '18px 24px', display: 'flex', gap: 32, alignItems: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12 }),
+  row: (i: number): React.CSSProperties => ({ background: 'var(--dark-2)', borderRadius: 14, padding: '18px 24px', display: 'flex', gap: 32, alignItems: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12 }),
   directionGroup: { display: 'flex', gap: 10, alignItems: 'center', flex: '0 0 200px' } as React.CSSProperties,
 };
 
@@ -227,8 +227,8 @@ export default function HomePage() {
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Поїзд, місто..."
                 style={ghostInput}
-                onFocus={e => { e.target.style.borderColor = 'rgba(196,145,138,0.5)'; e.target.style.background = 'rgba(236,232,223,0.12)'; }}
-                onBlur={e =>  { e.target.style.borderColor = 'rgba(236,232,223,0.12)'; e.target.style.background = 'rgba(236,232,223,0.08)'; }}
+                onFocus={e => { e.target.style.borderColor = 'var(--rose)'; }}
+                onBlur={e =>  { e.target.style.borderColor = 'var(--border-l)'; }}
               />
             </div>
 
