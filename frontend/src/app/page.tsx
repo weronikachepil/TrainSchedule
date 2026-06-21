@@ -3,13 +3,10 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import TrainModal from '@/components/TrainModal';
-import TripModal from '@/components/TripModal';
-import TripCalendar from '@/components/TripCalendar';
 import ConfirmModal from '@/components/ConfirmModal';
 import { useAuth } from '@/context/AuthContext';
 import { useTrains } from '@/hooks/useTrains';
 import { useFavorites } from '@/hooks/useFavorites';
-import { useTrips } from '@/hooks/useTrips';
 import type { Train } from '@/types';
 
 type Filter = 'all' | 'morning' | 'afternoon' | 'evening';
@@ -50,7 +47,6 @@ const ghostInput: React.CSSProperties = {
   transition: 'border-color 0.18s, background 0.18s',
 };
 
-
 interface ToastState { msg: string; type: 'success' | 'error' }
 
 export default function HomePage() {
@@ -63,7 +59,6 @@ export default function HomePage() {
   const [editing,         setEditing]         = useState<Train | null>(null);
   const [toast,           setToast]           = useState<ToastState | null>(null);
   const [confirmId,       setConfirmId]       = useState<number | null>(null);
-  const [tripTrain,       setTripTrain]       = useState<Train | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 350);
@@ -82,7 +77,6 @@ export default function HomePage() {
   });
 
   const { favoriteIds, toggle: toggleFavorite } = useFavorites();
-  const { trips, plan, remove: removeTrip } = useTrips();
 
   const showToast = (msg: string, type: ToastState['type'] = 'success') => {
     setToast({ msg, type });
@@ -122,12 +116,6 @@ export default function HomePage() {
     }
   };
 
-  const handlePlanTrip = async (tripDate: string, note?: string) => {
-    if (!tripTrain) return;
-    await plan(tripTrain.id, tripDate, note);
-    showToast('Поїздку заплановано');
-  };
-
   const handleToggleFavorite = async (trainId: number) => {
     try {
       await toggleFavorite(trainId);
@@ -144,8 +132,6 @@ export default function HomePage() {
   };
 
   const visible = applyFilter(trains, filter);
-
-  // Trains that are favorited (for the favorites section)
   const favoritedTrains = trains.filter(t => favoriteIds.has(t.id));
 
   return (
@@ -337,7 +323,6 @@ export default function HomePage() {
                         {isAuthenticated && (
                           <td>
                             <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                              {/* Favorite button — all authenticated users */}
                               <button
                                 className="icon-btn"
                                 onClick={() => handleToggleFavorite(t.id)}
@@ -346,16 +331,6 @@ export default function HomePage() {
                               >
                                 {isFav ? '❤️' : '🤍'}
                               </button>
-                              {/* Plan trip button — all authenticated users */}
-                              <button
-                                className="icon-btn"
-                                onClick={() => setTripTrain(t)}
-                                title="Запланувати поїздку"
-                                aria-label="Запланувати поїздку"
-                              >
-                                📅
-                              </button>
-                              {/* Edit / Delete — admins only */}
                               {isAdmin && (
                                 <>
                                   <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
@@ -374,70 +349,45 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Мої подорожі + Збережені маршрути */}
-        {isAuthenticated && (trips.length > 0 || favoritedTrains.length > 0) && (
+        {/* Збережені маршрути */}
+        {isAuthenticated && favoritedTrains.length > 0 && (
           <>
             <div className="section-divider" style={{ margin: '40px auto 0' }} />
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
-              <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-
-                {/* Calendar — left */}
-                {trips.length > 0 && (
-                  <div style={{ flex: '0 0 auto', width: 'min(340px, 100%)' }}>
-                    <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 14px', fontFamily: 'var(--font-sans)' }}>
-                      Мої подорожі
-                    </p>
-                    <TripCalendar
-                      trips={trips}
-                      onDelete={async (id) => {
-                        await removeTrip(id);
-                        showToast('Поїздку видалено');
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* Favorites — right */}
-                {favoritedTrains.length > 0 && (
-                  <div style={{ flex: '1 1 260px', minWidth: 240 }}>
-                    <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 14px', fontFamily: 'var(--font-sans)' }}>
-                      Збережені маршрути
-                    </p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {favoritedTrains.map(t => {
-                        const [from, to] = t.direction.split(' → ');
-                        return (
-                          <div
-                            key={t.id}
-                            style={{ background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}
-                          >
-                            <span style={{ padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                              {t.trainNumber}
-                            </span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                              <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{from}</span>
-                              <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
-                              <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{to}</span>
-                            </div>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 }}>
-                              {fmtTime(t.departureTime)}
-                            </span>
-                            <button
-                              className="icon-btn"
-                              onClick={() => handleToggleFavorite(t.id)}
-                              title="Видалити з обраних"
-                              aria-label="Видалити з обраних"
-                              style={{ flexShrink: 0 }}
-                            >
-                              ❤️
-                            </button>
-                          </div>
-                        );
-                      })}
+              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
+                Збережені маршрути
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {favoritedTrains.map(t => {
+                  const [from, to] = t.direction.split(' → ');
+                  return (
+                    <div
+                      key={t.id}
+                      style={{ background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}
+                    >
+                      <span style={{ padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                        {t.trainNumber}
+                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{from}</span>
+                        <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
+                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{to}</span>
+                      </div>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 }}>
+                        {fmtTime(t.departureTime)}
+                      </span>
+                      <button
+                        className="icon-btn"
+                        onClick={() => handleToggleFavorite(t.id)}
+                        title="Видалити з обраних"
+                        aria-label="Видалити з обраних"
+                        style={{ flexShrink: 0 }}
+                      >
+                        ❤️
+                      </button>
                     </div>
-                  </div>
-                )}
-
+                  );
+                })}
               </div>
             </section>
           </>
@@ -451,14 +401,6 @@ export default function HomePage() {
       )}
 
       {modal && <TrainModal train={editing} onClose={closeModal} onSave={handleSave} />}
-
-      {tripTrain && (
-        <TripModal
-          train={tripTrain}
-          onClose={() => setTripTrain(null)}
-          onSave={handlePlanTrip}
-        />
-      )}
 
       {confirmId !== null && (
         <ConfirmModal
