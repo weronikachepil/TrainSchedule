@@ -31,8 +31,12 @@ export class TrainsController {
   constructor(private readonly trainsService: TrainsService) {}
 
   @Get()
-  findAll(@Query('search') search?: string) {
-    return this.trainsService.findAll(search);
+  findAll(
+    @Query('search') search?: string,
+    @Query('departureDate') departureDate?: string,
+    @Query('arrivalDate') arrivalDate?: string,
+  ) {
+    return this.trainsService.findAll({ search, departureDate, arrivalDate });
   }
 
   @ApiBearerAuth()

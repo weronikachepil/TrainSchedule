@@ -4,6 +4,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { trainsApi } from '@/lib/api';
 import type { Train } from '@/types';
 
+interface SearchParams {
+  search: string;
+  departureDate: string;
+  arrivalDate: string;
+}
+
 interface UseTrainsReturn {
   trains: Train[];
   loading: boolean;
@@ -13,7 +19,7 @@ interface UseTrainsReturn {
   remove: (id: number) => Promise<void>;
 }
 
-export function useTrains(search: string): UseTrainsReturn {
+export function useTrains({ search, departureDate, arrivalDate }: SearchParams): UseTrainsReturn {
   const [trains, setTrains] = useState<Train[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,13 +28,17 @@ export function useTrains(search: string): UseTrainsReturn {
     try {
       setLoading(true);
       setError(null);
-      setTrains(await trainsApi.getAll(search || undefined));
+      setTrains(await trainsApi.getAll({
+        search:        search        || undefined,
+        departureDate: departureDate || undefined,
+        arrivalDate:   arrivalDate   || undefined,
+      }));
     } catch {
       setError('Не вдалося завантажити розклад');
     } finally {
       setLoading(false);
     }
-  }, [search]);
+  }, [search, departureDate, arrivalDate]);
 
   useEffect(() => { load(); }, [load]);
 

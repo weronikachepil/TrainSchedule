@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { Train } from './entities/train.entity';
 import { CreateTrainDto } from './dto/create-train.dto';
@@ -11,6 +11,12 @@ interface RequestUser {
   role: string;
 }
 
+interface FindAllParams {
+  search?: string;
+  departureDate?: string;
+  arrivalDate?: string;
+}
+
 @Injectable()
 export class TrainsService {
   constructor(
@@ -18,19 +24,41 @@ export class TrainsService {
     private trainsRepository: Repository<Train>,
   ) {}
 
-  findAll(search?: string): Promise<Train[]> {
-    if (!search?.trim()) {
-      return this.trainsRepository.find({ order: { departureTime: 'ASC' } });
+  findAll({ search, departureDate, arrivalDate }: FindAllParams = {}): Promise<Train[]> {
+    const qb = this.trainsRepository.createQueryBuilder('train');
+
+    if (search?.trim()) {
+      const q = `%${search.trim()}%`;
+      qb.andWhere(
+        '(train.trainNumber ILIKE :q OR train.direction ILIKE :q OR train.station ILIKE :q)',
+        { q },
+      );
     }
-    const q = `%${search.trim()}%`;
-    return this.trainsRepository.find({
-      where: [
-        { trainNumber: ILike(q) },
-        { direction:   ILike(q) },
-        { station:     ILike(q) },
-      ],
-      order: { departureTime: 'ASC' },
-    });
+
+    if (departureDate) {
+      const start = new Date(departureDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(departureDate);
+      end.setHours(23, 59, 59, 999);
+      qb.andWhere('train.departureTime BETWEEN :depStart AND :depEnd', {
+        depStart: start,
+        depEnd: end,
+      });
+    }
+
+    if (arrivalDate) {
+      const start = new Date(arrivalDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(arrivalDate);
+      end.setHours(23, 59, 59, 999);
+      qb.andWhere('train.arrivalTime BETWEEN :arrStart AND :arrEnd', {
+        arrStart: start,
+        arrEnd: end,
+      });
+    }
+
+    qb.orderBy('train.departureTime', 'ASC');
+    return qb.getMany();
   }
 
   async findOne(id: number): Promise<Train> {

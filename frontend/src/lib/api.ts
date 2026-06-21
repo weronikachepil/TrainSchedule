@@ -30,9 +30,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const trainsApi = {
-  getAll: (search?: string) => {
-    const url = search ? `/trains?search=${encodeURIComponent(search)}` : '/trains';
-    return request<Train[]>(url);
+  getAll: (params?: { search?: string; departureDate?: string; arrivalDate?: string }) => {
+    const qs = new URLSearchParams();
+    if (params?.search)        qs.set('search',        params.search);
+    if (params?.departureDate) qs.set('departureDate', params.departureDate);
+    if (params?.arrivalDate)   qs.set('arrivalDate',   params.arrivalDate);
+    const q = qs.toString();
+    return request<Train[]>(q ? `/trains?${q}` : '/trains');
   },
   create: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) =>
     request<Train>('/trains', { method: 'POST', body: JSON.stringify(data) }),
