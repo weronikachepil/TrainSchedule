@@ -1,6 +1,6 @@
-# 🚝 Train Schedule Application
+# Train Schedule Application
 
-A full-stack train schedule app where users can register, log in, and manage train routes. Built with NestJS, Next.js, and PostgreSQL.
+A full-stack train schedule app with role-based access, server-side search, favorites, and trip planning. Built with NestJS, Next.js, and PostgreSQL.
 
 ---
 
@@ -8,12 +8,14 @@ A full-stack train schedule app where users can register, log in, and manage tra
 
 - View train schedule in a table without an account (read-only)
 - Register and log in with JWT authentication
-- Add trains via a form with station dropdowns and a date/time picker
-- Users can edit and delete only their own train entries
-- Admins have full CRUD over all entries
+- **Server-side search** by train number, departure city, or arrival city
+- **Date filters** for departure and arrival dates
+- Time-of-day filters: morning / afternoon / evening
 - Role-based access control: Guest · User · Admin
+- **Users** can save favourite routes (heart button) and plan trips with a date and comment
+- **Admins** have full CRUD over all train entries
+- Planned trips displayed in a monthly calendar with day-click detail panel
 - Custom confirm dialog for destructive actions
-- Dark and light theme
 
 ---
 
@@ -102,14 +104,36 @@ The frontend runs on **http://localhost:3001**
 
 ## API Endpoints
 
-| Method | Endpoint | Auth required | Description |
-|--------|----------|:---:|-------------|
+### Auth
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|:----:|-------------|
 | POST | `/auth/register` | No | Create a new account |
 | POST | `/auth/login` | No | Log in and receive a JWT |
-| GET | `/trains` | No | Get all trains |
-| POST | `/trains` | Yes | Create a new train |
-| PATCH | `/trains/:id` | Yes | Update a train |
-| DELETE | `/trains/:id` | Yes | Delete a train |
+
+### Trains
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|:----:|-------------|
+| GET | `/trains` | No | Get all trains (supports `?search=`, `?departureDate=`, `?arrivalDate=`) |
+| POST | `/trains` | Admin | Create a new train |
+| PATCH | `/trains/:id` | Admin | Update a train |
+| DELETE | `/trains/:id` | Admin | Delete a train |
+
+### Favorites
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|:----:|-------------|
+| GET | `/favorites` | User | Get current user's saved trains |
+| POST | `/favorites/:trainId` | User | Toggle a train as favourite |
+
+### Trips
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|:----:|-------------|
+| GET | `/trips` | User | Get current user's planned trips |
+| POST | `/trips` | User | Plan a trip `{ trainId, tripDate, note? }` |
+| DELETE | `/trips/:id` | User | Delete a planned trip |
 
 ---
 
@@ -117,8 +141,8 @@ The frontend runs on **http://localhost:3001**
 
 | Role | Access |
 |------|--------|
-| Guest | View train schedule (read-only) |
-| User | View + create trains + edit and delete **own** trains only |
+| Guest | View train schedule (read-only), search and filter |
+| User | Save favourite routes, plan trips with a date and optional comment |
 | Admin | Full CRUD over all trains |
 
 To grant Admin rights, run the following SQL query on your database:
@@ -136,13 +160,16 @@ TrainSchedule/
 ├── backend/
 │   └── src/
 │       ├── auth/          # Authentication (JWT, guards, strategies)
+│       ├── favorites/     # Favourite routes (entity, service, controller)
 │       ├── trains/        # Train CRUD (entity, service, controller)
+│       ├── trips/         # Trip planning (entity, service, controller)
 │       └── users/         # User management
 ├── frontend/
 │   └── src/
 │       ├── app/           # Pages: / · /login · /register
-│       ├── components/    # Navbar, TrainCard, TrainModal
-│       ├── context/       # Auth and Theme context
-│       └── lib/           # API client
+│       ├── components/    # Navbar, TrainModal, TripModal, TripCalendar, ConfirmModal
+│       ├── context/       # AuthContext
+│       ├── hooks/         # useTrains, useFavorites, useTrips
+│       └── lib/           # API client (trainsApi, favoritesApi, tripsApi, authApi)
 └── README.md
 ```
