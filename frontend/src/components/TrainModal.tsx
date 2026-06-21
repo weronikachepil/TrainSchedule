@@ -7,7 +7,7 @@ import { STATIONS } from '@/types';
 interface Props {
   train: Train | null;
   onClose: () => void;
-  onSave: (data: Omit<Train, 'id' | 'createdAt'>) => Promise<void>;
+  onSave: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
 }
 
 function toLocal(iso: string): string {
