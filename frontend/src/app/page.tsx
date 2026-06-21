@@ -48,18 +48,18 @@ const ghostInput: React.CSSProperties = {
 };
 
 const heroStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' } as React.CSSProperties,
+  section: { maxWidth: 1200, margin: '0 auto', padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)' } as React.CSSProperties,
   eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--text-l)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
 };
 
 const toolbarStyles = {
-  outer: { maxWidth: 1200, margin: '0 auto', padding: '20px 24px 12px' } as React.CSSProperties,
+  outer: { maxWidth: 1200, margin: '0 auto', padding: '20px clamp(16px,4vw,24px) 12px' } as React.CSSProperties,
   row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
-  searchWrap: { position: 'relative', flex: '0 1 300px', minWidth: 180 } as React.CSSProperties,
+  searchWrap: {} as React.CSSProperties,
   searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
   datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
-  datePillLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--muted-l)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' } as React.CSSProperties,
+  datePillLabel: {} as React.CSSProperties,
   dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
   clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
@@ -68,7 +68,7 @@ const toolbarStyles = {
 };
 
 const tableStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: '4px 24px 0' } as React.CSSProperties,
+  section: { maxWidth: 1200, margin: '0 auto', padding: '4px clamp(0px,3vw,24px) 0' } as React.CSSProperties,
   scrollWrap: { overflowX: 'auto', paddingBottom: 4 } as React.CSSProperties,
   numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' } as React.CSSProperties,
   directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
@@ -84,7 +84,7 @@ const tableStyles = {
 };
 
 const favStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' } as React.CSSProperties,
+  section: { maxWidth: 1200, margin: '0 auto', padding: '32px clamp(16px,4vw,24px) 0' } as React.CSSProperties,
   sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   list: { display: 'flex', flexDirection: 'column', gap: 8 } as React.CSSProperties,
   card: { background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' } as React.CSSProperties,
@@ -218,7 +218,7 @@ export default function HomePage() {
         <div style={toolbarStyles.outer}>
           <div style={toolbarStyles.row}>
 
-            <div style={toolbarStyles.searchWrap}>
+            <div style={toolbarStyles.searchWrap} className="toolbar-search">
               <span style={toolbarStyles.searchIcon}>🔍</span>
               <input
                 type="text"
@@ -233,7 +233,7 @@ export default function HomePage() {
 
             {(['departure', 'arrival'] as const).map(type => (
               <div key={type} style={toolbarStyles.datePill}>
-                <span style={toolbarStyles.datePillLabel}>
+                <span className="datepill-label">
                   {type === 'departure' ? 'Відправлення' : 'Прибуття'}
                 </span>
                 <input
@@ -307,13 +307,13 @@ export default function HomePage() {
               )}
             </div>
           ) : (
-            <div style={tableStyles.scrollWrap}>
-              <table className="schedule-table" style={{ minWidth: 680 }}>
+            <div style={{ ...tableStyles.scrollWrap, WebkitOverflowScrolling: 'touch' as const }}>
+              <table className="schedule-table" style={{ minWidth: 580 }}>
                 <thead>
                   <tr>
                     <th>Номер</th>
                     <th>Напрямок</th>
-                    <th>Станція</th>
+                    <th className="col-station">Станція</th>
                     <th>Відправлення</th>
                     <th>Прибуття</th>
                     {isAuthenticated && <th />}
@@ -343,7 +343,7 @@ export default function HomePage() {
                             </div>
                           </div>
                         </td>
-                        <td>
+                        <td className="col-station">
                           <div style={tableStyles.stationCell}>
                             <span style={tableStyles.stationIcon}>
                               📍

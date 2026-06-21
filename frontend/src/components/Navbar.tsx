@@ -29,7 +29,7 @@ export default function Navbar() {
       <div style={{
         maxWidth: 1200,
         margin: '0 auto',
-        padding: '0 24px',
+        padding: `0 clamp(16px, 4vw, 24px)`,
         height: 62,
         display: 'flex',
         alignItems: 'center',
@@ -57,7 +57,7 @@ export default function Navbar() {
         </Link>
 
         {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 2vw, 8px)' }}>
 
           {/* Theme toggle */}
           <button
@@ -91,14 +91,14 @@ export default function Navbar() {
               <button
                 onClick={handleLogout}
                 style={{
-                  padding: '8px 20px',
+                  padding: 'clamp(6px,1.5vw,8px) clamp(12px,3vw,20px)',
                   border: '1.5px solid var(--border-l)',
                   borderRadius: 100,
                   background: 'transparent',
                   color: 'var(--muted-l)',
                   fontWeight: 500,
                   cursor: 'pointer',
-                  fontSize: '0.85rem',
+                  fontSize: 'clamp(0.78rem,2.5vw,0.85rem)',
                   fontFamily: 'var(--font-sans)',
                   transition: 'color 0.18s, border-color 0.18s',
                 }}
@@ -119,10 +119,10 @@ export default function Navbar() {
               <Link
                 href="/login"
                 style={{
-                  padding: '8px 16px',
+                  padding: 'clamp(6px,1.5vw,8px) clamp(8px,2.5vw,16px)',
                   color: 'var(--muted-l)',
                   fontWeight: 500,
-                  fontSize: '0.85rem',
+                  fontSize: 'clamp(0.78rem,2.5vw,0.85rem)',
                   textDecoration: 'none',
                   fontFamily: 'var(--font-sans)',
                   transition: 'color 0.18s',

@@ -426,3 +426,70 @@ body {
   .schedule-table tbody tr:hover { transform: none; }
   .schedule-table td:first-child { transition: none; }
 }
+
+/* ── Mobile layout helpers ── */
+.toolbar-search {
+  position: relative;
+  flex: 0 1 300px;
+  min-width: 180px;
+}
+
+.datepill-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted-l);
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  letter-spacing: 0.04em;
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 768px) {
+  .schedule-table th,
+  .schedule-table td { padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 640px) {
+  /* Toolbar: search goes full-width on its own row */
+  .toolbar-search { flex: 1 1 100%; min-width: 0; }
+
+  /* Hide verbose date-pill labels, keep the input */
+  .datepill-label { display: none; }
+
+  /* Table: compact cells, no page-level horizontal padding */
+  .schedule-table th,
+  .schedule-table td { padding: 14px 10px; }
+
+  /* Table: hide Station column — redundant with Direction on small screens */
+  .col-station { display: none; }
+
+  /* Modal: slide up from bottom edge */
+  .modal-backdrop { align-items: flex-end; padding: 0; }
+  .modal-card {
+    border-radius: 24px 24px 0 0;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 28px 20px 32px;
+  }
+
+  /* Toast: full width, centered */
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 80px;
+    transform: none;
+    white-space: normal;
+    text-align: center;
+  }
+
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0);   }
+  }
+
+  /* FAB: closer to edge */
+  .fab { bottom: 20px; right: 16px; width: 52px; height: 52px; font-size: 22px; }
+
+  /* Divider: no side margins on mobile */
+  .section-divider { margin-left: 0; margin-right: 0; }
+}
