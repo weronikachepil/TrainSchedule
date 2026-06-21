@@ -24,7 +24,8 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     throw new Error((err as { message?: string }).message ?? `HTTP ${res.status}`);
   }
 
-  if (res.status === 204) return null as T;
+  const contentType = res.headers.get('content-type');
+  if (res.status === 204 || !contentType?.includes('application/json')) return null as T;
   return res.json() as Promise<T>;
 }
 

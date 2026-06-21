@@ -10,13 +10,19 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { TrainsService } from './trains.service';
 import { CreateTrainDto } from './dto/create-train.dto';
 import { UpdateTrainDto } from './dto/update-train.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
+interface AuthRequest extends Request {
+  user: { id: number; email: string; role: string };
+}
 
 @ApiTags('trains')
 @Controller('trains')
@@ -31,22 +37,26 @@ export class TrainsController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() dto: CreateTrainDto) {
-    return this.trainsService.create(dto);
+  create(@Body() dto: CreateTrainDto, @Req() req: AuthRequest) {
+    return this.trainsService.create(dto, req.user);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTrainDto) {
-    return this.trainsService.update(id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTrainDto,
+    @Req() req: AuthRequest,
+  ) {
+    return this.trainsService.update(id, dto, req.user);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.trainsService.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number, @Req() req: AuthRequest) {
+    return this.trainsService.remove(id, req.user);
   }
 }

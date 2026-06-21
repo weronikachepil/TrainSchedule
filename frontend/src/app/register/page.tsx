@@ -24,7 +24,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const res = await authApi.register(email, password);
-      login(res.access_token, res.role);
+      login(res.access_token, res.role, res.id);
       router.push('/');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Помилка реєстрації');

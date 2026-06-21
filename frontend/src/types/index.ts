@@ -5,12 +5,14 @@ export interface Train {
   departureTime: string;
   arrivalTime: string;
   station: string;
+  createdById: number | null;
   createdAt: string;
 }
 
 export interface AuthResponse {
   access_token: string;
   role: string;
+  id: number;
 }
 
 export const STATIONS = [

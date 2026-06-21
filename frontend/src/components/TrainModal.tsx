@@ -39,11 +39,10 @@ const lbl: React.CSSProperties = {
 
 export default function TrainModal({ train, onClose, onSave }: Props) {
   const [trainNumber, setTrainNumber] = useState('');
-  const [from,    setFrom]    = useState<string>(STATIONS[0]);
-  const [to,      setTo]      = useState<string>(STATIONS[1]);
-  const [station, setStation] = useState('');
-  const [dep,     setDep]     = useState('');
-  const [arr,     setArr]     = useState('');
+  const [from, setFrom] = useState<string>(STATIONS[0]);
+  const [to,   setTo]   = useState<string>(STATIONS[1]);
+  const [dep,  setDep]  = useState('');
+  const [arr,  setArr]  = useState('');
   const [saving, setSaving] = useState(false);
   const [error,  setError]  = useState('');
 
@@ -53,17 +52,15 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
     const parts = train.direction.split(' → ');
     setFrom(parts[0] ?? STATIONS[0]);
     setTo(parts[1]   ?? STATIONS[1]);
-    setStation(train.station);
     setDep(toLocal(train.departureTime));
     setArr(toLocal(train.arrivalTime));
   }, [train]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     if (!trainNumber.trim())             { setError('Введіть номер поїзда'); return; }
     if (from === to)                     { setError('Станції мають різнитись'); return; }
-    if (!station.trim())                 { setError('Введіть назву станції'); return; }
     if (!dep)                            { setError('Оберіть час відправлення'); return; }
     if (!arr)                            { setError('Оберіть час прибуття'); return; }
     if (new Date(dep) >= new Date(arr))  { setError('Прибуття має бути пізніше відправлення'); return; }
@@ -75,7 +72,7 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
         direction:   `${from} → ${to}`,
         departureTime: new Date(dep).toISOString(),
         arrivalTime:   new Date(arr).toISOString(),
-        station: station.trim(),
+        station: from,
       });
     } catch {
       setError('Помилка збереження — спробуйте ще раз');
@@ -131,19 +128,6 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
               value={trainNumber}
               onChange={e => setTrainNumber(e.target.value)}
               placeholder="наприклад: IC 741"
-              onFocus={focusField}
-              onBlur={blurField}
-            />
-          </div>
-
-          {/* Station */}
-          <div>
-            <span style={lbl}>Станція відправлення</span>
-            <input
-              className="field-cream"
-              value={station}
-              onChange={e => setStation(e.target.value)}
-              placeholder="наприклад: Київ-Пасажирський"
               onFocus={focusField}
               onBlur={blurField}
             />

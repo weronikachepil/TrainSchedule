@@ -20,6 +20,9 @@ export class Train {
   @Column()
   station: string;
 
+  @Column({ nullable: true, type: 'int' })
+  createdById: number | null;
+
   @CreateDateColumn()
   createdAt: Date;
 }

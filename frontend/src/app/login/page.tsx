@@ -21,7 +21,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await authApi.login(email, password);
-      login(res.access_token, res.role);
+      login(res.access_token, res.role, res.id);
       router.push('/');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Невірний email або пароль');
