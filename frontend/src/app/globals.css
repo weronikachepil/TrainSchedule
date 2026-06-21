@@ -23,6 +23,7 @@
   --card-img-bg:    #231A16;
   --skeleton-from:  #231A17;
   --skeleton-mid:   #2E2119;
+  --page-bg:        linear-gradient(160deg, #1E1209 0%, #191310 45%, #221813 80%, #0F0C0A 100%);
 }
 
 /* ── Light theme overrides ── */
@@ -37,6 +38,7 @@
   --card-img-bg:    #231A16;
   --skeleton-from:  #706660;
   --skeleton-mid:   #807670;
+  --page-bg:        linear-gradient(160deg, #8A7F74 0%, #7A7065 45%, #6D6258 80%, #5E5448 100%);
 }
 
 @theme inline {
@@ -51,12 +53,13 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-  background: var(--dark);
+  background: var(--page-bg);
+  min-height: 100vh;
+  background-attachment: fixed;
   color: var(--text-l);
   font-family: var(--font-sans);
-  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 /* ── Train card ── */
