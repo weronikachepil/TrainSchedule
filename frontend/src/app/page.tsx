@@ -70,7 +70,7 @@ const toolbarStyles = {
 const tableStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: '4px 24px 0' } as React.CSSProperties,
   scrollWrap: { overflowX: 'auto', paddingBottom: 4 } as React.CSSProperties,
-  numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' } as React.CSSProperties,
+  numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' } as React.CSSProperties,
   directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
   cityName: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 } as React.CSSProperties,
   cityLabel: { fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' } as React.CSSProperties,
@@ -88,7 +88,7 @@ const favStyles = {
   sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   list: { display: 'flex', flexDirection: 'column', gap: 8 } as React.CSSProperties,
   card: { background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' } as React.CSSProperties,
-  numberBadge: { padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 } as React.CSSProperties,
+  numberBadge: { padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 } as React.CSSProperties,
   directionRow: { display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' } as React.CSSProperties,
   cityText: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as React.CSSProperties,
   arrowText: { color: 'var(--rose)', fontWeight: 700, flexShrink: 0 } as React.CSSProperties,
