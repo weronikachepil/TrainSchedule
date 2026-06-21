@@ -49,7 +49,7 @@ const ghostInput: React.CSSProperties = {
 
 const heroStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' } as React.CSSProperties,
-  eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
+  eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--text-l)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
 };
 
