@@ -169,9 +169,9 @@ body {
 /* ── CTA button (nav register) ── */
 .btn-cta {
   padding: 8px 20px;
-  background: var(--rose);
+  background: #3B9EFF;
   border-radius: 100px;
-  color: var(--cream);
+  color: #FFFFFF;
   font-weight: 600;
   font-size: 0.85rem;
   text-decoration: none;
