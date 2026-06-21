@@ -165,7 +165,7 @@ body {
 
 .badge-light   { border: 1.5px solid rgba(236,232,223,0.35); color: rgba(236,232,223,0.75); }
 .badge-dark    { border: 1.5px solid var(--border-d);         color: var(--muted-d);         }
-.badge-rose    { background: var(--rose); color: var(--cream); }
+.badge-rose    { background: var(--accent); color: #FFFFFF; }
 .badge-cream   { background: var(--cream); color: var(--text-d); }
 
 /* ── CTA button (nav register) ── */
