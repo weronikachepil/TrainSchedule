@@ -369,7 +369,7 @@ export default function HomePage() {
                                 title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                 aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                               >
-                                <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-l)', fontSize: '1rem', lineHeight: 1 }}>
+                                <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>
                                   {isFav ? '♥' : '♡'}
                                 </span>
                               </button>
