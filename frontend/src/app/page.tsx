@@ -374,63 +374,71 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Збережені маршрути */}
-        {isAuthenticated && favoritedTrains.length > 0 && (
+        {/* Мої подорожі + Збережені маршрути */}
+        {isAuthenticated && (trips.length > 0 || favoritedTrains.length > 0) && (
           <>
             <div className="section-divider" style={{ margin: '40px auto 0' }} />
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
-              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
-                Збережені маршрути
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {favoritedTrains.map(t => {
-                  const [from, to] = t.direction.split(' → ');
-                  return (
-                    <div
-                      key={t.id}
-                      style={{ background: 'var(--cream)', borderRadius: 14, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 16, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}
-                    >
-                      <span style={{ display: 'inline-block', padding: '4px 10px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                        {t.trainNumber}
-                      </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', whiteSpace: 'nowrap' }}>{from}</span>
-                        <span style={{ color: 'var(--rose)', fontWeight: 700 }}>→</span>
-                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', whiteSpace: 'nowrap' }}>{to}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--muted-d)', marginLeft: 4, whiteSpace: 'nowrap' }}>{fmtTime(t.departureTime)}</span>
-                      </div>
-                      <button
-                        className="icon-btn"
-                        onClick={() => handleToggleFavorite(t.id)}
-                        title="Видалити з обраних"
-                        aria-label="Видалити з обраних"
-                        style={{ flexShrink: 0 }}
-                      >
-                        ❤️
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          </>
-        )}
+              <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
-        {/* Мої подорожі */}
-        {isAuthenticated && trips.length > 0 && (
-          <>
-            <div className="section-divider" style={{ margin: '40px auto 0' }} />
-            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
-              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 20px', fontFamily: 'var(--font-sans)' }}>
-                Мої подорожі
-              </p>
-              <TripCalendar
-                trips={trips}
-                onDelete={async (id) => {
-                  await removeTrip(id);
-                  showToast('Поїздку видалено');
-                }}
-              />
+                {/* Calendar — left */}
+                {trips.length > 0 && (
+                  <div style={{ flex: '0 0 auto', width: 'min(340px, 100%)' }}>
+                    <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 14px', fontFamily: 'var(--font-sans)' }}>
+                      Мої подорожі
+                    </p>
+                    <TripCalendar
+                      trips={trips}
+                      onDelete={async (id) => {
+                        await removeTrip(id);
+                        showToast('Поїздку видалено');
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Favorites — right */}
+                {favoritedTrains.length > 0 && (
+                  <div style={{ flex: '1 1 260px', minWidth: 240 }}>
+                    <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 14px', fontFamily: 'var(--font-sans)' }}>
+                      Збережені маршрути
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {favoritedTrains.map(t => {
+                        const [from, to] = t.direction.split(' → ');
+                        return (
+                          <div
+                            key={t.id}
+                            style={{ background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}
+                          >
+                            <span style={{ padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                              {t.trainNumber}
+                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                              <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{from}</span>
+                              <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
+                              <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{to}</span>
+                            </div>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 }}>
+                              {fmtTime(t.departureTime)}
+                            </span>
+                            <button
+                              className="icon-btn"
+                              onClick={() => handleToggleFavorite(t.id)}
+                              title="Видалити з обраних"
+                              aria-label="Видалити з обраних"
+                              style={{ flexShrink: 0 }}
+                            >
+                              ❤️
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+              </div>
             </section>
           </>
         )}
