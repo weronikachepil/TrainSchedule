@@ -6,10 +6,13 @@ A full-stack train schedule app where users can register, log in, and manage tra
 
 ## Features
 
-- View train schedule without an account (read-only)
+- View train schedule in a table without an account (read-only)
 - Register and log in with JWT authentication
-- Add, edit, and delete train entries (authenticated users)
+- Add trains via a form with station dropdowns and a date/time picker
+- Users can edit and delete only their own train entries
+- Admins have full CRUD over all entries
 - Role-based access control: Guest · User · Admin
+- Custom confirm dialog for destructive actions
 - Dark and light theme
 
 ---
@@ -107,7 +110,6 @@ The frontend runs on **http://localhost:3001**
 | POST | `/trains` | Yes | Create a new train |
 | PATCH | `/trains/:id` | Yes | Update a train |
 | DELETE | `/trains/:id` | Yes | Delete a train |
-| GET | `/users` | Admin only | List all users |
 
 ---
 
@@ -115,9 +117,9 @@ The frontend runs on **http://localhost:3001**
 
 | Role | Access |
 |------|--------|
-| Guest | View train schedule |
-| User | View + create, edit, delete trains |
-| Admin | All of the above + view all users |
+| Guest | View train schedule (read-only) |
+| User | View + create trains + edit and delete **own** trains only |
+| Admin | Full CRUD over all trains |
 
 To grant Admin rights, run the following SQL query on your database:
 
