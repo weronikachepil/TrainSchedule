@@ -1,6 +1,6 @@
 # Train Schedule Application
 
-A full-stack train schedule app with role-based access, server-side search, favorites, and trip planning. Built with NestJS, Next.js, and PostgreSQL.
+A full-stack train schedule app with role-based access, server-side search, and saved favourite routes. Built with NestJS, Next.js, and PostgreSQL.
 
 ---
 
@@ -12,9 +12,8 @@ A full-stack train schedule app with role-based access, server-side search, favo
 - **Date filters** for departure and arrival dates
 - Time-of-day filters: morning / afternoon / evening
 - Role-based access control: Guest · User · Admin
-- **Users** can save favourite routes (heart button) and plan trips with a date and comment
+- **Users** can save favourite routes with a heart button; saved routes appear in a list below the table
 - **Admins** have full CRUD over all train entries
-- Planned trips displayed in a monthly calendar with day-click detail panel
 - Custom confirm dialog for destructive actions
 
 ---
@@ -127,14 +126,6 @@ The frontend runs on **http://localhost:3001**
 | GET | `/favorites` | User | Get current user's saved trains |
 | POST | `/favorites/:trainId` | User | Toggle a train as favourite |
 
-### Trips
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|:----:|-------------|
-| GET | `/trips` | User | Get current user's planned trips |
-| POST | `/trips` | User | Plan a trip `{ trainId, tripDate, note? }` |
-| DELETE | `/trips/:id` | User | Delete a planned trip |
-
 ---
 
 ## User Roles
@@ -142,7 +133,7 @@ The frontend runs on **http://localhost:3001**
 | Role | Access |
 |------|--------|
 | Guest | View train schedule (read-only), search and filter |
-| User | Save favourite routes, plan trips with a date and optional comment |
+| User | Save and remove favourite routes |
 | Admin | Full CRUD over all trains |
 
 To grant Admin rights, run the following SQL query on your database:
@@ -162,14 +153,13 @@ TrainSchedule/
 │       ├── auth/          # Authentication (JWT, guards, strategies)
 │       ├── favorites/     # Favourite routes (entity, service, controller)
 │       ├── trains/        # Train CRUD (entity, service, controller)
-│       ├── trips/         # Trip planning (entity, service, controller)
 │       └── users/         # User management
 ├── frontend/
 │   └── src/
 │       ├── app/           # Pages: / · /login · /register
-│       ├── components/    # Navbar, TrainModal, TripModal, TripCalendar, ConfirmModal
+│       ├── components/    # Navbar, TrainModal, ConfirmModal
 │       ├── context/       # AuthContext
-│       ├── hooks/         # useTrains, useFavorites, useTrips
-│       └── lib/           # API client (trainsApi, favoritesApi, tripsApi, authApi)
+│       ├── hooks/         # useTrains, useFavorites
+│       └── lib/           # API client (trainsApi, favoritesApi, authApi)
 └── README.md
 ```
