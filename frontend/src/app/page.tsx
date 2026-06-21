@@ -56,10 +56,8 @@ const heroStyles = {
 const toolbarStyles = {
   outer: { maxWidth: 1200, margin: '0 auto', padding: '20px clamp(16px,4vw,24px) 12px' } as React.CSSProperties,
   row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
-  searchWrap: {} as React.CSSProperties,
   searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
   datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
-  datePillLabel: {} as React.CSSProperties,
   dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
   clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
@@ -96,9 +94,14 @@ const favStyles = {
 
 const skeletonStyles = {
   list: { display: 'flex', flexDirection: 'column', gap: 7 } as React.CSSProperties,
-  row: (i: number): React.CSSProperties => ({ background: 'var(--dark-2)', borderRadius: 14, padding: '18px 24px', display: 'flex', gap: 32, alignItems: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12 }),
   directionGroup: { display: 'flex', gap: 10, alignItems: 'center', flex: '0 0 200px' } as React.CSSProperties,
 };
+
+const skeletonRow = (i: number): React.CSSProperties => ({
+  background: 'var(--dark-2)', borderRadius: 14, padding: '18px 24px',
+  display: 'flex', gap: 32, alignItems: 'center',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12,
+});
 
 interface ToastState { msg: string; type: 'success' | 'error' }
 
@@ -218,7 +221,7 @@ export default function HomePage() {
         <div style={toolbarStyles.outer}>
           <div style={toolbarStyles.row}>
 
-            <div style={toolbarStyles.searchWrap} className="toolbar-search">
+            <div className="toolbar-search">
               <span style={toolbarStyles.searchIcon}>🔍</span>
               <input
                 type="text"
@@ -272,7 +275,7 @@ export default function HomePage() {
           {loading ? (
             <div style={skeletonStyles.list}>
               {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} style={skeletonStyles.row(i)}>
+                <div key={i} style={skeletonRow(i)}>
                   <div className="skeleton" style={{ height: 28, width: 72, borderRadius: 100 }} />
                   <div style={skeletonStyles.directionGroup}>
                     <div className="skeleton" style={{ height: 14, width: 70, borderRadius: 4 }} />

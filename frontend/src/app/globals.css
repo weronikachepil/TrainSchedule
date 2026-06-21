@@ -479,7 +479,7 @@ body {
     white-space: normal;
   }
 
-  /* Table: hide on mobile, show cards */
+  /* Table: hidden; cards take over */
   .desktop-table-wrap { display: none; }
   .mobile-cards {
     display: flex;

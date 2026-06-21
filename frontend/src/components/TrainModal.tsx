@@ -39,7 +39,7 @@ const lbl: React.CSSProperties = {
 
 const headerStyles = {
   row: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 } as React.CSSProperties,
-  eyebrow: { fontSize: '0.7rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 3px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
+  eyebrow: { fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 3px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
   title: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '1.8rem', color: 'var(--text-d)', margin: 0, letterSpacing: '-0.01em' } as React.CSSProperties,
   closeBtn: {
     width: 36, height: 36, borderRadius: '50%',

@@ -29,29 +29,23 @@ export function useFavorites(): UseFavoritesReturn {
   }, [isAuthenticated]);
 
   const toggle = useCallback(async (trainId: number) => {
-    // Optimistic update
-    setFavoriteIds(prev => {
+    const flip = (prev: Set<number>) => {
       const next = new Set(prev);
       if (next.has(trainId)) next.delete(trainId);
       else next.add(trainId);
       return next;
-    });
+    };
+
+    setFavoriteIds(flip);
     try {
       const { saved } = await favoritesApi.toggle(trainId);
       setFavoriteIds(prev => {
         const next = new Set(prev);
-        if (saved) next.add(trainId);
-        else next.delete(trainId);
+        if (saved) next.add(trainId); else next.delete(trainId);
         return next;
       });
     } catch {
-      // Revert optimistic update on error
-      setFavoriteIds(prev => {
-        const next = new Set(prev);
-        if (next.has(trainId)) next.delete(trainId);
-        else next.add(trainId);
-        return next;
-      });
+      setFavoriteIds(flip);
     }
   }, []);
 
