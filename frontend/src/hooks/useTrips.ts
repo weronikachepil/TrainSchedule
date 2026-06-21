@@ -7,7 +7,7 @@ import type { Trip } from '@/types';
 
 interface UseTripsReturn {
   trips: Trip[];
-  plan: (trainId: number, tripDate: string) => Promise<void>;
+  plan: (trainId: number, tripDate: string, note?: string) => Promise<void>;
   remove: (id: number) => Promise<void>;
   loading: boolean;
 }
@@ -30,8 +30,8 @@ export function useTrips(): UseTripsReturn {
       .finally(() => setLoading(false));
   }, [isAuthenticated]);
 
-  const plan = useCallback(async (trainId: number, tripDate: string) => {
-    const trip = await tripsApi.create(trainId, tripDate);
+  const plan = useCallback(async (trainId: number, tripDate: string, note?: string) => {
+    const trip = await tripsApi.create(trainId, tripDate, note);
     setTrips(prev => [...prev, trip].sort((a, b) => a.tripDate.localeCompare(b.tripDate)));
   }, []);
 

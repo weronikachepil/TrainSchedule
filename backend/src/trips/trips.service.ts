@@ -17,8 +17,8 @@ export class TripsService {
     });
   }
 
-  async create(userId: number, trainId: number, tripDate: string): Promise<Trip> {
-    const trip = this.tripsRepository.create({ userId, trainId, tripDate });
+  async create(userId: number, trainId: number, tripDate: string, note?: string): Promise<Trip> {
+    const trip = this.tripsRepository.create({ userId, trainId, tripDate, note: note ?? null });
     const saved = await this.tripsRepository.save(trip);
     return this.tripsRepository.findOneOrFail({ where: { id: saved.id } });
   }

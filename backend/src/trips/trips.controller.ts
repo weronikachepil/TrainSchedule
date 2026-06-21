@@ -31,10 +31,10 @@ export class TripsController {
 
   @Post()
   create(
-    @Body() body: { trainId: number; tripDate: string },
+    @Body() body: { trainId: number; tripDate: string; note?: string },
     @Req() req: AuthRequest,
   ) {
-    return this.tripsService.create(req.user.id, body.trainId, body.tripDate);
+    return this.tripsService.create(req.user.id, body.trainId, body.tripDate, body.note);
   }
 
   @Delete(':id')

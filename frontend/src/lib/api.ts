@@ -65,7 +65,7 @@ export const favoritesApi = {
 
 export const tripsApi = {
   getAll: () => request<Trip[]>('/trips'),
-  create: (trainId: number, tripDate: string) =>
-    request<Trip>('/trips', { method: 'POST', body: JSON.stringify({ trainId, tripDate }) }),
+  create: (trainId: number, tripDate: string, note?: string) =>
+    request<Trip>('/trips', { method: 'POST', body: JSON.stringify({ trainId, tripDate, note }) }),
   delete: (id: number) => request<void>(`/trips/${id}`, { method: 'DELETE' }),
 };

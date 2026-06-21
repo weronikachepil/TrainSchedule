@@ -15,6 +15,7 @@ export interface Trip {
   trainId: number;
   train: Train;
   tripDate: string;
+  note: string | null;
   createdAt: string;
 }
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import TrainModal from '@/components/TrainModal';
 import TripModal from '@/components/TripModal';
+import TripCalendar from '@/components/TripCalendar';
 import ConfirmModal from '@/components/ConfirmModal';
 import { useAuth } from '@/context/AuthContext';
 import { useTrains } from '@/hooks/useTrains';
@@ -121,9 +122,9 @@ export default function HomePage() {
     }
   };
 
-  const handlePlanTrip = async (tripDate: string) => {
+  const handlePlanTrip = async (tripDate: string, note?: string) => {
     if (!tripTrain) return;
-    await plan(tripTrain.id, tripDate);
+    await plan(tripTrain.id, tripDate, note);
     showToast('Поїздку заплановано');
   };
 
@@ -420,53 +421,16 @@ export default function HomePage() {
           <>
             <div className="section-divider" style={{ margin: '40px auto 0' }} />
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
-              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
+              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 20px', fontFamily: 'var(--font-sans)' }}>
                 Мої подорожі
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
-                {trips.map(trip => {
-                  const [from, to] = trip.train.direction.split(' → ');
-                  return (
-                    <div
-                      key={trip.id}
-                      style={{ background: 'var(--cream)', borderRadius: 16, padding: '18px 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: 12 }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ display: 'inline-block', padding: '4px 10px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.06em' }}>
-                          {trip.train.trainNumber}
-                        </span>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-d)', fontFamily: 'var(--font-sans)', background: 'rgba(26,21,17,0.06)', padding: '4px 10px', borderRadius: 100 }}>
-                          📅 {new Date(trip.tripDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <div>
-                          <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)' }}>{from}</div>
-                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{fmtTime(trip.train.departureTime)}</div>
-                        </div>
-                        <div style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</div>
-                        <div>
-                          <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)' }}>{to}</div>
-                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{fmtTime(trip.train.arrivalTime)}</div>
-                        </div>
-                      </div>
-                      <button
-                        onClick={async () => {
-                          try {
-                            await removeTrip(trip.id);
-                            showToast('Поїздку видалено');
-                          } catch {
-                            showToast('Помилка видалення', 'error');
-                          }
-                        }}
-                        style={{ alignSelf: 'flex-end', padding: '6px 14px', borderRadius: 100, border: '1.5px solid rgba(180,60,60,0.25)', background: 'transparent', color: '#8B3030', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
-                      >
-                        Видалити
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
+              <TripCalendar
+                trips={trips}
+                onDelete={async (id) => {
+                  await removeTrip(id);
+                  showToast('Поїздку видалено');
+                }}
+              />
             </section>
           </>
         )}

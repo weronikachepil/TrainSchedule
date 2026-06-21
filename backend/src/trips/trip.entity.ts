@@ -10,5 +10,6 @@ export class Trip {
   @JoinColumn({ name: 'trainId' })
   train: Train;
   @Column({ type: 'date' }) tripDate: string;
+  @Column({ type: 'text', nullable: true }) note: string | null;
   @CreateDateColumn() createdAt: Date;
 }
