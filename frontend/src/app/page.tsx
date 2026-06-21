@@ -47,6 +47,60 @@ const ghostInput: React.CSSProperties = {
   transition: 'border-color 0.18s, background 0.18s',
 };
 
+const heroStyles = {
+  section: { maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' } as React.CSSProperties,
+  eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
+  h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--cream)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
+};
+
+const toolbarStyles = {
+  outer: { maxWidth: 1200, margin: '0 auto', padding: '20px 24px 12px' } as React.CSSProperties,
+  row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
+  searchWrap: { position: 'relative', flex: '0 1 300px', minWidth: 180 } as React.CSSProperties,
+  searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
+  datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(236,232,223,0.08)', border: '1.5px solid rgba(236,232,223,0.12)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
+  datePillLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'rgba(236,232,223,0.4)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' } as React.CSSProperties,
+  dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--cream)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none', colorScheme: 'dark' } as React.CSSProperties,
+  clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
+  count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
+  addBtn: { display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
+  addBtnIcon: { fontSize: '1rem', lineHeight: 1 } as React.CSSProperties,
+};
+
+const tableStyles = {
+  section: { maxWidth: 1200, margin: '0 auto', padding: '4px 24px 0' } as React.CSSProperties,
+  scrollWrap: { overflowX: 'auto', paddingBottom: 4 } as React.CSSProperties,
+  numberBadge: { display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' } as React.CSSProperties,
+  directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
+  cityName: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 } as React.CSSProperties,
+  cityLabel: { fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' } as React.CSSProperties,
+  arrow: { color: 'var(--rose)', fontWeight: 700, fontSize: '1.1rem', flexShrink: 0 } as React.CSSProperties,
+  stationCell: { display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
+  stationIcon: { width: 28, height: 28, borderRadius: '50%', background: 'rgba(196,145,138,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 } as React.CSSProperties,
+  stationName: { color: 'var(--text-d)', fontSize: '0.82rem', fontWeight: 500 } as React.CSSProperties,
+  timeValue: { fontWeight: 700, fontFamily: 'var(--font-sans)', color: 'var(--text-d)', fontSize: '1.05rem', lineHeight: 1, letterSpacing: '-0.01em' } as React.CSSProperties,
+  timeDate: { fontSize: '0.7rem', color: 'var(--muted-d)', marginTop: 4 } as React.CSSProperties,
+  actionsCell: { display: 'flex', gap: 6, justifyContent: 'flex-end' } as React.CSSProperties,
+};
+
+const favStyles = {
+  section: { maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' } as React.CSSProperties,
+  sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
+  list: { display: 'flex', flexDirection: 'column', gap: 8 } as React.CSSProperties,
+  card: { background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' } as React.CSSProperties,
+  numberBadge: { padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 } as React.CSSProperties,
+  directionRow: { display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' } as React.CSSProperties,
+  cityText: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as React.CSSProperties,
+  arrowText: { color: 'var(--rose)', fontWeight: 700, flexShrink: 0 } as React.CSSProperties,
+  timeText: { fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 } as React.CSSProperties,
+};
+
+const skeletonStyles = {
+  list: { display: 'flex', flexDirection: 'column', gap: 7 } as React.CSSProperties,
+  row: (i: number): React.CSSProperties => ({ background: '#1F1613', borderRadius: 14, padding: '18px 24px', display: 'flex', gap: 32, alignItems: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12 }),
+  directionGroup: { display: 'flex', gap: 10, alignItems: 'center', flex: '0 0 200px' } as React.CSSProperties,
+};
+
 interface ToastState { msg: string; type: 'success' | 'error' }
 
 export default function HomePage() {
@@ -140,12 +194,11 @@ export default function HomePage() {
 
       <main style={{ paddingBottom: 120 }}>
 
-        {/* Hero */}
-        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' }}>
-          <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' }}>
+        <section style={heroStyles.section}>
+          <p style={heroStyles.eyebrow}>
             Розклад потягів України
           </p>
-          <h1 style={{ fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--cream)', margin: '0 0 48px', letterSpacing: '-0.02em' }}>
+          <h1 style={heroStyles.h1}>
             Знайди<br />свій поїзд
           </h1>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -163,13 +216,11 @@ export default function HomePage() {
 
         <div className="section-divider" />
 
-        {/* Toolbar */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        <div style={toolbarStyles.outer}>
+          <div style={toolbarStyles.row}>
 
-            {/* Search */}
-            <div style={{ position: 'relative', flex: '0 1 300px', minWidth: 180 }}>
-              <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 }}>🔍</span>
+            <div style={toolbarStyles.searchWrap}>
+              <span style={toolbarStyles.searchIcon}>🔍</span>
               <input
                 type="text"
                 value={search}
@@ -181,61 +232,50 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Date pickers */}
             {(['departure', 'arrival'] as const).map(type => (
-              <div key={type} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(236,232,223,0.08)', border: '1.5px solid rgba(236,232,223,0.12)', borderRadius: 100, padding: '0 14px 0 16px' }}>
-                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(236,232,223,0.4)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' }}>
+              <div key={type} style={toolbarStyles.datePill}>
+                <span style={toolbarStyles.datePillLabel}>
                   {type === 'departure' ? 'Відправлення' : 'Прибуття'}
                 </span>
                 <input
                   type="date"
                   value={type === 'departure' ? departureDate : arrivalDate}
                   onChange={e => type === 'departure' ? setDepartureDate(e.target.value) : setArrivalDate(e.target.value)}
-                  style={{ padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--cream)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none', colorScheme: 'dark' }}
+                  style={toolbarStyles.dateInput}
                 />
               </div>
             ))}
 
-            {/* Clear */}
             {hasFilters && (
-              <button
-                onClick={clearFilters}
-                style={{ padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}
-              >
+              <button onClick={clearFilters} style={toolbarStyles.clearBtn}>
                 × Скинути
               </button>
             )}
 
-            {/* Count */}
             {!loading && (
-              <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}>
+              <p style={toolbarStyles.count}>
                 {visible.length > 0
                   ? `${visible.length} маршрут${visible.length === 1 ? '' : visible.length < 5 ? 'и' : 'ів'}`
                   : 'Нічого не знайдено'}
               </p>
             )}
 
-            {/* Add button — admins only */}
             {isAdmin && (
-              <button
-                onClick={openAdd}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}
-              >
-                <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
+              <button onClick={openAdd} style={toolbarStyles.addBtn}>
+                <span style={toolbarStyles.addBtnIcon}>+</span>
                 Додати маршрут
               </button>
             )}
           </div>
         </div>
 
-        {/* Table */}
-        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '4px 24px 0' }}>
+        <section style={tableStyles.section}>
           {loading ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+            <div style={skeletonStyles.list}>
               {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} style={{ background: '#1F1613', borderRadius: 14, padding: '18px 24px', display: 'flex', gap: 32, alignItems: 'center', boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12 }}>
+                <div key={i} style={skeletonStyles.row(i)}>
                   <div className="skeleton" style={{ height: 28, width: 72, borderRadius: 100 }} />
-                  <div style={{ display: 'flex', gap: 10, alignItems: 'center', flex: '0 0 200px' }}>
+                  <div style={skeletonStyles.directionGroup}>
                     <div className="skeleton" style={{ height: 14, width: 70, borderRadius: 4 }} />
                     <div className="skeleton" style={{ height: 10, width: 16, borderRadius: 4 }} />
                     <div className="skeleton" style={{ height: 14, width: 70, borderRadius: 4 }} />
@@ -268,7 +308,7 @@ export default function HomePage() {
               )}
             </div>
           ) : (
-            <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
+            <div style={tableStyles.scrollWrap}>
               <table className="schedule-table" style={{ minWidth: 680 }}>
                 <thead>
                   <tr>
@@ -287,42 +327,42 @@ export default function HomePage() {
                     return (
                       <tr key={t.id}>
                         <td>
-                          <span style={{ display: 'inline-block', padding: '5px 12px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+                          <span style={tableStyles.numberBadge}>
                             {t.trainNumber}
                           </span>
                         </td>
                         <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' }}>
+                          <div style={tableStyles.directionCell}>
                             <div>
-                              <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 }}>{from}</div>
-                              <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Відправлення</div>
+                              <div style={tableStyles.cityName}>{from}</div>
+                              <div style={tableStyles.cityLabel}>Відправлення</div>
                             </div>
-                            <div style={{ color: 'var(--rose)', fontWeight: 700, fontSize: '1.1rem', flexShrink: 0 }}>→</div>
+                            <div style={tableStyles.arrow}>→</div>
                             <div>
-                              <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 }}>{to}</div>
-                              <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Прибуття</div>
+                              <div style={tableStyles.cityName}>{to}</div>
+                              <div style={tableStyles.cityLabel}>Прибуття</div>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <span style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(196,145,138,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>
+                          <div style={tableStyles.stationCell}>
+                            <span style={tableStyles.stationIcon}>
                               📍
                             </span>
-                            <span style={{ color: 'var(--text-d)', fontSize: '0.82rem', fontWeight: 500 }}>{t.station}</span>
+                            <span style={tableStyles.stationName}>{t.station}</span>
                           </div>
                         </td>
                         <td>
-                          <div style={{ fontWeight: 700, fontFamily: 'var(--font-sans)', color: 'var(--text-d)', fontSize: '1.05rem', lineHeight: 1, letterSpacing: '-0.01em' }}>{fmtTime(t.departureTime)}</div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--muted-d)', marginTop: 4 }}>{fmtDate(t.departureTime)}</div>
+                          <div style={tableStyles.timeValue}>{fmtTime(t.departureTime)}</div>
+                          <div style={tableStyles.timeDate}>{fmtDate(t.departureTime)}</div>
                         </td>
                         <td>
-                          <div style={{ fontWeight: 700, fontFamily: 'var(--font-sans)', color: 'var(--text-d)', fontSize: '1.05rem', lineHeight: 1, letterSpacing: '-0.01em' }}>{fmtTime(t.arrivalTime)}</div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--muted-d)', marginTop: 4 }}>{fmtDate(t.arrivalTime)}</div>
+                          <div style={tableStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
+                          <div style={tableStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
                         </td>
                         {isAuthenticated && (
                           <td>
-                            <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                            <div style={tableStyles.actionsCell}>
                               <button
                                 className="icon-btn"
                                 onClick={() => handleToggleFavorite(t.id)}
@@ -349,31 +389,27 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Збережені маршрути */}
         {isAuthenticated && favoritedTrains.length > 0 && (
           <>
             <div className="section-divider" style={{ margin: '40px auto 0' }} />
-            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
-              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
+            <section style={favStyles.section}>
+              <p style={favStyles.sectionLabel}>
                 Збережені маршрути
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={favStyles.list}>
                 {favoritedTrains.map(t => {
                   const [from, to] = t.direction.split(' → ');
                   return (
-                    <div
-                      key={t.id}
-                      style={{ background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}
-                    >
-                      <span style={{ padding: '3px 9px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                    <div key={t.id} style={favStyles.card}>
+                      <span style={favStyles.numberBadge}>
                         {t.trainNumber}
                       </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{from}</span>
-                        <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
-                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{to}</span>
+                      <div style={favStyles.directionRow}>
+                        <span style={favStyles.cityText}>{from}</span>
+                        <span style={favStyles.arrowText}>→</span>
+                        <span style={favStyles.cityText}>{to}</span>
                       </div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--muted-d)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', flexShrink: 0 }}>
+                      <span style={favStyles.timeText}>
                         {fmtTime(t.departureTime)}
                       </span>
                       <button
@@ -395,7 +431,6 @@ export default function HomePage() {
 
       </main>
 
-      {/* FAB — admins only */}
       {isAdmin && (
         <button className="fab" onClick={openAdd} aria-label="Додати маршрут">+</button>
       )}
