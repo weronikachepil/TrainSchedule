@@ -1,6 +1,9 @@
 import type { Train, AuthResponse, Trip } from '@/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_BASE = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? '/backend'
+  : BASE_URL;
 
 function getToken(): string | null {
   if (typeof window === 'undefined') return null;
@@ -10,7 +13,7 @@ function getToken(): string | null {
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const res = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
