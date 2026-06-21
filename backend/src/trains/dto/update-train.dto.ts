@@ -1,18 +1,4 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
+import { CreateTrainDto } from './create-train.dto';
 
-export class UpdateTrainDto {
-  @ApiPropertyOptional({ example: 'IC 741' })
-  trainNumber?: string;
-
-  @ApiPropertyOptional({ example: 'Kyiv → Lviv' })
-  direction?: string;
-
-  @ApiPropertyOptional({ example: '2024-06-21T08:00:00.000Z' })
-  departureTime?: Date;
-
-  @ApiPropertyOptional({ example: '2024-06-21T13:30:00.000Z' })
-  arrivalTime?: Date;
-
-  @ApiPropertyOptional({ example: 'Kyiv-Pasazhyrskyi' })
-  station?: string;
-}
+export class UpdateTrainDto extends PartialType(CreateTrainDto) {}

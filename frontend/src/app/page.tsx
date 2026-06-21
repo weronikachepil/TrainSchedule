@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import TrainCard from '@/components/TrainCard';
 import TrainModal from '@/components/TrainModal';
 import { useAuth } from '@/context/AuthContext';
-import { trainsApi } from '@/lib/api';
+import { useTrains } from '@/hooks/useTrains';
 import type { Train } from '@/types';
 
 type Filter = 'all' | 'morning' | 'afternoon' | 'evening';
@@ -17,13 +17,13 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: 'evening',   label: 'Вечір'          },
 ];
 
-function applyFilter(trains: Train[], f: Filter): Train[] {
-  if (f === 'all') return trains;
+function applyFilter(trains: Train[], filter: Filter): Train[] {
+  if (filter === 'all') return trains;
   return trains.filter(t => {
     const h = new Date(t.departureTime).getHours();
-    if (f === 'morning')   return h >= 5  && h < 12;
-    if (f === 'afternoon') return h >= 12 && h < 18;
-    if (f === 'evening')   return h >= 18 || h < 5;
+    if (filter === 'morning')   return h >= 5  && h < 12;
+    if (filter === 'afternoon') return h >= 12 && h < 18;
+    if (filter === 'evening')   return h >= 18 || h < 5;
     return true;
   });
 }
@@ -32,9 +32,8 @@ interface ToastState { msg: string; type: 'success' | 'error' }
 
 export default function HomePage() {
   const { isAuthenticated } = useAuth();
+  const { trains, loading, error, create, update, remove } = useTrains();
 
-  const [trains,  setTrains]  = useState<Train[]>([]);
-  const [loading, setLoading] = useState(true);
   const [filter,  setFilter]  = useState<Filter>('all');
   const [modal,   setModal]   = useState(false);
   const [editing, setEditing] = useState<Train | null>(null);
@@ -45,40 +44,33 @@ export default function HomePage() {
     setTimeout(() => setToast(null), 2800);
   };
 
-  const load = useCallback(async () => {
-    try {
-      setTrains(await trainsApi.getAll());
-    } catch {
-      showToast('Не вдалося завантажити розклад', 'error');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
-
   const openAdd    = () => { setEditing(null); setModal(true); };
   const openEdit   = (t: Train) => { setEditing(t); setModal(true); };
   const closeModal = () => { setModal(false); setEditing(null); };
 
   const handleSave = async (data: Omit<Train, 'id' | 'createdAt'>) => {
-    if (editing) {
-      const updated = await trainsApi.update(editing.id, data);
-      setTrains(prev => prev.map(t => t.id === editing.id ? updated : t));
-      showToast('Поїзд оновлено');
-    } else {
-      const created = await trainsApi.create(data);
-      setTrains(prev => [...prev, created]);
-      showToast('Поїзд додано');
+    try {
+      if (editing) {
+        await update(editing.id, data);
+        showToast('Маршрут оновлено');
+      } else {
+        await create(data);
+        showToast('Маршрут додано');
+      }
+      closeModal();
+    } catch {
+      showToast('Помилка збереження', 'error');
     }
-    closeModal();
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Видалити цей маршрут?')) return;
-    await trainsApi.delete(id);
-    setTrains(prev => prev.filter(t => t.id !== id));
-    showToast('Маршрут видалено');
+    try {
+      await remove(id);
+      showToast('Маршрут видалено');
+    } catch {
+      showToast('Помилка видалення', 'error');
+    }
   };
 
   const visible = applyFilter(trains, filter);
@@ -89,33 +81,14 @@ export default function HomePage() {
 
       <main style={{ paddingBottom: 140 }}>
 
-        {/* ── Hero ── */}
+        {/* Hero */}
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '56px 24px 48px' }}>
-          <p style={{
-            fontSize: '0.72rem',
-            fontWeight: 600,
-            color: 'var(--rose)',
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            margin: '0 0 18px',
-            fontFamily: 'var(--font-sans)',
-          }}>
+          <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' }}>
             Розклад потягів України
           </p>
-
-          <h1 style={{
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 800,
-            fontSize: 'clamp(52px, 9vw, 92px)',
-            lineHeight: 0.93,
-            color: 'var(--cream)',
-            margin: '0 0 48px',
-            letterSpacing: '-0.02em',
-          }}>
+          <h1 style={{ fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(52px, 9vw, 92px)', lineHeight: 0.93, color: 'var(--cream)', margin: '0 0 48px', letterSpacing: '-0.02em' }}>
             Знайди<br />свій поїзд
           </h1>
-
-          {/* Filter tabs */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {FILTERS.map(f => (
               <button
@@ -129,10 +102,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Subtle divider ── */}
         <div className="section-divider" />
 
-        {/* ── Count row ── */}
+        {/* Count row */}
         {!loading && (
           <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: 0, fontFamily: 'var(--font-sans)' }}>
@@ -143,14 +115,7 @@ export default function HomePage() {
             {isAuthenticated && (
               <button
                 onClick={openAdd}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '7px 16px',
-                  background: 'var(--cream)', color: 'var(--text-d)',
-                  border: 'none', borderRadius: 100,
-                  fontWeight: 600, fontSize: '0.82rem',
-                  cursor: 'pointer', fontFamily: 'var(--font-sans)',
-                }}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 16px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
               >
                 <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
                 Додати маршрут
@@ -159,10 +124,9 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* ── Content ── */}
+        {/* Content */}
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
           {loading ? (
-            /* Skeletons */
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))', gap: 20 }}>
               {[1, 2, 3].map(i => (
                 <div key={i} style={{ borderRadius: 20, overflow: 'hidden', background: '#1F1613' }}>
@@ -175,36 +139,24 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          ) : error ? (
+            <div style={{ textAlign: 'center', padding: '80px 0' }}>
+              <p style={{ color: 'var(--rose)', fontSize: '0.95rem', fontFamily: 'var(--font-sans)' }}>{error}</p>
+            </div>
           ) : visible.length === 0 ? (
-            /* Empty state */
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
               <p style={{ fontSize: '3rem', marginBottom: 12 }}>🚂</p>
               <p style={{ color: 'var(--muted-l)', fontSize: '0.95rem', margin: '0 0 24px', fontFamily: 'var(--font-sans)' }}>
-                {filter === 'all'
-                  ? 'Маршрутів поки немає'
-                  : `Немає маршрутів для фільтру «${FILTERS.find(f => f.key === filter)?.label}»`}
+                {filter === 'all' ? 'Маршрутів поки немає' : `Немає маршрутів для «${FILTERS.find(f => f.key === filter)?.label}»`}
               </p>
               {isAuthenticated && filter === 'all' && (
-                <button
-                  onClick={openAdd}
-                  style={{
-                    padding: '13px 28px',
-                    background: 'var(--cream)', color: 'var(--text-d)',
-                    border: 'none', borderRadius: 100,
-                    fontWeight: 600, cursor: 'pointer',
-                    fontSize: '0.9rem', fontFamily: 'var(--font-sans)',
-                  }}
-                >
+                <button onClick={openAdd} style={{ padding: '13px 28px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'var(--font-sans)' }}>
                   Додати перший маршрут
                 </button>
               )}
             </div>
           ) : (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))',
-              gap: 20,
-            }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))', gap: 20 }}>
               {visible.map(t => (
                 <TrainCard
                   key={t.id}
@@ -219,11 +171,8 @@ export default function HomePage() {
         </section>
       </main>
 
-      {/* FAB — visible only on mobile / when count row not shown */}
       {isAuthenticated && (
-        <button className="fab" onClick={openAdd} aria-label="Додати маршрут"
-          style={{ display: 'flex' }}
-        >
+        <button className="fab" onClick={openAdd} aria-label="Додати маршрут" style={{ display: 'flex' }}>
           +
         </button>
       )}
