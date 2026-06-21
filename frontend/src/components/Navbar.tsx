@@ -49,7 +49,7 @@ export default function Navbar() {
           </span>
           <span style={{
             fontSize: '0.55rem',
-            color: 'var(--rose)',
+            color: 'var(--accent)',
             fontWeight: 700,
             verticalAlign: 'super',
             marginLeft: 1,
