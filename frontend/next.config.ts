@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/backend/:path*',
-        destination: `${process.env.BACKEND_URL}/:path*`,
+        destination: `${process.env.BACKEND_URL ?? 'https://trainschedule-production.up.railway.app'}/:path*`,
       },
     ];
   },
