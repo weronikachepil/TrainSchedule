@@ -394,7 +394,7 @@ export default function HomePage() {
                   return (
                     <div key={t.id} className="train-card-mobile">
                       {/* Header: badge + route + actions */}
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                         <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
                         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -422,11 +422,18 @@ export default function HomePage() {
                         )}
                       </div>
                       {/* Times */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                        <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em' }}>{fmtTime(t.departureTime)}</span>
-                        <span style={{ color: 'var(--muted-d)', fontSize: '0.8rem' }}>→</span>
-                        <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em' }}>{fmtTime(t.arrivalTime)}</span>
-                        <span style={{ color: 'var(--muted-d)', fontSize: '0.72rem', marginLeft: 4 }}>· {fmtDate(t.departureTime)}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
+                        <div>
+                          <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Відправлення</div>
+                          <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.departureTime)}</div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.departureTime)}</div>
+                        </div>
+                        <span style={{ color: 'var(--rose)', fontWeight: 700, fontSize: '1.1rem', alignSelf: 'center' }}>→</span>
+                        <div>
+                          <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Прибуття</div>
+                          <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.arrivalTime)}</div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.arrivalTime)}</div>
+                        </div>
                       </div>
                       {/* Station */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.75rem', color: 'var(--muted-d)' }}>
