@@ -77,12 +77,12 @@ export default function RegisterPage() {
             color: 'var(--text-d)',
             margin: 0,
           }}>
-            TrainSchedule<span style={{ color: 'var(--rose)', fontSize: '0.55rem', verticalAlign: 'super', marginLeft: 1 }}>®</span>
+            TrainSchedule<span style={{ color: 'var(--accent)', fontSize: '0.55rem', verticalAlign: 'super', marginLeft: 1 }}>®</span>
           </p>
         </div>
 
         {/* Heading */}
-        <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px', fontFamily: 'var(--font-sans)' }}>
+        <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px', fontFamily: 'var(--font-sans)' }}>
           Новий акаунт
         </p>
         <h1 style={{ fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: '2.4rem', color: 'var(--text-d)', margin: '0 0 6px', letterSpacing: '-0.02em', lineHeight: 1 }}>
@@ -147,7 +147,7 @@ export default function RegisterPage() {
 
         <p style={{ textAlign: 'center', marginTop: 24, color: 'var(--muted-d)', fontSize: '0.875rem', fontFamily: 'var(--font-sans)' }}>
           Вже є акаунт?{' '}
-          <Link href="/login" style={{ color: 'var(--rose)', fontWeight: 600, textDecoration: 'none' }}>
+          <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
             Увійти →
           </Link>
         </p>
