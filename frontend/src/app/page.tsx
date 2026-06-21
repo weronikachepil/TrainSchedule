@@ -72,7 +72,7 @@ const tableStyles = {
   directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
   cityName: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 } as React.CSSProperties,
   cityLabel: { fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' } as React.CSSProperties,
-  arrow: { color: 'var(--rose)', fontWeight: 700, fontSize: '1.1rem', flexShrink: 0 } as React.CSSProperties,
+  arrow: { color: 'var(--accent)', fontWeight: 700, fontSize: '1.1rem', flexShrink: 0 } as React.CSSProperties,
   stationCell: { display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
   stationIcon: { width: 28, height: 28, borderRadius: '50%', background: 'rgba(196,145,138,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 } as React.CSSProperties,
   stationName: { color: 'var(--text-d)', fontSize: '0.82rem', fontWeight: 500 } as React.CSSProperties,
@@ -404,7 +404,7 @@ export default function HomePage() {
                             <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {from?.trim()}
                             </span>
-                            <span style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</span>
+                            <span style={{ color: 'var(--accent)', fontWeight: 700, flexShrink: 0 }}>→</span>
                             <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {to?.trim()}
                             </span>
@@ -431,7 +431,7 @@ export default function HomePage() {
                           <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.departureTime)}</div>
                           <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.departureTime)}</div>
                         </div>
-                        <span style={{ color: 'var(--rose)', fontWeight: 700, fontSize: '1.1rem', alignSelf: 'center' }}>→</span>
+                        <span style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '1.1rem', alignSelf: 'center' }}>→</span>
                         <div>
                           <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Прибуття</div>
                           <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.arrivalTime)}</div>
