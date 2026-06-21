@@ -369,7 +369,9 @@ export default function HomePage() {
                                 title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                 aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                               >
-                                {isFav ? '❤️' : '🤍'}
+                                <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-l)', fontSize: '1rem', lineHeight: 1 }}>
+                                  {isFav ? '♥' : '♡'}
+                                </span>
                               </button>
                               {isAdmin && (
                                 <>
@@ -419,7 +421,7 @@ export default function HomePage() {
                         aria-label="Видалити з обраних"
                         style={{ flexShrink: 0 }}
                       >
-                        ❤️
+                        <span style={{ color: 'var(--accent)', fontSize: '1rem', lineHeight: 1 }}>♥</span>
                       </button>
                     </div>
                   );
