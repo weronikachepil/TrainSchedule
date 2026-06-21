@@ -185,7 +185,7 @@ body {
 .btn-cta:hover { opacity: 0.85; }
 
 [data-theme="light"] .btn-cta {
-  background: var(--dark);
+  background: var(--accent);
   color: #FFFFFF;
 }
 
