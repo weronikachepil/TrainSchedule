@@ -1,0 +1,221 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import type { Train } from '@/types';
+import { STATIONS } from '@/types';
+
+interface Props {
+  train: Train | null;
+  onClose: () => void;
+  onSave: (data: Omit<Train, 'id' | 'createdAt'>) => Promise<void>;
+}
+
+function toLocal(iso: string): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const z = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+}
+
+const focusField  = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  e.target.style.borderColor = 'var(--rose)';
+  e.target.style.background  = 'rgba(255,255,255,0.7)';
+};
+const blurField = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  e.target.style.borderColor = 'var(--border-d)';
+  e.target.style.background  = 'rgba(26,21,17,0.04)';
+};
+
+const lbl: React.CSSProperties = {
+  display: 'block',
+  fontSize: '0.7rem',
+  fontWeight: 600,
+  color: 'var(--muted-d)',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  marginBottom: 6,
+  fontFamily: 'var(--font-sans)',
+};
+
+export default function TrainModal({ train, onClose, onSave }: Props) {
+  const [trainNumber, setTrainNumber] = useState('');
+  const [from,    setFrom]    = useState<string>(STATIONS[0]);
+  const [to,      setTo]      = useState<string>(STATIONS[1]);
+  const [station, setStation] = useState('');
+  const [dep,     setDep]     = useState('');
+  const [arr,     setArr]     = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error,  setError]  = useState('');
+
+  useEffect(() => {
+    if (!train) return;
+    setTrainNumber(train.trainNumber);
+    const parts = train.direction.split(' → ');
+    setFrom(parts[0] ?? STATIONS[0]);
+    setTo(parts[1]   ?? STATIONS[1]);
+    setStation(train.station);
+    setDep(toLocal(train.departureTime));
+    setArr(toLocal(train.arrivalTime));
+  }, [train]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+    if (!trainNumber.trim())             { setError('Введіть номер поїзда'); return; }
+    if (from === to)                     { setError('Станції мають різнитись'); return; }
+    if (!station.trim())                 { setError('Введіть назву станції'); return; }
+    if (!dep)                            { setError('Оберіть час відправлення'); return; }
+    if (!arr)                            { setError('Оберіть час прибуття'); return; }
+    if (new Date(dep) >= new Date(arr))  { setError('Прибуття має бути пізніше відправлення'); return; }
+
+    setSaving(true);
+    try {
+      await onSave({
+        trainNumber: trainNumber.trim(),
+        direction:   `${from} → ${to}`,
+        departureTime: new Date(dep).toISOString(),
+        arrivalTime:   new Date(arr).toISOString(),
+        station: station.trim(),
+      });
+    } catch {
+      setError('Помилка збереження — спробуйте ще раз');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div
+      className="modal-backdrop"
+      onClick={e => e.target === e.currentTarget && onClose()}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="modal-card">
+
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 3px', fontFamily: 'var(--font-sans)' }}>
+              {train ? 'Редагування' : 'Новий маршрут'}
+            </p>
+            <h2 style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '1.8rem', color: 'var(--text-d)', margin: 0, letterSpacing: '-0.01em' }}>
+              {train ? 'Змінити поїзд' : 'Додати поїзд'}
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Закрити"
+            style={{
+              width: 36, height: 36, borderRadius: '50%',
+              border: '1.5px solid var(--border-d)',
+              background: 'transparent', cursor: 'pointer',
+              fontSize: '1.1rem', lineHeight: 1,
+              color: 'var(--muted-d)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+
+          {/* Train number */}
+          <div>
+            <span style={lbl}>Номер поїзда</span>
+            <input
+              className="field-cream"
+              value={trainNumber}
+              onChange={e => setTrainNumber(e.target.value)}
+              placeholder="наприклад: IC 741"
+              onFocus={focusField}
+              onBlur={blurField}
+            />
+          </div>
+
+          {/* Station */}
+          <div>
+            <span style={lbl}>Станція відправлення</span>
+            <input
+              className="field-cream"
+              value={station}
+              onChange={e => setStation(e.target.value)}
+              placeholder="наприклад: Київ-Пасажирський"
+              onFocus={focusField}
+              onBlur={blurField}
+            />
+          </div>
+
+          {/* From → To */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 10, alignItems: 'end' }}>
+            <div>
+              <span style={lbl}>Звідки</span>
+              <select className="field-cream" value={from} onChange={e => setFrom(e.target.value)} onFocus={focusField} onBlur={blurField} style={{ cursor: 'pointer' }}>
+                {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div style={{ paddingBottom: 2, color: 'var(--rose)', fontWeight: 700, fontSize: '1rem', textAlign: 'center' }}>→</div>
+            <div>
+              <span style={lbl}>Куди</span>
+              <select className="field-cream" value={to} onChange={e => setTo(e.target.value)} onFocus={focusField} onBlur={blurField} style={{ cursor: 'pointer' }}>
+                {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* Times */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <span style={lbl}>Відправлення</span>
+              <input type="datetime-local" className="field-cream" value={dep} onChange={e => setDep(e.target.value)} onFocus={focusField} onBlur={blurField} />
+            </div>
+            <div>
+              <span style={lbl}>Прибуття</span>
+              <input type="datetime-local" className="field-cream" value={arr} onChange={e => setArr(e.target.value)} onFocus={focusField} onBlur={blurField} />
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div style={{ background: 'rgba(180,60,60,0.08)', border: '1px solid rgba(180,60,60,0.2)', borderRadius: 10, padding: '10px 14px', color: '#8B3030', fontSize: '0.875rem' }}>
+              {error}
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+            <button
+              type="button" onClick={onClose}
+              style={{
+                flex: 1, padding: '13px',
+                border: '1.5px solid var(--border-d)', borderRadius: 12,
+                background: 'transparent', color: 'var(--muted-d)',
+                fontWeight: 500, cursor: 'pointer',
+                fontSize: '0.9rem', fontFamily: 'var(--font-sans)',
+              }}
+            >
+              Скасувати
+            </button>
+            <button
+              type="submit" disabled={saving}
+              style={{
+                flex: 2, padding: '13px',
+                border: 'none', borderRadius: 12,
+                background: saving ? 'rgba(26,21,17,0.35)' : 'var(--dark)',
+                color: 'var(--cream)', fontWeight: 600,
+                cursor: saving ? 'not-allowed' : 'pointer',
+                fontSize: '0.9rem', fontFamily: 'var(--font-sans)',
+                transition: 'background 0.18s',
+              }}
+            >
+              {saving ? 'Збереження...' : train ? 'Зберегти' : 'Додати поїзд'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
