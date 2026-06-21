@@ -1,4 +1,4 @@
-import type { Train, AuthResponse } from '@/types';
+import type { Train, AuthResponse, Trip } from '@/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
@@ -56,4 +56,16 @@ export const authApi = {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }),
+};
+
+export const favoritesApi = {
+  getAll: () => request<{ id: number; trainId: number }[]>('/favorites'),
+  toggle: (trainId: number) => request<{ saved: boolean }>(`/favorites/${trainId}`, { method: 'POST' }),
+};
+
+export const tripsApi = {
+  getAll: () => request<Trip[]>('/trips'),
+  create: (trainId: number, tripDate: string) =>
+    request<Trip>('/trips', { method: 'POST', body: JSON.stringify({ trainId, tripDate }) }),
+  delete: (id: number) => request<void>(`/trips/${id}`, { method: 'DELETE' }),
 };

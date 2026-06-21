@@ -3,9 +3,12 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import TrainModal from '@/components/TrainModal';
+import TripModal from '@/components/TripModal';
 import ConfirmModal from '@/components/ConfirmModal';
 import { useAuth } from '@/context/AuthContext';
 import { useTrains } from '@/hooks/useTrains';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useTrips } from '@/hooks/useTrips';
 import type { Train } from '@/types';
 
 type Filter = 'all' | 'morning' | 'afternoon' | 'evening';
@@ -46,29 +49,6 @@ const ghostInput: React.CSSProperties = {
   transition: 'border-color 0.18s, background 0.18s',
 };
 
-const dateLabel: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 3,
-  fontSize: '0.65rem',
-  fontWeight: 600,
-  color: 'rgba(236,232,223,0.35)',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  fontFamily: 'var(--font-sans)',
-};
-
-const dateInput: React.CSSProperties = {
-  padding: '7px 12px',
-  background: 'rgba(236,232,223,0.08)',
-  border: '1.5px solid rgba(236,232,223,0.12)',
-  borderRadius: 10,
-  color: 'var(--cream)',
-  fontSize: '0.82rem',
-  fontFamily: 'var(--font-sans)',
-  outline: 'none',
-  colorScheme: 'dark',
-};
 
 interface ToastState { msg: string; type: 'success' | 'error' }
 
@@ -82,16 +62,15 @@ export default function HomePage() {
   const [editing,         setEditing]         = useState<Train | null>(null);
   const [toast,           setToast]           = useState<ToastState | null>(null);
   const [confirmId,       setConfirmId]       = useState<number | null>(null);
+  const [tripTrain,       setTripTrain]       = useState<Train | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 350);
     return () => clearTimeout(t);
   }, [search]);
 
-  const { isAuthenticated, role, userId } = useAuth();
+  const { isAuthenticated, role } = useAuth();
   const isAdmin = role === 'admin';
-  const canManage = (createdById: number | null) =>
-    isAdmin || (isAuthenticated && createdById === userId);
 
   const hasFilters = !!(debouncedSearch || departureDate || arrivalDate);
 
@@ -100,6 +79,9 @@ export default function HomePage() {
     departureDate,
     arrivalDate,
   });
+
+  const { favoriteIds, toggle: toggleFavorite } = useFavorites();
+  const { trips, plan, remove: removeTrip } = useTrips();
 
   const showToast = (msg: string, type: ToastState['type'] = 'success') => {
     setToast({ msg, type });
@@ -139,6 +121,20 @@ export default function HomePage() {
     }
   };
 
+  const handlePlanTrip = async (tripDate: string) => {
+    if (!tripTrain) return;
+    await plan(tripTrain.id, tripDate);
+    showToast('Поїздку заплановано');
+  };
+
+  const handleToggleFavorite = async (trainId: number) => {
+    try {
+      await toggleFavorite(trainId);
+    } catch {
+      showToast('Помилка збереження', 'error');
+    }
+  };
+
   const clearFilters = () => {
     setSearch('');
     setDebouncedSearch('');
@@ -147,6 +143,9 @@ export default function HomePage() {
   };
 
   const visible = applyFilter(trains, filter);
+
+  // Trains that are favorited (for the favorites section)
+  const favoritedTrains = trains.filter(t => favoriteIds.has(t.id));
 
   return (
     <>
@@ -179,24 +178,58 @@ export default function HomePage() {
 
         {/* Toolbar */}
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
 
-          {/* Row 1: text search + add button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 10 }}>
-            <div style={{ position: 'relative', flex: '1 1 260px', minWidth: 0 }}>
-              <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 }}>
-                🔍
-              </span>
+            {/* Search */}
+            <div style={{ position: 'relative', flex: '0 1 300px', minWidth: 180 }}>
+              <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 }}>🔍</span>
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Номер поїзда, місто відправлення або прибуття..."
+                placeholder="Поїзд, місто..."
                 style={ghostInput}
                 onFocus={e => { e.target.style.borderColor = 'rgba(196,145,138,0.5)'; e.target.style.background = 'rgba(236,232,223,0.12)'; }}
                 onBlur={e =>  { e.target.style.borderColor = 'rgba(236,232,223,0.12)'; e.target.style.background = 'rgba(236,232,223,0.08)'; }}
               />
             </div>
-            {isAuthenticated && (
+
+            {/* Date pickers */}
+            {(['departure', 'arrival'] as const).map(type => (
+              <div key={type} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(236,232,223,0.08)', border: '1.5px solid rgba(236,232,223,0.12)', borderRadius: 100, padding: '0 14px 0 16px' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(236,232,223,0.4)', whiteSpace: 'nowrap', fontFamily: 'var(--font-sans)', letterSpacing: '0.04em' }}>
+                  {type === 'departure' ? 'Відправлення' : 'Прибуття'}
+                </span>
+                <input
+                  type="date"
+                  value={type === 'departure' ? departureDate : arrivalDate}
+                  onChange={e => type === 'departure' ? setDepartureDate(e.target.value) : setArrivalDate(e.target.value)}
+                  style={{ padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--cream)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none', colorScheme: 'dark' }}
+                />
+              </div>
+            ))}
+
+            {/* Clear */}
+            {hasFilters && (
+              <button
+                onClick={clearFilters}
+                style={{ padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}
+              >
+                × Скинути
+              </button>
+            )}
+
+            {/* Count */}
+            {!loading && (
+              <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}>
+                {visible.length > 0
+                  ? `${visible.length} маршрут${visible.length === 1 ? '' : visible.length < 5 ? 'и' : 'ів'}`
+                  : 'Нічого не знайдено'}
+              </p>
+            )}
+
+            {/* Add button — admins only */}
+            {isAdmin && (
               <button
                 onClick={openAdd}
                 style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}
@@ -204,43 +237,6 @@ export default function HomePage() {
                 <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span>
                 Додати маршрут
               </button>
-            )}
-          </div>
-
-          {/* Row 2: date filters + count + clear */}
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, flexWrap: 'wrap' }}>
-            <label style={dateLabel}>
-              Дата відправлення
-              <input
-                type="date"
-                value={departureDate}
-                onChange={e => setDepartureDate(e.target.value)}
-                style={dateInput}
-              />
-            </label>
-            <label style={dateLabel}>
-              Дата прибуття
-              <input
-                type="date"
-                value={arrivalDate}
-                onChange={e => setArrivalDate(e.target.value)}
-                style={dateInput}
-              />
-            </label>
-            {hasFilters && (
-              <button
-                onClick={clearFilters}
-                style={{ padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap', marginBottom: 1 }}
-              >
-                × Скинути
-              </button>
-            )}
-            {!loading && (
-              <p style={{ fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 2px auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' }}>
-                {visible.length > 0
-                  ? `${visible.length} маршрут${visible.length === 1 ? '' : visible.length < 5 ? 'и' : 'ів'}`
-                  : 'Нічого не знайдено'}
-              </p>
             )}
           </div>
         </div>
@@ -278,7 +274,7 @@ export default function HomePage() {
                   Скинути фільтри
                 </button>
               )}
-              {isAuthenticated && !hasFilters && filter === 'all' && (
+              {isAdmin && !hasFilters && filter === 'all' && (
                 <button onClick={openAdd} style={{ padding: '13px 28px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'var(--font-sans)' }}>
                   Додати перший маршрут
                 </button>
@@ -300,7 +296,7 @@ export default function HomePage() {
                 <tbody>
                   {visible.map(t => {
                     const [from, to] = t.direction.split(' → ');
-                    const rowCanManage = canManage(t.createdById);
+                    const isFav = favoriteIds.has(t.id);
                     return (
                       <tr key={t.id}>
                         <td>
@@ -339,12 +335,33 @@ export default function HomePage() {
                         </td>
                         {isAuthenticated && (
                           <td>
-                            {rowCanManage && (
-                              <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                                <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
-                                <button className="icon-btn danger" onClick={() => handleDelete(t.id)} title="Видалити" aria-label="Видалити">🗑️</button>
-                              </div>
-                            )}
+                            <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                              {/* Favorite button — all authenticated users */}
+                              <button
+                                className="icon-btn"
+                                onClick={() => handleToggleFavorite(t.id)}
+                                title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                                aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                              >
+                                {isFav ? '❤️' : '🤍'}
+                              </button>
+                              {/* Plan trip button — all authenticated users */}
+                              <button
+                                className="icon-btn"
+                                onClick={() => setTripTrain(t)}
+                                title="Запланувати поїздку"
+                                aria-label="Запланувати поїздку"
+                              >
+                                📅
+                              </button>
+                              {/* Edit / Delete — admins only */}
+                              {isAdmin && (
+                                <>
+                                  <button className="icon-btn" onClick={() => openEdit(t)} title="Редагувати" aria-label="Редагувати">✏️</button>
+                                  <button className="icon-btn danger" onClick={() => handleDelete(t.id)} title="Видалити" aria-label="Видалити">🗑️</button>
+                                </>
+                              )}
+                            </div>
                           </td>
                         )}
                       </tr>
@@ -355,13 +372,121 @@ export default function HomePage() {
             </div>
           )}
         </section>
+
+        {/* Збережені маршрути */}
+        {isAuthenticated && favoritedTrains.length > 0 && (
+          <>
+            <div className="section-divider" style={{ margin: '40px auto 0' }} />
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
+              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
+                Збережені маршрути
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {favoritedTrains.map(t => {
+                  const [from, to] = t.direction.split(' → ');
+                  return (
+                    <div
+                      key={t.id}
+                      style={{ background: 'var(--cream)', borderRadius: 14, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 16, boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}
+                    >
+                      <span style={{ display: 'inline-block', padding: '4px 10px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                        {t.trainNumber}
+                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
+                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', whiteSpace: 'nowrap' }}>{from}</span>
+                        <span style={{ color: 'var(--rose)', fontWeight: 700 }}>→</span>
+                        <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', whiteSpace: 'nowrap' }}>{to}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--muted-d)', marginLeft: 4, whiteSpace: 'nowrap' }}>{fmtTime(t.departureTime)}</span>
+                      </div>
+                      <button
+                        className="icon-btn"
+                        onClick={() => handleToggleFavorite(t.id)}
+                        title="Видалити з обраних"
+                        aria-label="Видалити з обраних"
+                        style={{ flexShrink: 0 }}
+                      >
+                        ❤️
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* Мої подорожі */}
+        {isAuthenticated && trips.length > 0 && (
+          <>
+            <div className="section-divider" style={{ margin: '40px auto 0' }} />
+            <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
+              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--rose)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' }}>
+                Мої подорожі
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+                {trips.map(trip => {
+                  const [from, to] = trip.train.direction.split(' → ');
+                  return (
+                    <div
+                      key={trip.id}
+                      style={{ background: 'var(--cream)', borderRadius: 16, padding: '18px 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: 12 }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ display: 'inline-block', padding: '4px 10px', borderRadius: 100, border: '1.5px solid var(--rose)', color: 'var(--rose)', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.06em' }}>
+                          {trip.train.trainNumber}
+                        </span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-d)', fontFamily: 'var(--font-sans)', background: 'rgba(26,21,17,0.06)', padding: '4px 10px', borderRadius: 100 }}>
+                          📅 {new Date(trip.tripDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div>
+                          <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)' }}>{from}</div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{fmtTime(trip.train.departureTime)}</div>
+                        </div>
+                        <div style={{ color: 'var(--rose)', fontWeight: 700, flexShrink: 0 }}>→</div>
+                        <div>
+                          <div style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)' }}>{to}</div>
+                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{fmtTime(trip.train.arrivalTime)}</div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          try {
+                            await removeTrip(trip.id);
+                            showToast('Поїздку видалено');
+                          } catch {
+                            showToast('Помилка видалення', 'error');
+                          }
+                        }}
+                        style={{ alignSelf: 'flex-end', padding: '6px 14px', borderRadius: 100, border: '1.5px solid rgba(180,60,60,0.25)', background: 'transparent', color: '#8B3030', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
+                      >
+                        Видалити
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          </>
+        )}
+
       </main>
 
-      {isAuthenticated && (
+      {/* FAB — admins only */}
+      {isAdmin && (
         <button className="fab" onClick={openAdd} aria-label="Додати маршрут">+</button>
       )}
 
       {modal && <TrainModal train={editing} onClose={closeModal} onSave={handleSave} />}
+
+      {tripTrain && (
+        <TripModal
+          train={tripTrain}
+          onClose={() => setTripTrain(null)}
+          onSave={handlePlanTrip}
+        />
+      )}
 
       {confirmId !== null && (
         <ConfirmModal

@@ -9,6 +9,15 @@ export interface Train {
   createdAt: string;
 }
 
+export interface Trip {
+  id: number;
+  userId: number;
+  trainId: number;
+  train: Train;
+  tripDate: string;
+  createdAt: string;
+}
+
 export interface AuthResponse {
   access_token: string;
   role: string;

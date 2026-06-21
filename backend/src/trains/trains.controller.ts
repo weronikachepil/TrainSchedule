@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Req,
   Query,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -43,6 +44,7 @@ export class TrainsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() dto: CreateTrainDto, @Req() req: AuthRequest) {
+    if (req.user.role !== 'admin') throw new ForbiddenException('Admins only');
     return this.trainsService.create(dto, req.user);
   }
 
@@ -54,6 +56,7 @@ export class TrainsController {
     @Body() dto: UpdateTrainDto,
     @Req() req: AuthRequest,
   ) {
+    if (req.user.role !== 'admin') throw new ForbiddenException('Admins only');
     return this.trainsService.update(id, dto, req.user);
   }
 
@@ -62,6 +65,7 @@ export class TrainsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseIntPipe) id: number, @Req() req: AuthRequest) {
+    if (req.user.role !== 'admin') throw new ForbiddenException('Admins only');
     return this.trainsService.remove(id, req.user);
   }
 }
