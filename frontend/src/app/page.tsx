@@ -298,7 +298,6 @@ export default function HomePage() {
             </div>
           ) : (
             <>
-              {/* Desktop table */}
               <div className="desktop-table-wrap" style={{ ...tableStyles.scrollWrap, WebkitOverflowScrolling: 'touch' as const }}>
                 <table className="schedule-table" style={{ minWidth: 580 }}>
                   <thead>
@@ -376,14 +375,12 @@ export default function HomePage() {
                 </table>
               </div>
 
-              {/* Mobile cards */}
               <div className="mobile-cards">
                 {visible.map(t => {
                   const [from, to] = t.direction.split(' → ');
                   const isFav = favoriteIds.has(t.id);
                   return (
                     <div key={t.id} className="train-card-mobile">
-                      {/* Header: badge + route + actions */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                         <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
                         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
@@ -411,7 +408,6 @@ export default function HomePage() {
                           </div>
                         )}
                       </div>
-                      {/* Times */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
                         <div>
                           <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Відправлення</div>
@@ -425,7 +421,6 @@ export default function HomePage() {
                           <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.arrivalTime)}</div>
                         </div>
                       </div>
-                      {/* Station */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.75rem', color: 'var(--muted-d)' }}>
                         <span>📍</span>
                         <span>{t.station}</span>

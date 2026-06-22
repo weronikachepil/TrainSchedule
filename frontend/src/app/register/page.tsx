@@ -43,7 +43,6 @@ export default function RegisterPage() {
       justifyContent: 'center',
       padding: 24,
     }}>
-      {/* Back link */}
       <div style={{ width: '100%', maxWidth: 420, marginBottom: 20 }}>
         <Link href="/" style={{
           color: 'var(--muted-l)',
@@ -59,7 +58,6 @@ export default function RegisterPage() {
         </Link>
       </div>
 
-      {/* Card */}
       <div style={{
         background: 'var(--cream)',
         borderRadius: 28,
@@ -68,7 +66,6 @@ export default function RegisterPage() {
         maxWidth: 420,
         boxShadow: '0 40px 100px rgba(0,0,0,0.4)',
       }}>
-        {/* Logo */}
         <div style={{ marginBottom: 32 }}>
           <p style={{
             fontFamily: 'var(--font-syne)',
@@ -81,7 +78,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Heading */}
         <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px', fontFamily: 'var(--font-sans)' }}>
           Новий акаунт
         </p>

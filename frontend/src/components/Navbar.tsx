@@ -35,7 +35,6 @@ export default function Navbar() {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        {/* Logo */}
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{
             fontFamily: 'var(--font-syne)',
@@ -56,10 +55,8 @@ export default function Navbar() {
           }}>®</span>
         </Link>
 
-        {/* Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 2vw, 8px)' }}>
 
-          {/* Theme toggle */}
           <button
             onClick={toggle}
             title={theme === 'dark' ? 'Увімкнути світлу тему' : 'Увімкнути темну тему'}
