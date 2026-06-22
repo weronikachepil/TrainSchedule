@@ -35,59 +35,301 @@ const fmtDate = (d: string) =>
   new Date(d).toLocaleString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' });
 
 const heroStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)' } as React.CSSProperties,
-  eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
-  h1: { fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: 'clamp(48px, 8vw, 88px)', lineHeight: 0.93, color: 'var(--text-l)', margin: '0 0 48px', letterSpacing: '-0.02em' } as React.CSSProperties,
+  section: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)',
+  } as React.CSSProperties,
+  eyebrow: {
+    fontSize: '0.72rem',
+    fontWeight: 600,
+    color: 'var(--accent)',
+    letterSpacing: '0.16em',
+    textTransform: 'uppercase',
+    margin: '0 0 18px',
+    fontFamily: 'var(--font-sans)',
+  } as React.CSSProperties,
+  h1: {
+    fontFamily: 'var(--font-syne)',
+    fontWeight: 800,
+    fontSize: 'clamp(48px, 8vw, 88px)',
+    lineHeight: 0.93,
+    color: 'var(--text-l)',
+    margin: '0 0 48px',
+    letterSpacing: '-0.02em',
+  } as React.CSSProperties,
 };
 
 const toolbarStyles = {
-  outer: { maxWidth: 1200, margin: '0 auto', padding: '20px clamp(16px,4vw,24px) 12px' } as React.CSSProperties,
-  row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
-  searchInput: { width: '100%', padding: '9px 14px 9px 36px', background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, color: 'var(--text-l)', fontSize: '0.85rem', fontFamily: 'var(--font-sans)', outline: 'none', transition: 'border-color 0.18s, background 0.18s' } as React.CSSProperties,
-  searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
-  dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
-  clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
-  count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
-  addBtn: { display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', background: 'var(--accent)', color: '#FFFFFF', border: 'none', borderRadius: 100, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
-  addBtnIcon: { fontSize: '1rem', lineHeight: 1 } as React.CSSProperties,
+  outer: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: '20px clamp(16px,4vw,24px) 12px',
+  } as React.CSSProperties,
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    flexWrap: 'wrap',
+  } as React.CSSProperties,
+  searchInput: {
+    width: '100%',
+    padding: '9px 14px 9px 36px',
+    background: 'var(--input-bg)',
+    border: '1.5px solid var(--border-l)',
+    borderRadius: 100,
+    color: 'var(--text-l)',
+    fontSize: '0.85rem',
+    fontFamily: 'var(--font-sans)',
+    outline: 'none',
+    transition: 'border-color 0.18s, background 0.18s',
+  } as React.CSSProperties,
+  searchIcon: {
+    position: 'absolute',
+    left: 14,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    fontSize: '0.85rem',
+    pointerEvents: 'none',
+    opacity: 0.35,
+  } as React.CSSProperties,
+  dateInput: {
+    padding: '8px 0',
+    background: 'transparent',
+    border: 'none',
+    color: 'var(--text-l)',
+    fontSize: '0.82rem',
+    fontFamily: 'var(--font-sans)',
+    outline: 'none',
+  } as React.CSSProperties,
+  clearBtn: {
+    padding: '7px 14px',
+    borderRadius: 100,
+    border: '1.5px solid rgba(196,145,138,0.35)',
+    background: 'transparent',
+    color: 'var(--rose)',
+    fontSize: '0.78rem',
+    fontWeight: 600,
+    cursor: 'pointer',
+    fontFamily: 'var(--font-sans)',
+    whiteSpace: 'nowrap',
+  } as React.CSSProperties,
+  count: {
+    fontSize: '0.8rem',
+    color: 'var(--muted-l)',
+    margin: '0 0 0 auto',
+    fontFamily: 'var(--font-sans)',
+    whiteSpace: 'nowrap',
+  } as React.CSSProperties,
+  addBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    padding: '9px 18px',
+    background: 'var(--accent)',
+    color: '#FFFFFF',
+    border: 'none',
+    borderRadius: 100,
+    fontWeight: 600,
+    fontSize: '0.82rem',
+    cursor: 'pointer',
+    fontFamily: 'var(--font-sans)',
+    whiteSpace: 'nowrap',
+  } as React.CSSProperties,
+  addBtnIcon: {
+    fontSize: '1rem',
+    lineHeight: 1,
+  } as React.CSSProperties,
 };
 
 const tableStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: '4px clamp(0px,3vw,24px) 0' } as React.CSSProperties,
-  scrollWrap: { overflowX: 'auto', paddingBottom: 4 } as React.CSSProperties,
-  numberBadge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: 30, padding: '0 12px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'Arial, sans-serif', fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.04em', whiteSpace: 'nowrap', minWidth: 64, lineHeight: 1 } as React.CSSProperties,
-  directionCell: { display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' } as React.CSSProperties,
-  cityName: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-d)', lineHeight: 1.2 } as React.CSSProperties,
-  cityLabel: { fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 2, letterSpacing: '0.06em', textTransform: 'uppercase' } as React.CSSProperties,
-  arrow: { color: 'var(--accent)', fontWeight: 700, fontSize: '1.1rem', flexShrink: 0 } as React.CSSProperties,
-  stationCell: { display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties,
-  stationIcon: { width: 28, height: 28, borderRadius: '50%', background: 'rgba(196,145,138,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 } as React.CSSProperties,
-  stationName: { color: 'var(--text-d)', fontSize: '0.82rem', fontWeight: 500 } as React.CSSProperties,
-  timeValue: { fontWeight: 700, fontFamily: 'var(--font-sans)', color: 'var(--text-d)', fontSize: '1.05rem', lineHeight: 1, letterSpacing: '-0.01em' } as React.CSSProperties,
-  timeDate: { fontSize: '0.7rem', color: 'var(--muted-d)', marginTop: 4 } as React.CSSProperties,
-  actionsCell: { display: 'flex', gap: 6, justifyContent: 'flex-end' } as React.CSSProperties,
+  section: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: '4px clamp(0px,3vw,24px) 0',
+  } as React.CSSProperties,
+  scrollWrap: {
+    overflowX: 'auto',
+    paddingBottom: 4,
+  } as React.CSSProperties,
+  numberBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    padding: '0 12px',
+    borderRadius: 100,
+    border: '1.5px solid var(--accent)',
+    color: 'var(--accent)',
+    fontFamily: 'Arial, sans-serif',
+    fontWeight: 700,
+    fontSize: '0.78rem',
+    letterSpacing: '0.04em',
+    whiteSpace: 'nowrap',
+    minWidth: 64,
+    lineHeight: 1,
+  } as React.CSSProperties,
+  directionCell: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    whiteSpace: 'nowrap',
+  } as React.CSSProperties,
+  cityName: {
+    fontFamily: 'var(--font-syne)',
+    fontWeight: 700,
+    fontSize: '0.95rem',
+    color: 'var(--text-d)',
+    lineHeight: 1.2,
+  } as React.CSSProperties,
+  cityLabel: {
+    fontSize: '0.68rem',
+    color: 'var(--muted-d)',
+    marginTop: 2,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+  } as React.CSSProperties,
+  arrow: {
+    color: 'var(--accent)',
+    fontWeight: 700,
+    fontSize: '1.1rem',
+    flexShrink: 0,
+  } as React.CSSProperties,
+  stationCell: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+  } as React.CSSProperties,
+  stationIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: '50%',
+    background: 'rgba(196,145,138,0.12)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '0.75rem',
+    flexShrink: 0,
+  } as React.CSSProperties,
+  stationName: {
+    color: 'var(--text-d)',
+    fontSize: '0.82rem',
+    fontWeight: 500,
+  } as React.CSSProperties,
+  timeValue: {
+    fontWeight: 700,
+    fontFamily: 'var(--font-sans)',
+    color: 'var(--text-d)',
+    fontSize: '1.05rem',
+    lineHeight: 1,
+    letterSpacing: '-0.01em',
+  } as React.CSSProperties,
+  timeDate: {
+    fontSize: '0.7rem',
+    color: 'var(--muted-d)',
+    marginTop: 4,
+  } as React.CSSProperties,
+  actionsCell: {
+    display: 'flex',
+    gap: 6,
+    justifyContent: 'flex-end',
+  } as React.CSSProperties,
 };
 
 const favStyles = {
-  section: { maxWidth: 1200, margin: '0 auto', padding: '32px clamp(16px,4vw,24px) 0' } as React.CSSProperties,
-  sectionLabel: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 16px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
-  list: { display: 'flex', flexDirection: 'column', gap: 8 } as React.CSSProperties,
-  card: { background: 'var(--cream)', borderRadius: 14, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' } as React.CSSProperties,
-  numberBadge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: 26, padding: '0 9px', borderRadius: 100, border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'Arial, sans-serif', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.04em', whiteSpace: 'nowrap', flexShrink: 0, minWidth: 52, lineHeight: 1 } as React.CSSProperties,
-  directionRow: { display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 0, overflow: 'hidden' } as React.CSSProperties,
-  cityText: { fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as React.CSSProperties,
-  arrowText: { color: 'var(--accent)', fontWeight: 700, flexShrink: 0 } as React.CSSProperties,
+  section: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: '32px clamp(16px,4vw,24px) 0',
+  } as React.CSSProperties,
+  sectionLabel: {
+    fontSize: '0.72rem',
+    fontWeight: 600,
+    color: 'var(--accent)',
+    letterSpacing: '0.16em',
+    textTransform: 'uppercase',
+    margin: '0 0 16px',
+    fontFamily: 'var(--font-sans)',
+  } as React.CSSProperties,
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  } as React.CSSProperties,
+  card: {
+    background: 'var(--cream)',
+    borderRadius: 14,
+    padding: '12px 16px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+  } as React.CSSProperties,
+  numberBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 26,
+    padding: '0 9px',
+    borderRadius: 100,
+    border: '1.5px solid var(--accent)',
+    color: 'var(--accent)',
+    fontFamily: 'Arial, sans-serif',
+    fontWeight: 700,
+    fontSize: '0.72rem',
+    letterSpacing: '0.04em',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+    minWidth: 52,
+    lineHeight: 1,
+  } as React.CSSProperties,
+  directionRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  cityText: {
+    fontFamily: 'var(--font-syne)',
+    fontWeight: 700,
+    fontSize: '0.85rem',
+    color: 'var(--text-d)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  } as React.CSSProperties,
+  arrowText: {
+    color: 'var(--accent)',
+    fontWeight: 700,
+    flexShrink: 0,
+  } as React.CSSProperties,
 };
 
 const skeletonStyles = {
-  list: { display: 'flex', flexDirection: 'column', gap: 7 } as React.CSSProperties,
-  directionGroup: { display: 'flex', gap: 10, alignItems: 'center', flex: '0 0 200px' } as React.CSSProperties,
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 7,
+  } as React.CSSProperties,
+  directionGroup: {
+    display: 'flex',
+    gap: 10,
+    alignItems: 'center',
+    flex: '0 0 200px',
+  } as React.CSSProperties,
 };
 
 const skeletonRow = (i: number): React.CSSProperties => ({
-  background: 'var(--dark-2)', borderRadius: 14, padding: '18px 24px',
-  display: 'flex', gap: 32, alignItems: 'center',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12,
+  background: 'var(--dark-2)',
+  borderRadius: 14,
+  padding: '18px 24px',
+  display: 'flex',
+  gap: 32,
+  alignItems: 'center',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.14)',
+  opacity: 1 - i * 0.12,
 });
 
 type ToastState = { msg: string; type: 'success' | 'error' };
@@ -277,21 +519,50 @@ export default function HomePage() {
             </div>
           ) : error ? (
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p style={{ color: 'var(--rose)', fontSize: '0.95rem', fontFamily: 'var(--font-sans)' }}>{error}</p>
+              <p style={{
+                color: 'var(--rose)',
+                fontSize: '0.95rem',
+                fontFamily: 'var(--font-sans)',
+              }}>{error}</p>
             </div>
           ) : visible.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
               <p style={{ fontSize: '3rem', marginBottom: 12 }}>🚂</p>
-              <p style={{ color: 'var(--muted-l)', fontSize: '0.95rem', margin: '0 0 24px', fontFamily: 'var(--font-sans)' }}>
+              <p style={{
+                color: 'var(--muted-l)',
+                fontSize: '0.95rem',
+                margin: '0 0 24px',
+                fontFamily: 'var(--font-sans)',
+              }}>
                 {hasFilters ? 'Нічого не знайдено за вашим запитом' : filter === 'all' ? 'Маршрутів поки немає' : `Немає маршрутів для «${FILTERS.find(f => f.key === filter)?.label}»`}
               </p>
               {hasFilters && (
-                <button onClick={clearFilters} style={{ padding: '11px 24px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem', fontFamily: 'var(--font-sans)' }}>
+                <button onClick={clearFilters} style={{
+                  padding: '11px 24px',
+                  background: 'var(--cream)',
+                  color: 'var(--text-d)',
+                  border: 'none',
+                  borderRadius: 100,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '0.88rem',
+                  fontFamily: 'var(--font-sans)',
+                }}>
                   Скинути фільтри
                 </button>
               )}
               {isAdmin && !hasFilters && filter === 'all' && (
-                <button onClick={openAdd} style={{ padding: '13px 28px', background: 'var(--cream)', color: 'var(--text-d)', border: 'none', borderRadius: 100, fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'var(--font-sans)' }}>
+                <button onClick={openAdd} style={{
+                  padding: '13px 28px',
+                  background: 'var(--cream)',
+                  color: 'var(--text-d)',
+                  border: 'none',
+                  borderRadius: 100,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  fontFamily: 'var(--font-sans)',
+                }}>
                   Додати перший маршрут
                 </button>
               )}
@@ -355,7 +626,11 @@ export default function HomePage() {
                                   title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                   aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                 >
-                                  <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>
+                                  <span style={{
+                                    color: isFav ? 'var(--accent)' : 'var(--muted-d)',
+                                    fontSize: '1rem',
+                                    lineHeight: 1,
+                                  }}>
                                     {isFav ? '♥' : '♡'}
                                   </span>
                                 </button>
@@ -381,23 +656,64 @@ export default function HomePage() {
                   const isFav = favoriteIds.has(t.id);
                   return (
                     <div key={t.id} className="train-card-mobile">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        marginBottom: 10,
+                      }}>
                         <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
-                        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div style={{
+                          flex: 1,
+                          minWidth: 0,
+                          overflow: 'hidden',
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
+                          }}>
+                            <span style={{
+                              fontFamily: 'var(--font-syne)',
+                              fontWeight: 700,
+                              fontSize: '0.9rem',
+                              color: 'var(--text-d)',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}>
                               {from?.trim()}
                             </span>
-                            <span style={{ color: 'var(--accent)', fontWeight: 700, flexShrink: 0 }}>→</span>
-                            <span style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-d)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <span style={{
+                              color: 'var(--accent)',
+                              fontWeight: 700,
+                              flexShrink: 0,
+                            }}>→</span>
+                            <span style={{
+                              fontFamily: 'var(--font-syne)',
+                              fontWeight: 700,
+                              fontSize: '0.9rem',
+                              color: 'var(--text-d)',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}>
                               {to?.trim()}
                             </span>
                           </div>
                         </div>
                         {isAuthenticated && (
-                          <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+                          <div style={{
+                            display: 'flex',
+                            gap: 2,
+                            flexShrink: 0,
+                          }}>
                             <button className="icon-btn" onClick={() => handleToggleFavorite(t.id)} title={isFav ? 'Видалити з обраних' : 'Додати до обраних'} aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}>
-                              <span style={{ color: isFav ? 'var(--accent)' : 'var(--muted-d)', fontSize: '1rem', lineHeight: 1 }}>{isFav ? '♥' : '♡'}</span>
+                              <span style={{
+                                color: isFav ? 'var(--accent)' : 'var(--muted-d)',
+                                fontSize: '1rem',
+                                lineHeight: 1,
+                              }}>{isFav ? '♥' : '♡'}</span>
                             </button>
                             {isAdmin && (
                               <>
@@ -408,20 +724,70 @@ export default function HomePage() {
                           </div>
                         )}
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 16,
+                        marginBottom: 8,
+                      }}>
                         <div>
-                          <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Відправлення</div>
-                          <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.departureTime)}</div>
-                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.departureTime)}</div>
+                          <div style={{
+                            fontSize: '0.62rem',
+                            color: 'var(--muted-d)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: 2,
+                          }}>Відправлення</div>
+                          <div style={{
+                            fontWeight: 700,
+                            fontSize: '1rem',
+                            color: 'var(--text-d)',
+                            fontFamily: 'var(--font-sans)',
+                            letterSpacing: '-0.01em',
+                            lineHeight: 1,
+                          }}>{fmtTime(t.departureTime)}</div>
+                          <div style={{
+                            fontSize: '0.68rem',
+                            color: 'var(--muted-d)',
+                            marginTop: 3,
+                          }}>{fmtDate(t.departureTime)}</div>
                         </div>
-                        <span style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '1.1rem', alignSelf: 'center' }}>→</span>
+                        <span style={{
+                          color: 'var(--accent)',
+                          fontWeight: 700,
+                          fontSize: '1.1rem',
+                          alignSelf: 'center',
+                        }}>→</span>
                         <div>
-                          <div style={{ fontSize: '0.62rem', color: 'var(--muted-d)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>Прибуття</div>
-                          <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-d)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.01em', lineHeight: 1 }}>{fmtTime(t.arrivalTime)}</div>
-                          <div style={{ fontSize: '0.68rem', color: 'var(--muted-d)', marginTop: 3 }}>{fmtDate(t.arrivalTime)}</div>
+                          <div style={{
+                            fontSize: '0.62rem',
+                            color: 'var(--muted-d)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: 2,
+                          }}>Прибуття</div>
+                          <div style={{
+                            fontWeight: 700,
+                            fontSize: '1rem',
+                            color: 'var(--text-d)',
+                            fontFamily: 'var(--font-sans)',
+                            letterSpacing: '-0.01em',
+                            lineHeight: 1,
+                          }}>{fmtTime(t.arrivalTime)}</div>
+                          <div style={{
+                            fontSize: '0.68rem',
+                            color: 'var(--muted-d)',
+                            marginTop: 3,
+                          }}>{fmtDate(t.arrivalTime)}</div>
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.75rem', color: 'var(--muted-d)' }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 5,
+                        fontSize: '0.75rem',
+                        color: 'var(--muted-d)',
+                      }}>
                         <span>📍</span>
                         <span>{t.station}</span>
                       </div>
@@ -460,7 +826,11 @@ export default function HomePage() {
                         aria-label="Видалити з обраних"
                         style={{ flexShrink: 0 }}
                       >
-                        <span style={{ color: 'var(--accent)', fontSize: '1rem', lineHeight: 1 }}>♥</span>
+                        <span style={{
+                          color: 'var(--accent)',
+                          fontSize: '1rem',
+                          lineHeight: 1,
+                        }}>♥</span>
                       </button>
                     </div>
                   );

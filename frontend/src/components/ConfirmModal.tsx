@@ -7,11 +7,16 @@ interface Props {
 }
 
 const iconStyles: React.CSSProperties = {
-  width: 52, height: 52, borderRadius: '50%',
+  width: 52,
+  height: 52,
+  borderRadius: '50%',
   background: 'rgba(180,60,60,0.1)',
   border: '1.5px solid rgba(180,60,60,0.2)',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  fontSize: '1.4rem', margin: '0 auto 20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '1.4rem',
+  margin: '0 auto 20px',
 };
 
 const titleStyles: React.CSSProperties = {
@@ -31,10 +36,14 @@ const messageStyles: React.CSSProperties = {
   lineHeight: 1.5,
 };
 
-const btnRowStyles: React.CSSProperties = { display: 'flex', gap: 10 };
+const btnRowStyles: React.CSSProperties = {
+  display: 'flex',
+  gap: 10,
+};
 
 const cancelBtnStyles: React.CSSProperties = {
-  flex: 1, padding: '13px',
+  flex: 1,
+  padding: '13px',
   border: '1.5px solid var(--border-d)',
   borderRadius: 12,
   background: 'transparent',
@@ -46,8 +55,10 @@ const cancelBtnStyles: React.CSSProperties = {
 };
 
 const deleteBtnStyles: React.CSSProperties = {
-  flex: 1, padding: '13px',
-  border: 'none', borderRadius: 12,
+  flex: 1,
+  padding: '13px',
+  border: 'none',
+  borderRadius: 12,
   background: '#8B3030',
   color: '#fff',
   fontWeight: 600,
