@@ -9,7 +9,6 @@
   --rose:    #C4918A;
   --rose-2:  #9E6D66;
 
-  
   --text-l:   #ECE8DF;
   --text-d:   #1A1511;
   --muted-l:  rgba(236,232,223,0.45);
@@ -18,7 +17,6 @@
   --border-d: rgba(26,21,17,0.14);
   --input-bg: rgba(236,232,223,0.08);
 
-  
   --accent:        #3B9EFF;
   --nav-bg:        rgba(2,6,14,0.88);
   --card-img-bg:   #040F20;
@@ -56,11 +54,39 @@
 }
 
 @theme inline {
-  --color-dark:  #191310;
-  --color-cream: #ECE8DF;
-  --color-rose:  #C4918A;
+  --color-dark:    #191310;
+  --color-dark-2:  var(--dark-2);
+  --color-cream:   #ECE8DF;
+  --color-rose:    #C4918A;
+  --color-accent:  var(--accent);
+  --color-tl:      var(--text-l);
+  --color-td:      var(--text-d);
+  --color-ml:      var(--muted-l);
+  --color-md:      var(--muted-d);
+  --color-bl:      var(--border-l);
+  --color-bd:      var(--border-d);
+  --color-ibg:     var(--input-bg);
+  --color-navbg:   var(--nav-bg);
   --font-headline: var(--font-syne),   'Arial', sans-serif;
   --font-sans:     var(--font-dm),     system-ui, sans-serif;
+}
+
+@utility font-arial       { font-family: Arial, sans-serif; }
+@utility border-15-bl     { border: 1.5px solid var(--border-l); }
+@utility border-15-bd     { border: 1.5px solid var(--border-d); }
+@utility border-15-accent { border: 1.5px solid var(--accent); }
+@utility number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1;
+  border-radius: 100px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

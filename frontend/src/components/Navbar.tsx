@@ -16,66 +16,22 @@ export default function Navbar() {
   };
 
   return (
-    <header style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 40,
-      background: 'var(--nav-bg)',
-      backdropFilter: 'blur(18px)',
-      WebkitBackdropFilter: 'blur(18px)',
-      borderBottom: '1px solid var(--border-l)',
-      transition: 'background 0.3s ease, border-color 0.3s ease',
-    }}>
-      <div style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: `0 clamp(16px, 4vw, 24px)`,
-        height: 62,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{
-            fontFamily: 'var(--font-syne)',
-            fontSize: '1.15rem',
-            fontWeight: 700,
-            color: 'var(--text-l)',
-            letterSpacing: '0.01em',
-            transition: 'color 0.3s ease',
-          }}>
+    <header className="sticky top-0 z-40 bg-navbg backdrop-blur-[18px] border-b border-15-bl transition-all duration-300">
+      <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,24px)] h-[62px] flex items-center justify-between">
+
+        <Link href="/" className="no-underline flex items-center gap-1">
+          <span className="font-headline text-[1.15rem] font-bold text-tl tracking-[0.01em] transition-colors duration-300">
             TrainSchedule
           </span>
-          <span style={{
-            fontSize: '0.55rem',
-            color: 'var(--accent)',
-            fontWeight: 700,
-            verticalAlign: 'super',
-            marginLeft: 1,
-          }}>®</span>
+          <span className="text-[0.55rem] text-accent font-bold align-super ml-px">®</span>
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 2vw, 8px)' }}>
+        <div className="flex items-center gap-[clamp(4px,2vw,8px)]">
 
           <button
             onClick={toggle}
             title={theme === 'dark' ? 'Увімкнути світлу тему' : 'Увімкнути темну тему'}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              border: '1.5px solid var(--border-l)',
-              background: 'transparent',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'border-color 0.18s, background 0.18s',
-              flexShrink: 0,
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(128,100,80,0.12)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+            className="w-9 h-9 rounded-full border-15-bl bg-transparent cursor-pointer text-base flex items-center justify-center transition-all duration-200 shrink-0 hover:bg-[rgba(128,100,80,0.12)]"
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
@@ -87,26 +43,7 @@ export default function Navbar() {
               )}
               <button
                 onClick={handleLogout}
-                style={{
-                  padding: 'clamp(6px,1.5vw,8px) clamp(12px,3vw,20px)',
-                  border: '1.5px solid var(--border-l)',
-                  borderRadius: 100,
-                  background: 'transparent',
-                  color: 'var(--muted-l)',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  fontSize: 'clamp(0.78rem,2.5vw,0.85rem)',
-                  fontFamily: 'var(--font-sans)',
-                  transition: 'color 0.18s, border-color 0.18s',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.color = 'var(--text-l)';
-                  e.currentTarget.style.borderColor = 'var(--muted-l)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.color = 'var(--muted-l)';
-                  e.currentTarget.style.borderColor = 'var(--border-l)';
-                }}
+                className="py-[clamp(6px,1.5vw,8px)] px-[clamp(12px,3vw,20px)] border-15-bl rounded-full bg-transparent text-ml font-medium cursor-pointer text-[clamp(0.78rem,2.5vw,0.85rem)] font-sans transition-all duration-200 hover:text-tl"
               >
                 Вийти
               </button>
@@ -115,15 +52,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                style={{
-                  padding: 'clamp(6px,1.5vw,8px) clamp(8px,2.5vw,16px)',
-                  color: 'var(--muted-l)',
-                  fontWeight: 500,
-                  fontSize: 'clamp(0.78rem,2.5vw,0.85rem)',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--font-sans)',
-                  transition: 'color 0.18s',
-                }}
+                className="py-[clamp(6px,1.5vw,8px)] px-[clamp(8px,2.5vw,16px)] text-ml font-medium text-[clamp(0.78rem,2.5vw,0.85rem)] no-underline font-sans transition-colors duration-200 hover:text-tl"
               >
                 Увійти
               </Link>

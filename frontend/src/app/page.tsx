@@ -34,451 +34,6 @@ const fmtTime = (d: string) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' });
 
-const pageStyles: Record<string, React.CSSProperties> = {
-  main: {
-    paddingBottom: 120,
-  },
-  filterRow: {
-    display: 'flex',
-    gap: 8,
-    flexWrap: 'wrap',
-  },
-};
-
-const heroStyles: Record<string, React.CSSProperties> = {
-  section: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)',
-  },
-  eyebrow: {
-    fontSize: '0.72rem',
-    fontWeight: 600,
-    color: 'var(--accent)',
-    letterSpacing: '0.16em',
-    textTransform: 'uppercase',
-    margin: '0 0 18px',
-    fontFamily: 'var(--font-sans)',
-  },
-  h1: {
-    fontFamily: 'var(--font-syne)',
-    fontWeight: 800,
-    fontSize: 'clamp(48px, 8vw, 88px)',
-    lineHeight: 0.93,
-    color: 'var(--text-l)',
-    margin: '0 0 48px',
-    letterSpacing: '-0.02em',
-  },
-};
-
-const toolbarStyles: Record<string, React.CSSProperties> = {
-  outer: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: '20px clamp(16px,4vw,24px) 12px',
-  },
-  row: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    flexWrap: 'wrap',
-  },
-  searchInput: {
-    width: '100%',
-    padding: '9px 14px 9px 36px',
-    background: 'var(--input-bg)',
-    border: '1.5px solid var(--border-l)',
-    borderRadius: 100,
-    color: 'var(--text-l)',
-    fontSize: '0.85rem',
-    fontFamily: 'var(--font-sans)',
-    outline: 'none',
-    transition: 'border-color 0.18s, background 0.18s',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 14,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    fontSize: '0.85rem',
-    pointerEvents: 'none',
-    opacity: 0.35,
-  },
-  dateInput: {
-    padding: '8px 0',
-    background: 'transparent',
-    border: 'none',
-    color: 'var(--text-l)',
-    fontSize: '0.82rem',
-    fontFamily: 'var(--font-sans)',
-    outline: 'none',
-  },
-  clearBtn: {
-    padding: '7px 14px',
-    borderRadius: 100,
-    border: '1.5px solid rgba(196,145,138,0.35)',
-    background: 'transparent',
-    color: 'var(--rose)',
-    fontSize: '0.78rem',
-    fontWeight: 600,
-    cursor: 'pointer',
-    fontFamily: 'var(--font-sans)',
-    whiteSpace: 'nowrap',
-  },
-  count: {
-    fontSize: '0.8rem',
-    color: 'var(--muted-l)',
-    margin: '0 0 0 auto',
-    fontFamily: 'var(--font-sans)',
-    whiteSpace: 'nowrap',
-  },
-  addBtn: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-    padding: '9px 18px',
-    background: 'var(--accent)',
-    color: '#FFFFFF',
-    border: 'none',
-    borderRadius: 100,
-    fontWeight: 600,
-    fontSize: '0.82rem',
-    cursor: 'pointer',
-    fontFamily: 'var(--font-sans)',
-    whiteSpace: 'nowrap',
-  },
-  addBtnIcon: {
-    fontSize: '1rem',
-    lineHeight: 1,
-  },
-};
-
-const tableStyles: Record<string, React.CSSProperties> = {
-  section: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: '4px clamp(0px,3vw,24px) 0',
-  },
-  scrollWrap: {
-    overflowX: 'auto',
-    paddingBottom: 4,
-  },
-  table: {
-    minWidth: 580,
-  },
-  numberBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 30,
-    padding: '0 12px',
-    borderRadius: 100,
-    border: '1.5px solid var(--accent)',
-    color: 'var(--accent)',
-    fontFamily: 'Arial, sans-serif',
-    fontWeight: 700,
-    fontSize: '0.78rem',
-    letterSpacing: '0.04em',
-    whiteSpace: 'nowrap',
-    minWidth: 64,
-    lineHeight: 1,
-  },
-  directionCell: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    whiteSpace: 'nowrap',
-  },
-  cityName: {
-    fontFamily: 'var(--font-syne)',
-    fontWeight: 700,
-    fontSize: '0.95rem',
-    color: 'var(--text-d)',
-    lineHeight: 1.2,
-  },
-  cityLabel: {
-    fontSize: '0.68rem',
-    color: 'var(--muted-d)',
-    marginTop: 2,
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
-  },
-  arrow: {
-    color: 'var(--accent)',
-    fontWeight: 700,
-    fontSize: '1.1rem',
-    flexShrink: 0,
-  },
-  stationCell: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-  },
-  stationIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: '50%',
-    background: 'rgba(196,145,138,0.12)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '0.75rem',
-    flexShrink: 0,
-  },
-  stationName: {
-    color: 'var(--text-d)',
-    fontSize: '0.82rem',
-    fontWeight: 500,
-  },
-  timeValue: {
-    fontWeight: 700,
-    fontFamily: 'var(--font-sans)',
-    color: 'var(--text-d)',
-    fontSize: '1.05rem',
-    lineHeight: 1,
-    letterSpacing: '-0.01em',
-  },
-  timeDate: {
-    fontSize: '0.7rem',
-    color: 'var(--muted-d)',
-    marginTop: 4,
-  },
-  actionsCell: {
-    display: 'flex',
-    gap: 6,
-    justifyContent: 'flex-end',
-  },
-};
-
-const mobileCardStyles: Record<string, React.CSSProperties> = {
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 10,
-  },
-  directionWrap: {
-    flex: 1,
-    minWidth: 0,
-    overflow: 'hidden',
-  },
-  directionRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 5,
-  },
-  cityText: {
-    fontFamily: 'var(--font-syne)',
-    fontWeight: 700,
-    fontSize: '0.9rem',
-    color: 'var(--text-d)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  arrowSmall: {
-    color: 'var(--accent)',
-    fontWeight: 700,
-    flexShrink: 0,
-  },
-  actionsRow: {
-    display: 'flex',
-    gap: 2,
-    flexShrink: 0,
-  },
-  timesRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 16,
-    marginBottom: 8,
-  },
-  timeLabel: {
-    fontSize: '0.62rem',
-    color: 'var(--muted-d)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.06em',
-    marginBottom: 2,
-  },
-  timeValue: {
-    fontWeight: 700,
-    fontSize: '1rem',
-    color: 'var(--text-d)',
-    fontFamily: 'var(--font-sans)',
-    letterSpacing: '-0.01em',
-    lineHeight: 1,
-  },
-  timeDate: {
-    fontSize: '0.68rem',
-    color: 'var(--muted-d)',
-    marginTop: 3,
-  },
-  arrowSep: {
-    color: 'var(--accent)',
-    fontWeight: 700,
-    fontSize: '1.1rem',
-    alignSelf: 'center',
-  },
-  stationRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 5,
-    fontSize: '0.75rem',
-    color: 'var(--muted-d)',
-  },
-};
-
-const emptyStyles: Record<string, React.CSSProperties> = {
-  wrap: {
-    textAlign: 'center',
-    padding: '80px 0',
-  },
-  emoji: {
-    fontSize: '3rem',
-    marginBottom: 12,
-  },
-  errorText: {
-    color: 'var(--rose)',
-    fontSize: '0.95rem',
-    fontFamily: 'var(--font-sans)',
-  },
-  emptyText: {
-    color: 'var(--muted-l)',
-    fontSize: '0.95rem',
-    margin: '0 0 24px',
-    fontFamily: 'var(--font-sans)',
-  },
-  clearBtn: {
-    padding: '11px 24px',
-    background: 'var(--cream)',
-    color: 'var(--text-d)',
-    border: 'none',
-    borderRadius: 100,
-    fontWeight: 600,
-    cursor: 'pointer',
-    fontSize: '0.88rem',
-    fontFamily: 'var(--font-sans)',
-  },
-  addFirstBtn: {
-    padding: '13px 28px',
-    background: 'var(--cream)',
-    color: 'var(--text-d)',
-    border: 'none',
-    borderRadius: 100,
-    fontWeight: 600,
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontFamily: 'var(--font-sans)',
-  },
-};
-
-const favStyles: Record<string, React.CSSProperties> = {
-  section: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: '32px clamp(16px,4vw,24px) 0',
-  },
-  divider: {
-    margin: '40px auto 0',
-  },
-  sectionLabel: {
-    fontSize: '0.72rem',
-    fontWeight: 600,
-    color: 'var(--accent)',
-    letterSpacing: '0.16em',
-    textTransform: 'uppercase',
-    margin: '0 0 16px',
-    fontFamily: 'var(--font-sans)',
-  },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 8,
-  },
-  card: {
-    background: 'var(--cream)',
-    borderRadius: 14,
-    padding: '12px 16px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-  },
-  numberBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 26,
-    padding: '0 9px',
-    borderRadius: 100,
-    border: '1.5px solid var(--accent)',
-    color: 'var(--accent)',
-    fontFamily: 'Arial, sans-serif',
-    fontWeight: 700,
-    fontSize: '0.72rem',
-    letterSpacing: '0.04em',
-    whiteSpace: 'nowrap',
-    flexShrink: 0,
-    minWidth: 52,
-    lineHeight: 1,
-  },
-  directionRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-    flex: 1,
-    minWidth: 0,
-    overflow: 'hidden',
-  },
-  cityText: {
-    fontFamily: 'var(--font-syne)',
-    fontWeight: 700,
-    fontSize: '0.85rem',
-    color: 'var(--text-d)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  arrowText: {
-    color: 'var(--accent)',
-    fontWeight: 700,
-    flexShrink: 0,
-  },
-  unfavBtn: {
-    flexShrink: 0,
-  },
-};
-
-const skeletonStyles: Record<string, React.CSSProperties> = {
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 7,
-  },
-  directionGroup: {
-    display: 'flex',
-    gap: 10,
-    alignItems: 'center',
-    flex: '0 0 200px',
-  },
-};
-
-const skeletonRow = (i: number): React.CSSProperties => ({
-  background: 'var(--dark-2)',
-  borderRadius: 14,
-  padding: '18px 24px',
-  display: 'flex',
-  gap: 32,
-  alignItems: 'center',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.14)',
-  opacity: 1 - i * 0.12,
-});
-
-const heartStyle = (active: boolean): React.CSSProperties => ({
-  color: active ? 'var(--accent)' : 'var(--muted-d)',
-  fontSize: '1rem',
-  lineHeight: 1,
-});
-
 type ToastState = { msg: string; type: 'success' | 'error' };
 
 export default function HomePage() {
@@ -570,16 +125,16 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main style={pageStyles.main}>
+      <main className="pb-[120px]">
 
-        <section style={heroStyles.section}>
-          <p style={heroStyles.eyebrow}>
+        <section className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,24px)] pt-[clamp(32px,6vw,56px)] pb-[clamp(24px,5vw,48px)]">
+          <p className="text-[0.72rem] font-semibold text-accent tracking-[0.16em] uppercase mb-[18px] font-sans m-0">
             Розклад потягів України
           </p>
-          <h1 style={heroStyles.h1}>
+          <h1 className="font-headline font-extrabold text-[clamp(48px,8vw,88px)] leading-[0.93] text-tl mb-[48px] tracking-[-0.02em] m-0">
             Знайди<br />свій поїзд
           </h1>
-          <div style={pageStyles.filterRow}>
+          <div className="flex gap-2 flex-wrap">
             {FILTERS.map(f => (
               <button
                 key={f.key}
@@ -594,17 +149,17 @@ export default function HomePage() {
 
         <div className="section-divider" />
 
-        <div style={toolbarStyles.outer}>
-          <div style={toolbarStyles.row}>
+        <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,24px)] pt-5 pb-3">
+          <div className="flex items-center gap-[10px] flex-wrap">
 
             <div className="toolbar-search">
-              <span style={toolbarStyles.searchIcon}>🔍</span>
+              <span className="absolute left-[14px] top-1/2 -translate-y-1/2 text-[0.85rem] pointer-events-none opacity-35">🔍</span>
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Поїзд, місто..."
-                style={toolbarStyles.searchInput}
+                className="w-full py-[9px] pr-[14px] pl-9 bg-ibg border-15-bl rounded-full text-tl text-[0.85rem] font-sans outline-none transition-all duration-200"
                 onFocus={e => { e.target.style.borderColor = 'var(--rose)'; }}
                 onBlur={e =>  { e.target.style.borderColor = 'var(--border-l)'; }}
               />
@@ -619,19 +174,22 @@ export default function HomePage() {
                   type="date"
                   value={type === 'departure' ? departureDate : arrivalDate}
                   onChange={e => type === 'departure' ? setDepartureDate(e.target.value) : setArrivalDate(e.target.value)}
-                  style={toolbarStyles.dateInput}
+                  className="py-2 bg-transparent border-none text-tl text-[0.82rem] font-sans outline-none"
                 />
               </div>
             ))}
 
             {hasFilters && (
-              <button onClick={clearFilters} style={toolbarStyles.clearBtn}>
+              <button
+                onClick={clearFilters}
+                className="py-[7px] px-[14px] rounded-full border border-[rgba(196,145,138,0.35)] bg-transparent text-rose text-[0.78rem] font-semibold cursor-pointer font-sans whitespace-nowrap"
+              >
                 × Скинути
               </button>
             )}
 
             {!loading && (
-              <p style={toolbarStyles.count}>
+              <p className="text-[0.8rem] text-ml ml-auto font-sans whitespace-nowrap m-0">
                 {visible.length > 0
                   ? `${visible.length} маршрут${visible.length === 1 ? '' : visible.length < 5 ? 'и' : 'ів'}`
                   : 'Нічого не знайдено'}
@@ -639,39 +197,46 @@ export default function HomePage() {
             )}
 
             {isAdmin && (
-              <button onClick={openAdd} style={toolbarStyles.addBtn}>
-                <span style={toolbarStyles.addBtnIcon}>+</span>
+              <button
+                onClick={openAdd}
+                className="flex items-center gap-[6px] py-[9px] px-[18px] bg-accent text-white border-none rounded-full font-semibold text-[0.82rem] cursor-pointer font-sans whitespace-nowrap"
+              >
+                <span className="text-base leading-none">+</span>
                 Додати маршрут
               </button>
             )}
           </div>
         </div>
 
-        <section style={tableStyles.section}>
+        <section className="max-w-[1200px] mx-auto px-[clamp(0px,3vw,24px)] pt-1">
           {loading ? (
-            <div style={skeletonStyles.list}>
+            <div className="flex flex-col gap-[7px]">
               {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} style={skeletonRow(i)}>
-                  <div className="skeleton" style={{ height: 28, width: 72, borderRadius: 100 }} />
-                  <div style={skeletonStyles.directionGroup}>
-                    <div className="skeleton" style={{ height: 14, width: 70, borderRadius: 4 }} />
-                    <div className="skeleton" style={{ height: 10, width: 16, borderRadius: 4 }} />
-                    <div className="skeleton" style={{ height: 14, width: 70, borderRadius: 4 }} />
+                <div
+                  key={i}
+                  className="bg-dark-2 rounded-[14px] py-[18px] px-6 flex gap-8 items-center shadow-[0_2px_10px_rgba(0,0,0,0.14)]"
+                  style={{ opacity: 1 - i * 0.12 }}
+                >
+                  <div className="skeleton h-7 w-[72px] rounded-full" />
+                  <div className="flex gap-[10px] items-center basis-[200px] shrink-0">
+                    <div className="skeleton h-[14px] w-[70px] rounded" />
+                    <div className="skeleton h-[10px] w-4 rounded" />
+                    <div className="skeleton h-[14px] w-[70px] rounded" />
                   </div>
-                  <div className="skeleton" style={{ height: 14, width: 140, borderRadius: 4 }} />
-                  <div className="skeleton" style={{ height: 18, width: 55, borderRadius: 4 }} />
-                  <div className="skeleton" style={{ height: 18, width: 55, borderRadius: 4 }} />
+                  <div className="skeleton h-[14px] w-[140px] rounded" />
+                  <div className="skeleton h-[18px] w-[55px] rounded" />
+                  <div className="skeleton h-[18px] w-[55px] rounded" />
                 </div>
               ))}
             </div>
           ) : error ? (
-            <div style={emptyStyles.wrap}>
-              <p style={emptyStyles.errorText}>{error}</p>
+            <div className="text-center py-[80px]">
+              <p className="text-rose text-[0.95rem] font-sans m-0">{error}</p>
             </div>
           ) : visible.length === 0 ? (
-            <div style={emptyStyles.wrap}>
-              <p style={emptyStyles.emoji}>🚂</p>
-              <p style={emptyStyles.emptyText}>
+            <div className="text-center py-[80px]">
+              <p className="text-[3rem] mb-3 m-0">🚂</p>
+              <p className="text-ml text-[0.95rem] mb-6 font-sans m-0">
                 {hasFilters
                   ? 'Нічого не знайдено за вашим запитом'
                   : filter === 'all'
@@ -679,25 +244,31 @@ export default function HomePage() {
                     : `Немає маршрутів для «${FILTERS.find(f => f.key === filter)?.label}»`}
               </p>
               {hasFilters && (
-                <button onClick={clearFilters} style={emptyStyles.clearBtn}>
+                <button
+                  onClick={clearFilters}
+                  className="py-[11px] px-6 bg-cream text-td border-none rounded-full font-semibold cursor-pointer text-[0.88rem] font-sans"
+                >
                   Скинути фільтри
                 </button>
               )}
               {isAdmin && !hasFilters && filter === 'all' && (
-                <button onClick={openAdd} style={emptyStyles.addFirstBtn}>
+                <button
+                  onClick={openAdd}
+                  className="py-[13px] px-7 bg-cream text-td border-none rounded-full font-semibold cursor-pointer text-[0.9rem] font-sans"
+                >
                   Додати перший маршрут
                 </button>
               )}
             </div>
           ) : (
             <>
-              <div className="desktop-table-wrap" style={tableStyles.scrollWrap}>
-                <table className="schedule-table" style={tableStyles.table}>
+              <div className="desktop-table-wrap overflow-x-auto pb-1">
+                <table className="schedule-table min-w-[580px]">
                   <thead>
                     <tr>
                       <th>Номер</th>
                       <th>Напрямок</th>
-                      <th className="col-station">Станція</th>
+                      <th>Станція</th>
                       <th>Відправлення</th>
                       <th>Прибуття</th>
                       {isAuthenticated && <th />}
@@ -710,45 +281,47 @@ export default function HomePage() {
                       return (
                         <tr key={t.id}>
                           <td>
-                            <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
+                            <span className="number-badge h-[30px] px-3 text-[0.78rem] min-w-[64px]">
+                              {t.trainNumber}
+                            </span>
                           </td>
                           <td>
-                            <div style={tableStyles.directionCell}>
+                            <div className="flex items-center gap-[10px] whitespace-nowrap">
                               <div>
-                                <div style={tableStyles.cityName}>{from}</div>
-                                <div style={tableStyles.cityLabel}>Відправлення</div>
+                                <div className="font-headline font-bold text-[0.95rem] text-td leading-[1.2]">{from}</div>
+                                <div className="text-[0.68rem] text-md mt-[2px] tracking-[0.06em] uppercase">Відправлення</div>
                               </div>
-                              <div style={tableStyles.arrow}>→</div>
+                              <div className="text-accent font-bold text-[1.1rem] shrink-0">→</div>
                               <div>
-                                <div style={tableStyles.cityName}>{to}</div>
-                                <div style={tableStyles.cityLabel}>Прибуття</div>
+                                <div className="font-headline font-bold text-[0.95rem] text-td leading-[1.2]">{to}</div>
+                                <div className="text-[0.68rem] text-md mt-[2px] tracking-[0.06em] uppercase">Прибуття</div>
                               </div>
                             </div>
                           </td>
-                          <td className="col-station">
-                            <div style={tableStyles.stationCell}>
-                              <span style={tableStyles.stationIcon}>📍</span>
-                              <span style={tableStyles.stationName}>{t.station}</span>
+                          <td>
+                            <div className="flex items-center gap-[6px]">
+                              <span className="w-7 h-7 rounded-full bg-[rgba(196,145,138,0.12)] flex items-center justify-center text-[0.75rem] shrink-0">📍</span>
+                              <span className="text-td text-[0.82rem] font-medium">{t.station}</span>
                             </div>
                           </td>
                           <td>
-                            <div style={tableStyles.timeValue}>{fmtTime(t.departureTime)}</div>
-                            <div style={tableStyles.timeDate}>{fmtDate(t.departureTime)}</div>
+                            <div className="font-bold font-sans text-td text-[1.05rem] leading-none tracking-[-0.01em]">{fmtTime(t.departureTime)}</div>
+                            <div className="text-[0.7rem] text-md mt-1">{fmtDate(t.departureTime)}</div>
                           </td>
                           <td>
-                            <div style={tableStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
-                            <div style={tableStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
+                            <div className="font-bold font-sans text-td text-[1.05rem] leading-none tracking-[-0.01em]">{fmtTime(t.arrivalTime)}</div>
+                            <div className="text-[0.7rem] text-md mt-1">{fmtDate(t.arrivalTime)}</div>
                           </td>
                           {isAuthenticated && (
                             <td>
-                              <div style={tableStyles.actionsCell}>
+                              <div className="flex gap-[6px] justify-end">
                                 <button
                                   className="icon-btn"
                                   onClick={() => handleToggleFavorite(t.id)}
                                   title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                   aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                 >
-                                  <span style={heartStyle(isFav)}>
+                                  <span className={`text-base leading-none ${isFav ? 'text-accent' : 'text-md'}`}>
                                     {isFav ? '♥' : '♡'}
                                   </span>
                                 </button>
@@ -774,24 +347,21 @@ export default function HomePage() {
                   const isFav = favoriteIds.has(t.id);
                   return (
                     <div key={t.id} className="train-card-mobile">
-                      <div style={mobileCardStyles.header}>
-                        <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
-                        <div style={mobileCardStyles.directionWrap}>
-                          <div style={mobileCardStyles.directionRow}>
-                            <span style={mobileCardStyles.cityText}>{from?.trim()}</span>
-                            <span style={mobileCardStyles.arrowSmall}>→</span>
-                            <span style={mobileCardStyles.cityText}>{to?.trim()}</span>
+                      <div className="flex items-center gap-[10px] mb-[10px]">
+                        <span className="number-badge h-[30px] px-3 text-[0.78rem] min-w-[64px]">
+                          {t.trainNumber}
+                        </span>
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <div className="flex items-center gap-[5px]">
+                            <span className="font-headline font-bold text-[0.9rem] text-td overflow-hidden text-ellipsis whitespace-nowrap">{from?.trim()}</span>
+                            <span className="text-accent font-bold shrink-0">→</span>
+                            <span className="font-headline font-bold text-[0.9rem] text-td overflow-hidden text-ellipsis whitespace-nowrap">{to?.trim()}</span>
                           </div>
                         </div>
                         {isAuthenticated && (
-                          <div style={mobileCardStyles.actionsRow}>
-                            <button
-                              className="icon-btn"
-                              onClick={() => handleToggleFavorite(t.id)}
-                              title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
-                              aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
-                            >
-                              <span style={heartStyle(isFav)}>{isFav ? '♥' : '♡'}</span>
+                          <div className="flex gap-[2px] shrink-0">
+                            <button className="icon-btn" onClick={() => handleToggleFavorite(t.id)} title={isFav ? 'Видалити з обраних' : 'Додати до обраних'} aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}>
+                              <span className={`text-base leading-none ${isFav ? 'text-accent' : 'text-md'}`}>{isFav ? '♥' : '♡'}</span>
                             </button>
                             {isAdmin && (
                               <>
@@ -802,20 +372,20 @@ export default function HomePage() {
                           </div>
                         )}
                       </div>
-                      <div style={mobileCardStyles.timesRow}>
+                      <div className="flex items-center gap-4 mb-2">
                         <div>
-                          <div style={mobileCardStyles.timeLabel}>Відправлення</div>
-                          <div style={mobileCardStyles.timeValue}>{fmtTime(t.departureTime)}</div>
-                          <div style={mobileCardStyles.timeDate}>{fmtDate(t.departureTime)}</div>
+                          <div className="text-[0.62rem] text-md uppercase tracking-[0.06em] mb-[2px]">Відправлення</div>
+                          <div className="font-bold text-[1rem] text-td font-sans tracking-[-0.01em] leading-none">{fmtTime(t.departureTime)}</div>
+                          <div className="text-[0.68rem] text-md mt-[3px]">{fmtDate(t.departureTime)}</div>
                         </div>
-                        <span style={mobileCardStyles.arrowSep}>→</span>
+                        <span className="text-accent font-bold text-[1.1rem] self-center">→</span>
                         <div>
-                          <div style={mobileCardStyles.timeLabel}>Прибуття</div>
-                          <div style={mobileCardStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
-                          <div style={mobileCardStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
+                          <div className="text-[0.62rem] text-md uppercase tracking-[0.06em] mb-[2px]">Прибуття</div>
+                          <div className="font-bold text-[1rem] text-td font-sans tracking-[-0.01em] leading-none">{fmtTime(t.arrivalTime)}</div>
+                          <div className="text-[0.68rem] text-md mt-[3px]">{fmtDate(t.arrivalTime)}</div>
                         </div>
                       </div>
-                      <div style={mobileCardStyles.stationRow}>
+                      <div className="flex items-center gap-[5px] text-[0.75rem] text-md">
                         <span>📍</span>
                         <span>{t.station}</span>
                       </div>
@@ -829,32 +399,31 @@ export default function HomePage() {
 
         {isAuthenticated && favoritedTrains.length > 0 && (
           <>
-            <div className="section-divider" style={favStyles.divider} />
-            <section style={favStyles.section}>
-              <p style={favStyles.sectionLabel}>
+            <div className="section-divider mt-10" />
+            <section className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,24px)] pt-8">
+              <p className="text-[0.72rem] font-semibold text-accent tracking-[0.16em] uppercase mb-4 font-sans m-0">
                 Збережені маршрути
               </p>
-              <div style={favStyles.list}>
+              <div className="flex flex-col gap-2">
                 {favoritedTrains.map(t => {
                   const [from, to] = t.direction.split(' → ');
                   return (
-                    <div key={t.id} style={favStyles.card}>
-                      <span style={favStyles.numberBadge}>
+                    <div key={t.id} className="bg-cream rounded-[14px] py-3 px-4 flex items-center gap-3 shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+                      <span className="number-badge h-[26px] px-[9px] text-[0.72rem] min-w-[52px] shrink-0">
                         {t.trainNumber}
                       </span>
-                      <div style={favStyles.directionRow}>
-                        <span style={favStyles.cityText}>{from}</span>
-                        <span style={favStyles.arrowText}>→</span>
-                        <span style={favStyles.cityText}>{to}</span>
+                      <div className="flex items-center gap-[6px] flex-1 min-w-0 overflow-hidden">
+                        <span className="font-headline font-bold text-[0.85rem] text-td overflow-hidden text-ellipsis whitespace-nowrap">{from}</span>
+                        <span className="text-accent font-bold shrink-0">→</span>
+                        <span className="font-headline font-bold text-[0.85rem] text-td overflow-hidden text-ellipsis whitespace-nowrap">{to}</span>
                       </div>
                       <button
-                        className="icon-btn"
+                        className="icon-btn shrink-0"
                         onClick={() => handleToggleFavorite(t.id)}
                         title="Видалити з обраних"
                         aria-label="Видалити з обраних"
-                        style={favStyles.unfavBtn}
                       >
-                        <span style={heartStyle(true)}>♥</span>
+                        <span className="text-accent text-base leading-none">♥</span>
                       </button>
                     </div>
                   );

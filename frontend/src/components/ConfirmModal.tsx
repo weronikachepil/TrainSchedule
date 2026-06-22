@@ -6,73 +6,6 @@ type Props = {
   onCancel: () => void;
 }
 
-const iconStyles: React.CSSProperties = {
-  width: 52,
-  height: 52,
-  borderRadius: '50%',
-  background: 'rgba(180,60,60,0.1)',
-  border: '1.5px solid rgba(180,60,60,0.2)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '1.4rem',
-  margin: '0 auto 20px',
-};
-
-const titleStyles: React.CSSProperties = {
-  fontFamily: 'var(--font-syne)',
-  fontWeight: 700,
-  fontSize: '1.4rem',
-  color: 'var(--text-d)',
-  margin: '0 0 8px',
-  letterSpacing: '-0.01em',
-};
-
-const messageStyles: React.CSSProperties = {
-  color: 'var(--muted-d)',
-  fontSize: '0.875rem',
-  margin: '0 0 28px',
-  fontFamily: 'var(--font-sans)',
-  lineHeight: 1.5,
-};
-
-const btnRowStyles: React.CSSProperties = {
-  display: 'flex',
-  gap: 10,
-};
-
-const cancelBtnStyles: React.CSSProperties = {
-  flex: 1,
-  padding: '13px',
-  border: '1.5px solid var(--border-d)',
-  borderRadius: 12,
-  background: 'transparent',
-  color: 'var(--muted-d)',
-  fontWeight: 500,
-  cursor: 'pointer',
-  fontSize: '0.9rem',
-  fontFamily: 'var(--font-sans)',
-};
-
-const deleteBtnStyles: React.CSSProperties = {
-  flex: 1,
-  padding: '13px',
-  border: 'none',
-  borderRadius: 12,
-  background: '#8B3030',
-  color: '#fff',
-  fontWeight: 600,
-  cursor: 'pointer',
-  fontSize: '0.9rem',
-  fontFamily: 'var(--font-sans)',
-  transition: 'background 0.18s',
-};
-
-const cardStyles: React.CSSProperties = {
-  maxWidth: 400,
-  textAlign: 'center',
-};
-
 export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
   return (
     <div
@@ -81,29 +14,30 @@ export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="modal-card" style={cardStyles}>
+      <div className="modal-card max-w-[400px] text-center">
 
-        <div style={iconStyles}>
+        <div className="w-[52px] h-[52px] rounded-full bg-[rgba(180,60,60,0.1)] border border-[rgba(180,60,60,0.2)] flex items-center justify-center text-[1.4rem] mx-auto mb-5">
           🗑️
         </div>
 
-        <h2 style={titleStyles}>
+        <h2 className="font-headline font-bold text-[1.4rem] text-td m-0 mb-2 tracking-[-0.01em]">
           Видалити маршрут?
         </h2>
 
-        <p style={messageStyles}>
+        <p className="text-md text-[0.875rem] m-0 mb-7 font-sans leading-[1.5]">
           {message}
         </p>
 
-        <div style={btnRowStyles}>
-          <button onClick={onCancel} style={cancelBtnStyles}>
+        <div className="flex gap-[10px]">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-[13px] border-15-bd rounded-[12px] bg-transparent text-md font-medium cursor-pointer text-[0.9rem] font-sans"
+          >
             Скасувати
           </button>
           <button
             onClick={onConfirm}
-            style={deleteBtnStyles}
-            onMouseEnter={e => { e.currentTarget.style.background = '#7A2828'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#8B3030'; }}
+            className="flex-1 py-[13px] border-none rounded-[12px] bg-[#8B3030] text-white font-semibold cursor-pointer text-[0.9rem] font-sans transition-colors duration-200 hover:bg-[#7A2828]"
           >
             Видалити
           </button>

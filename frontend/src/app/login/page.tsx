@@ -31,62 +31,31 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'var(--page-bg)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 24,
-    }}>
-      <div style={{ width: '100%', maxWidth: 420, marginBottom: 20 }}>
-        <Link href="/" style={{
-          color: 'var(--muted-l)',
-          fontSize: '0.82rem',
-          textDecoration: 'none',
-          fontFamily: 'var(--font-sans)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          width: 'fit-content',
-        }}>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-[420px] mb-5">
+        <Link href="/" className="text-ml text-[0.82rem] no-underline font-sans flex items-center gap-[6px] w-fit">
           ← Назад до розкладу
         </Link>
       </div>
 
-      <div style={{
-        background: 'var(--cream)',
-        borderRadius: 28,
-        padding: 'clamp(32px, 6vw, 48px) clamp(28px, 5vw, 44px)',
-        width: '100%',
-        maxWidth: 420,
-        boxShadow: '0 40px 100px rgba(0,0,0,0.4)',
-      }}>
-        <div style={{ marginBottom: 32 }}>
-          <p style={{
-            fontFamily: 'var(--font-syne)',
-            fontSize: '1.05rem',
-            fontWeight: 700,
-            color: 'var(--text-d)',
-            margin: 0,
-            letterSpacing: '0.01em',
-          }}>
-            TrainSchedule<span style={{ color: 'var(--accent)', fontSize: '0.55rem', verticalAlign: 'super', marginLeft: 1 }}>®</span>
+      <div className="bg-cream rounded-[28px] px-[clamp(28px,5vw,44px)] py-[clamp(32px,6vw,48px)] w-full max-w-[420px] shadow-[0_40px_100px_rgba(0,0,0,0.4)]">
+        <div className="mb-8">
+          <p className="font-headline text-[1.05rem] font-bold text-td m-0 tracking-[0.01em]">
+            TrainSchedule<span className="text-accent text-[0.55rem] align-super ml-px">®</span>
           </p>
         </div>
 
-        <p style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px', fontFamily: 'var(--font-sans)' }}>
+        <p className="text-[0.7rem] font-semibold text-accent tracking-[0.12em] uppercase m-0 mb-1 font-sans">
           Вхід до акаунту
         </p>
-        <h1 style={{ fontFamily: 'var(--font-syne)', fontWeight: 800, fontSize: '2.4rem', color: 'var(--text-d)', margin: '0 0 6px', letterSpacing: '-0.02em', lineHeight: 1 }}>
+        <h1 className="font-headline font-extrabold text-[2.4rem] text-td m-0 mb-[6px] tracking-[-0.02em] leading-none">
           З поверненням
         </h1>
-        <p style={{ color: 'var(--muted-d)', fontSize: '0.875rem', margin: '0 0 30px', fontFamily: 'var(--font-sans)' }}>
+        <p className="text-md text-[0.875rem] m-0 mb-[30px] font-sans">
           Увійди, щоб зберігати улюблені маршрути
         </p>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
             className="auth-input"
             type="email"
@@ -107,7 +76,7 @@ export default function LoginPage() {
           />
 
           {error && (
-            <div style={{ background: 'rgba(180,60,60,0.08)', border: '1px solid rgba(180,60,60,0.2)', borderRadius: 10, padding: '10px 14px', color: '#8B3030', fontSize: '0.875rem', fontFamily: 'var(--font-sans)' }}>
+            <div className="bg-[rgba(180,60,60,0.08)] border border-[rgba(180,60,60,0.2)] rounded-[10px] px-[14px] py-[10px] text-[#8B3030] text-[0.875rem] font-sans">
               {error}
             </div>
           )}
@@ -115,24 +84,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{
-              padding: '14px',
-              background: loading ? 'rgba(26,21,17,0.35)' : 'var(--dark)',
-              color: 'var(--cream)',
-              border: 'none', borderRadius: 12,
-              fontWeight: 600, fontSize: '0.95rem',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              marginTop: 6, fontFamily: 'var(--font-sans)',
-              transition: 'background 0.18s',
-            }}
+            className={`py-[14px] border-none rounded-[12px] text-cream font-semibold text-[0.95rem] font-sans mt-[6px] transition-colors duration-200 ${loading ? 'bg-[rgba(26,21,17,0.35)] cursor-not-allowed' : 'bg-dark cursor-pointer'}`}
           >
             {loading ? 'Вхід...' : 'Увійти'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 24, color: 'var(--muted-d)', fontSize: '0.875rem', fontFamily: 'var(--font-sans)' }}>
+        <p className="text-center mt-6 text-md text-[0.875rem] font-sans m-0">
           Немає акаунту?{' '}
-          <Link href="/register" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
+          <Link href="/register" className="text-accent font-semibold no-underline">
             Зареєструватись →
           </Link>
         </p>

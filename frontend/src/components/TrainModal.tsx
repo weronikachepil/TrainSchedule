@@ -26,123 +26,6 @@ const blurField = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) =>
   e.target.style.background  = 'rgba(26,21,17,0.04)';
 };
 
-const lbl: React.CSSProperties = {
-  display: 'block',
-  fontSize: '0.7rem',
-  fontWeight: 600,
-  color: 'var(--muted-d)',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  marginBottom: 6,
-  fontFamily: 'var(--font-sans)',
-};
-
-const headerStyles: Record<string, React.CSSProperties> = {
-  row: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 28,
-  },
-  eyebrow: {
-    fontSize: '0.7rem',
-    fontWeight: 600,
-    color: 'var(--accent)',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    margin: '0 0 3px',
-    fontFamily: 'var(--font-sans)',
-  },
-  title: {
-    fontFamily: 'var(--font-syne)',
-    fontWeight: 700,
-    fontSize: '1.8rem',
-    color: 'var(--text-d)',
-    margin: 0,
-    letterSpacing: '-0.01em',
-  },
-  closeBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: '50%',
-    border: '1.5px solid var(--border-d)',
-    background: 'transparent',
-    cursor: 'pointer',
-    fontSize: '1.1rem',
-    lineHeight: 1,
-    color: 'var(--muted-d)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-};
-
-const formStyles: Record<string, React.CSSProperties> = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 15,
-  },
-  directionGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr auto 1fr',
-    gap: 10,
-    alignItems: 'end',
-  },
-  directionArrow: {
-    paddingBottom: 2,
-    color: 'var(--accent)',
-    fontWeight: 700,
-    fontSize: '1rem',
-    textAlign: 'center',
-  },
-  timesGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: 12,
-  },
-  errorBox: {
-    background: 'rgba(180,60,60,0.08)',
-    border: '1px solid rgba(180,60,60,0.2)',
-    borderRadius: 10,
-    padding: '10px 14px',
-    color: '#8B3030',
-    fontSize: '0.875rem',
-  },
-  btnRow: {
-    display: 'flex',
-    gap: 10,
-    marginTop: 4,
-  },
-  cancelBtn: {
-    flex: 1,
-    padding: '13px',
-    border: '1.5px solid var(--border-d)',
-    borderRadius: 12,
-    background: 'transparent',
-    color: 'var(--muted-d)',
-    fontWeight: 500,
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontFamily: 'var(--font-sans)',
-  },
-};
-
-const submitBtnStyle = (saving: boolean): React.CSSProperties => ({
-  flex: 2,
-  padding: '13px',
-  border: 'none',
-  borderRadius: 12,
-  background: saving ? 'rgba(26,21,17,0.35)' : 'var(--dark)',
-  color: 'var(--cream)',
-  fontWeight: 600,
-  cursor: saving ? 'not-allowed' : 'pointer',
-  fontSize: '0.9rem',
-  fontFamily: 'var(--font-sans)',
-  transition: 'background 0.18s',
-});
-
 export default function TrainModal({ train, onClose, onSave }: Props) {
   const [trainNumber, setTrainNumber] = useState('');
   const [from, setFrom] = useState<string>(STATIONS[0]);
@@ -196,24 +79,30 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
     >
       <div className="modal-card">
 
-        <div style={headerStyles.row}>
+        <div className="flex justify-between items-start mb-7">
           <div>
-            <p style={headerStyles.eyebrow}>
+            <p className="text-[0.7rem] font-semibold text-accent tracking-[0.1em] uppercase m-0 mb-[3px] font-sans">
               {train ? 'Редагування' : 'Новий маршрут'}
             </p>
-            <h2 style={headerStyles.title}>
+            <h2 className="font-headline font-bold text-[1.8rem] text-td m-0 tracking-[-0.01em]">
               {train ? 'Змінити поїзд' : 'Додати поїзд'}
             </h2>
           </div>
-          <button onClick={onClose} aria-label="Закрити" style={headerStyles.closeBtn}>
+          <button
+            onClick={onClose}
+            aria-label="Закрити"
+            className="w-9 h-9 rounded-full border-15-bd bg-transparent cursor-pointer text-[1.1rem] leading-none text-md flex items-center justify-center shrink-0"
+          >
             ×
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={formStyles.form}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[15px]">
 
           <div>
-            <span style={lbl}>Номер поїзда</span>
+            <span className="block text-[0.7rem] font-semibold text-md tracking-[0.1em] uppercase mb-[6px] font-sans">
+              Номер поїзда
+            </span>
             <input
               className="field-cream"
               value={trainNumber}
@@ -224,44 +113,60 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
             />
           </div>
 
-          <div style={formStyles.directionGrid}>
+          <div className="grid grid-cols-[1fr_auto_1fr] gap-[10px] items-end">
             <div>
-              <span style={lbl}>Звідки</span>
-              <select className="field-cream" value={from} onChange={e => setFrom(e.target.value)} onFocus={focusField} onBlur={blurField} style={{ cursor: 'pointer' }}>
+              <span className="block text-[0.7rem] font-semibold text-md tracking-[0.1em] uppercase mb-[6px] font-sans">
+                Звідки
+              </span>
+              <select className="field-cream cursor-pointer" value={from} onChange={e => setFrom(e.target.value)} onFocus={focusField} onBlur={blurField}>
                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
-            <div style={formStyles.directionArrow}>→</div>
+            <div className="pb-[2px] text-accent font-bold text-base text-center">→</div>
             <div>
-              <span style={lbl}>Куди</span>
-              <select className="field-cream" value={to} onChange={e => setTo(e.target.value)} onFocus={focusField} onBlur={blurField} style={{ cursor: 'pointer' }}>
+              <span className="block text-[0.7rem] font-semibold text-md tracking-[0.1em] uppercase mb-[6px] font-sans">
+                Куди
+              </span>
+              <select className="field-cream cursor-pointer" value={to} onChange={e => setTo(e.target.value)} onFocus={focusField} onBlur={blurField}>
                 {STATIONS.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
           </div>
 
-          <div style={formStyles.timesGrid}>
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <span style={lbl}>Відправлення</span>
+              <span className="block text-[0.7rem] font-semibold text-md tracking-[0.1em] uppercase mb-[6px] font-sans">
+                Відправлення
+              </span>
               <input type="datetime-local" className="field-cream" value={dep} onChange={e => setDep(e.target.value)} onFocus={focusField} onBlur={blurField} />
             </div>
             <div>
-              <span style={lbl}>Прибуття</span>
+              <span className="block text-[0.7rem] font-semibold text-md tracking-[0.1em] uppercase mb-[6px] font-sans">
+                Прибуття
+              </span>
               <input type="datetime-local" className="field-cream" value={arr} onChange={e => setArr(e.target.value)} onFocus={focusField} onBlur={blurField} />
             </div>
           </div>
 
           {error && (
-            <div style={formStyles.errorBox}>
+            <div className="bg-[rgba(180,60,60,0.08)] border border-[rgba(180,60,60,0.2)] rounded-[10px] px-[14px] py-[10px] text-[#8B3030] text-[0.875rem]">
               {error}
             </div>
           )}
 
-          <div style={formStyles.btnRow}>
-            <button type="button" onClick={onClose} style={formStyles.cancelBtn}>
+          <div className="flex gap-[10px] mt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-[13px] border-15-bd rounded-[12px] bg-transparent text-md font-medium cursor-pointer text-[0.9rem] font-sans"
+            >
               Скасувати
             </button>
-            <button type="submit" disabled={saving} style={submitBtnStyle(saving)}>
+            <button
+              type="submit"
+              disabled={saving}
+              className={`flex-[2] py-[13px] border-none rounded-[12px] text-cream font-semibold text-[0.9rem] font-sans transition-colors duration-200 ${saving ? 'bg-[rgba(26,21,17,0.35)] cursor-not-allowed' : 'bg-dark cursor-pointer'}`}
+            >
               {saving ? 'Збереження...' : train ? 'Зберегти' : 'Додати поїзд'}
             </button>
           </div>
