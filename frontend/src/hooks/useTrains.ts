@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { trainsApi } from '@/lib/api';
-import type { Train } from '@/types';
+import type { Train, TrainData } from '@/types';
 
 interface SearchParams {
   search: string;
@@ -14,8 +14,8 @@ interface UseTrainsReturn {
   trains: Train[];
   loading: boolean;
   error: string | null;
-  create: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
-  update: (id: number, data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
+  create: (data: TrainData) => Promise<void>;
+  update: (id: number, data: TrainData) => Promise<void>;
   remove: (id: number) => Promise<void>;
 }
 
@@ -42,12 +42,12 @@ export function useTrains({ search, departureDate, arrivalDate }: SearchParams):
 
   useEffect(() => { load(); }, [load]);
 
-  const create = useCallback(async (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => {
+  const create = useCallback(async (data: TrainData) => {
     const created = await trainsApi.create(data);
     setTrains(prev => [...prev, created]);
   }, []);
 
-  const update = useCallback(async (id: number, data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => {
+  const update = useCallback(async (id: number, data: TrainData) => {
     const updated = await trainsApi.update(id, data);
     setTrains(prev => prev.map(t => t.id === id ? updated : t));
   }, []);

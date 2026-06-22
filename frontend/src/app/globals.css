@@ -443,6 +443,16 @@ body {
   letter-spacing: 0.04em;
 }
 
+.date-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border-l);
+  border-radius: 100px;
+  padding: 0 14px 0 16px;
+}
+
 /* Mobile cards: hidden on desktop, revealed by mobile breakpoint */
 .mobile-cards { display: none; }
 
@@ -465,12 +475,12 @@ body {
 
   /* Date filters: label visible, stacked column */
   .date-filter-item {
-    flex: 1 1 calc(50% - 5px) !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    border-radius: 12px !important;
-    padding: 8px 14px !important;
-    gap: 2px !important;
+    flex: 1 1 calc(50% - 5px);
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 12px;
+    padding: 8px 14px;
+    gap: 2px;
     min-width: 0;
   }
   .datepill-label {

@@ -7,7 +7,7 @@ import ConfirmModal from '@/components/ConfirmModal';
 import { useAuth } from '@/context/AuthContext';
 import { useTrains } from '@/hooks/useTrains';
 import { useFavorites } from '@/hooks/useFavorites';
-import type { Train } from '@/types';
+import type { Train, TrainData } from '@/types';
 
 type Filter = 'all' | 'morning' | 'afternoon' | 'evening';
 
@@ -34,19 +34,6 @@ const fmtTime = (d: string) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' });
 
-const ghostInput: React.CSSProperties = {
-  width: '100%',
-  padding: '9px 14px 9px 36px',
-  background: 'var(--input-bg)',
-  border: '1.5px solid var(--border-l)',
-  borderRadius: 100,
-  color: 'var(--text-l)',
-  fontSize: '0.85rem',
-  fontFamily: 'var(--font-sans)',
-  outline: 'none',
-  transition: 'border-color 0.18s, background 0.18s',
-};
-
 const heroStyles = {
   section: { maxWidth: 1200, margin: '0 auto', padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)' } as React.CSSProperties,
   eyebrow: { fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 18px', fontFamily: 'var(--font-sans)' } as React.CSSProperties,
@@ -56,8 +43,8 @@ const heroStyles = {
 const toolbarStyles = {
   outer: { maxWidth: 1200, margin: '0 auto', padding: '20px clamp(16px,4vw,24px) 12px' } as React.CSSProperties,
   row: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' } as React.CSSProperties,
+  searchInput: { width: '100%', padding: '9px 14px 9px 36px', background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, color: 'var(--text-l)', fontSize: '0.85rem', fontFamily: 'var(--font-sans)', outline: 'none', transition: 'border-color 0.18s, background 0.18s' } as React.CSSProperties,
   searchIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: '0.85rem', pointerEvents: 'none', opacity: 0.35 } as React.CSSProperties,
-  datePill: { display: 'flex', alignItems: 'center', gap: 8, background: 'var(--input-bg)', border: '1.5px solid var(--border-l)', borderRadius: 100, padding: '0 14px 0 16px' } as React.CSSProperties,
   dateInput: { padding: '8px 0', background: 'transparent', border: 'none', color: 'var(--text-l)', fontSize: '0.82rem', fontFamily: 'var(--font-sans)', outline: 'none' } as React.CSSProperties,
   clearBtn: { padding: '7px 14px', borderRadius: 100, border: '1.5px solid rgba(196,145,138,0.35)', background: 'transparent', color: 'var(--rose)', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
   count: { fontSize: '0.8rem', color: 'var(--muted-l)', margin: '0 0 0 auto', fontFamily: 'var(--font-sans)', whiteSpace: 'nowrap' } as React.CSSProperties,
@@ -103,7 +90,7 @@ const skeletonRow = (i: number): React.CSSProperties => ({
   boxShadow: '0 2px 10px rgba(0,0,0,0.14)', opacity: 1 - i * 0.12,
 });
 
-interface ToastState { msg: string; type: 'success' | 'error' }
+type ToastState = { msg: string; type: 'success' | 'error' };
 
 export default function HomePage() {
   const [filter,          setFilter]          = useState<Filter>('all');
@@ -143,7 +130,7 @@ export default function HomePage() {
   const openEdit   = (t: Train) => { setEditing(t); setModal(true); };
   const closeModal = () => { setModal(false); setEditing(null); };
 
-  const handleSave = async (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => {
+  const handleSave = async (data: TrainData) => {
     try {
       if (editing) {
         await update(editing.id, data);
@@ -228,14 +215,14 @@ export default function HomePage() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Поїзд, місто..."
-                style={ghostInput}
+                style={toolbarStyles.searchInput}
                 onFocus={e => { e.target.style.borderColor = 'var(--rose)'; }}
                 onBlur={e =>  { e.target.style.borderColor = 'var(--border-l)'; }}
               />
             </div>
 
             {(['departure', 'arrival'] as const).map(type => (
-              <div key={type} style={toolbarStyles.datePill} className="date-filter-item">
+              <div key={type} className="date-filter-item">
                 <span className="datepill-label">
                   {type === 'departure' ? 'Відправлення' : 'Прибуття'}
                 </span>

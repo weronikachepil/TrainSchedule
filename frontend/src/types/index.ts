@@ -1,4 +1,4 @@
-export interface Train {
+export type Train = {
   id: number;
   trainNumber: string;
   direction: string;
@@ -7,13 +7,15 @@ export interface Train {
   station: string;
   createdById: number | null;
   createdAt: string;
-}
+};
 
-export interface AuthResponse {
+export type AuthResponse = {
   access_token: string;
   role: string;
   id: number;
-}
+};
+
+export type TrainData = Omit<Train, 'id' | 'createdAt' | 'createdById'>;
 
 export const STATIONS = [
   'Київ',

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Train } from '@/types';
+import type { Train, TrainData } from '@/types';
 import { STATIONS } from '@/types';
 
 interface Props {
   train: Train | null;
   onClose: () => void;
-  onSave: (data: Omit<Train, 'id' | 'createdAt' | 'createdById'>) => Promise<void>;
+  onSave: (data: TrainData) => Promise<void>;
 }
 
 function toLocal(iso: string): string {
