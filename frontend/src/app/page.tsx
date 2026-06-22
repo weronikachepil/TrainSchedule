@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import TrainModal from '@/components/TrainModal';
-import ConfirmModal from '@/components/ConfirmModal';
+import type { Train, TrainData } from '@/types';
 import { useAuth } from '@/context/AuthContext';
 import { useTrains } from '@/hooks/useTrains';
 import { useFavorites } from '@/hooks/useFavorites';
-import type { Train, TrainData } from '@/types';
+import Navbar from '@/components/Navbar';
+import TrainModal from '@/components/TrainModal';
+import ConfirmModal from '@/components/ConfirmModal';
 
 type Filter = 'all' | 'morning' | 'afternoon' | 'evening';
 
@@ -34,12 +34,23 @@ const fmtTime = (d: string) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleString('uk-UA', { day: 'numeric', month: 'short', year: 'numeric' });
 
-const heroStyles = {
+const pageStyles: Record<string, React.CSSProperties> = {
+  main: {
+    paddingBottom: 120,
+  },
+  filterRow: {
+    display: 'flex',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+};
+
+const heroStyles: Record<string, React.CSSProperties> = {
   section: {
     maxWidth: 1200,
     margin: '0 auto',
     padding: 'clamp(32px,6vw,56px) clamp(16px,4vw,24px) clamp(24px,5vw,48px)',
-  } as React.CSSProperties,
+  },
   eyebrow: {
     fontSize: '0.72rem',
     fontWeight: 600,
@@ -48,7 +59,7 @@ const heroStyles = {
     textTransform: 'uppercase',
     margin: '0 0 18px',
     fontFamily: 'var(--font-sans)',
-  } as React.CSSProperties,
+  },
   h1: {
     fontFamily: 'var(--font-syne)',
     fontWeight: 800,
@@ -57,21 +68,21 @@ const heroStyles = {
     color: 'var(--text-l)',
     margin: '0 0 48px',
     letterSpacing: '-0.02em',
-  } as React.CSSProperties,
+  },
 };
 
-const toolbarStyles = {
+const toolbarStyles: Record<string, React.CSSProperties> = {
   outer: {
     maxWidth: 1200,
     margin: '0 auto',
     padding: '20px clamp(16px,4vw,24px) 12px',
-  } as React.CSSProperties,
+  },
   row: {
     display: 'flex',
     alignItems: 'center',
     gap: 10,
     flexWrap: 'wrap',
-  } as React.CSSProperties,
+  },
   searchInput: {
     width: '100%',
     padding: '9px 14px 9px 36px',
@@ -83,7 +94,7 @@ const toolbarStyles = {
     fontFamily: 'var(--font-sans)',
     outline: 'none',
     transition: 'border-color 0.18s, background 0.18s',
-  } as React.CSSProperties,
+  },
   searchIcon: {
     position: 'absolute',
     left: 14,
@@ -92,7 +103,7 @@ const toolbarStyles = {
     fontSize: '0.85rem',
     pointerEvents: 'none',
     opacity: 0.35,
-  } as React.CSSProperties,
+  },
   dateInput: {
     padding: '8px 0',
     background: 'transparent',
@@ -101,7 +112,7 @@ const toolbarStyles = {
     fontSize: '0.82rem',
     fontFamily: 'var(--font-sans)',
     outline: 'none',
-  } as React.CSSProperties,
+  },
   clearBtn: {
     padding: '7px 14px',
     borderRadius: 100,
@@ -113,14 +124,14 @@ const toolbarStyles = {
     cursor: 'pointer',
     fontFamily: 'var(--font-sans)',
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
+  },
   count: {
     fontSize: '0.8rem',
     color: 'var(--muted-l)',
     margin: '0 0 0 auto',
     fontFamily: 'var(--font-sans)',
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
+  },
   addBtn: {
     display: 'flex',
     alignItems: 'center',
@@ -135,23 +146,26 @@ const toolbarStyles = {
     cursor: 'pointer',
     fontFamily: 'var(--font-sans)',
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
+  },
   addBtnIcon: {
     fontSize: '1rem',
     lineHeight: 1,
-  } as React.CSSProperties,
+  },
 };
 
-const tableStyles = {
+const tableStyles: Record<string, React.CSSProperties> = {
   section: {
     maxWidth: 1200,
     margin: '0 auto',
     padding: '4px clamp(0px,3vw,24px) 0',
-  } as React.CSSProperties,
+  },
   scrollWrap: {
     overflowX: 'auto',
     paddingBottom: 4,
-  } as React.CSSProperties,
+  },
+  table: {
+    minWidth: 580,
+  },
   numberBadge: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -168,38 +182,38 @@ const tableStyles = {
     whiteSpace: 'nowrap',
     minWidth: 64,
     lineHeight: 1,
-  } as React.CSSProperties,
+  },
   directionCell: {
     display: 'flex',
     alignItems: 'center',
     gap: 10,
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
+  },
   cityName: {
     fontFamily: 'var(--font-syne)',
     fontWeight: 700,
     fontSize: '0.95rem',
     color: 'var(--text-d)',
     lineHeight: 1.2,
-  } as React.CSSProperties,
+  },
   cityLabel: {
     fontSize: '0.68rem',
     color: 'var(--muted-d)',
     marginTop: 2,
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
-  } as React.CSSProperties,
+  },
   arrow: {
     color: 'var(--accent)',
     fontWeight: 700,
     fontSize: '1.1rem',
     flexShrink: 0,
-  } as React.CSSProperties,
+  },
   stationCell: {
     display: 'flex',
     alignItems: 'center',
     gap: 6,
-  } as React.CSSProperties,
+  },
   stationIcon: {
     width: 28,
     height: 28,
@@ -210,12 +224,12 @@ const tableStyles = {
     justifyContent: 'center',
     fontSize: '0.75rem',
     flexShrink: 0,
-  } as React.CSSProperties,
+  },
   stationName: {
     color: 'var(--text-d)',
     fontSize: '0.82rem',
     fontWeight: 500,
-  } as React.CSSProperties,
+  },
   timeValue: {
     fontWeight: 700,
     fontFamily: 'var(--font-sans)',
@@ -223,25 +237,149 @@ const tableStyles = {
     fontSize: '1.05rem',
     lineHeight: 1,
     letterSpacing: '-0.01em',
-  } as React.CSSProperties,
+  },
   timeDate: {
     fontSize: '0.7rem',
     color: 'var(--muted-d)',
     marginTop: 4,
-  } as React.CSSProperties,
+  },
   actionsCell: {
     display: 'flex',
     gap: 6,
     justifyContent: 'flex-end',
-  } as React.CSSProperties,
+  },
 };
 
-const favStyles = {
+const mobileCardStyles: Record<string, React.CSSProperties> = {
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 10,
+  },
+  directionWrap: {
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
+  },
+  directionRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
+  },
+  cityText: {
+    fontFamily: 'var(--font-syne)',
+    fontWeight: 700,
+    fontSize: '0.9rem',
+    color: 'var(--text-d)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  arrowSmall: {
+    color: 'var(--accent)',
+    fontWeight: 700,
+    flexShrink: 0,
+  },
+  actionsRow: {
+    display: 'flex',
+    gap: 2,
+    flexShrink: 0,
+  },
+  timesRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+    marginBottom: 8,
+  },
+  timeLabel: {
+    fontSize: '0.62rem',
+    color: 'var(--muted-d)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
+    marginBottom: 2,
+  },
+  timeValue: {
+    fontWeight: 700,
+    fontSize: '1rem',
+    color: 'var(--text-d)',
+    fontFamily: 'var(--font-sans)',
+    letterSpacing: '-0.01em',
+    lineHeight: 1,
+  },
+  timeDate: {
+    fontSize: '0.68rem',
+    color: 'var(--muted-d)',
+    marginTop: 3,
+  },
+  arrowSep: {
+    color: 'var(--accent)',
+    fontWeight: 700,
+    fontSize: '1.1rem',
+    alignSelf: 'center',
+  },
+  stationRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
+    fontSize: '0.75rem',
+    color: 'var(--muted-d)',
+  },
+};
+
+const emptyStyles: Record<string, React.CSSProperties> = {
+  wrap: {
+    textAlign: 'center',
+    padding: '80px 0',
+  },
+  emoji: {
+    fontSize: '3rem',
+    marginBottom: 12,
+  },
+  errorText: {
+    color: 'var(--rose)',
+    fontSize: '0.95rem',
+    fontFamily: 'var(--font-sans)',
+  },
+  emptyText: {
+    color: 'var(--muted-l)',
+    fontSize: '0.95rem',
+    margin: '0 0 24px',
+    fontFamily: 'var(--font-sans)',
+  },
+  clearBtn: {
+    padding: '11px 24px',
+    background: 'var(--cream)',
+    color: 'var(--text-d)',
+    border: 'none',
+    borderRadius: 100,
+    fontWeight: 600,
+    cursor: 'pointer',
+    fontSize: '0.88rem',
+    fontFamily: 'var(--font-sans)',
+  },
+  addFirstBtn: {
+    padding: '13px 28px',
+    background: 'var(--cream)',
+    color: 'var(--text-d)',
+    border: 'none',
+    borderRadius: 100,
+    fontWeight: 600,
+    cursor: 'pointer',
+    fontSize: '0.9rem',
+    fontFamily: 'var(--font-sans)',
+  },
+};
+
+const favStyles: Record<string, React.CSSProperties> = {
   section: {
     maxWidth: 1200,
     margin: '0 auto',
     padding: '32px clamp(16px,4vw,24px) 0',
-  } as React.CSSProperties,
+  },
+  divider: {
+    margin: '40px auto 0',
+  },
   sectionLabel: {
     fontSize: '0.72rem',
     fontWeight: 600,
@@ -250,12 +388,12 @@ const favStyles = {
     textTransform: 'uppercase',
     margin: '0 0 16px',
     fontFamily: 'var(--font-sans)',
-  } as React.CSSProperties,
+  },
   list: {
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
-  } as React.CSSProperties,
+  },
   card: {
     background: 'var(--cream)',
     borderRadius: 14,
@@ -264,7 +402,7 @@ const favStyles = {
     alignItems: 'center',
     gap: 12,
     boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-  } as React.CSSProperties,
+  },
   numberBadge: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -282,7 +420,7 @@ const favStyles = {
     flexShrink: 0,
     minWidth: 52,
     lineHeight: 1,
-  } as React.CSSProperties,
+  },
   directionRow: {
     display: 'flex',
     alignItems: 'center',
@@ -290,7 +428,7 @@ const favStyles = {
     flex: 1,
     minWidth: 0,
     overflow: 'hidden',
-  } as React.CSSProperties,
+  },
   cityText: {
     fontFamily: 'var(--font-syne)',
     fontWeight: 700,
@@ -299,26 +437,29 @@ const favStyles = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
+  },
   arrowText: {
     color: 'var(--accent)',
     fontWeight: 700,
     flexShrink: 0,
-  } as React.CSSProperties,
+  },
+  unfavBtn: {
+    flexShrink: 0,
+  },
 };
 
-const skeletonStyles = {
+const skeletonStyles: Record<string, React.CSSProperties> = {
   list: {
     display: 'flex',
     flexDirection: 'column',
     gap: 7,
-  } as React.CSSProperties,
+  },
   directionGroup: {
     display: 'flex',
     gap: 10,
     alignItems: 'center',
     flex: '0 0 200px',
-  } as React.CSSProperties,
+  },
 };
 
 const skeletonRow = (i: number): React.CSSProperties => ({
@@ -330,6 +471,12 @@ const skeletonRow = (i: number): React.CSSProperties => ({
   alignItems: 'center',
   boxShadow: '0 2px 10px rgba(0,0,0,0.14)',
   opacity: 1 - i * 0.12,
+});
+
+const heartStyle = (active: boolean): React.CSSProperties => ({
+  color: active ? 'var(--accent)' : 'var(--muted-d)',
+  fontSize: '1rem',
+  lineHeight: 1,
 });
 
 type ToastState = { msg: string; type: 'success' | 'error' };
@@ -416,14 +563,14 @@ export default function HomePage() {
     setArrivalDate('');
   };
 
-  const visible = applyFilter(trains, filter);
+  const visible         = applyFilter(trains, filter);
   const favoritedTrains = trains.filter(t => favoriteIds.has(t.id));
 
   return (
     <>
       <Navbar />
 
-      <main style={{ paddingBottom: 120 }}>
+      <main style={pageStyles.main}>
 
         <section style={heroStyles.section}>
           <p style={heroStyles.eyebrow}>
@@ -432,7 +579,7 @@ export default function HomePage() {
           <h1 style={heroStyles.h1}>
             Знайди<br />свій поїзд
           </h1>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={pageStyles.filterRow}>
             {FILTERS.map(f => (
               <button
                 key={f.key}
@@ -518,59 +665,34 @@ export default function HomePage() {
               ))}
             </div>
           ) : error ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p style={{
-                color: 'var(--rose)',
-                fontSize: '0.95rem',
-                fontFamily: 'var(--font-sans)',
-              }}>{error}</p>
+            <div style={emptyStyles.wrap}>
+              <p style={emptyStyles.errorText}>{error}</p>
             </div>
           ) : visible.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <p style={{ fontSize: '3rem', marginBottom: 12 }}>🚂</p>
-              <p style={{
-                color: 'var(--muted-l)',
-                fontSize: '0.95rem',
-                margin: '0 0 24px',
-                fontFamily: 'var(--font-sans)',
-              }}>
-                {hasFilters ? 'Нічого не знайдено за вашим запитом' : filter === 'all' ? 'Маршрутів поки немає' : `Немає маршрутів для «${FILTERS.find(f => f.key === filter)?.label}»`}
+            <div style={emptyStyles.wrap}>
+              <p style={emptyStyles.emoji}>🚂</p>
+              <p style={emptyStyles.emptyText}>
+                {hasFilters
+                  ? 'Нічого не знайдено за вашим запитом'
+                  : filter === 'all'
+                    ? 'Маршрутів поки немає'
+                    : `Немає маршрутів для «${FILTERS.find(f => f.key === filter)?.label}»`}
               </p>
               {hasFilters && (
-                <button onClick={clearFilters} style={{
-                  padding: '11px 24px',
-                  background: 'var(--cream)',
-                  color: 'var(--text-d)',
-                  border: 'none',
-                  borderRadius: 100,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: '0.88rem',
-                  fontFamily: 'var(--font-sans)',
-                }}>
+                <button onClick={clearFilters} style={emptyStyles.clearBtn}>
                   Скинути фільтри
                 </button>
               )}
               {isAdmin && !hasFilters && filter === 'all' && (
-                <button onClick={openAdd} style={{
-                  padding: '13px 28px',
-                  background: 'var(--cream)',
-                  color: 'var(--text-d)',
-                  border: 'none',
-                  borderRadius: 100,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontFamily: 'var(--font-sans)',
-                }}>
+                <button onClick={openAdd} style={emptyStyles.addFirstBtn}>
                   Додати перший маршрут
                 </button>
               )}
             </div>
           ) : (
             <>
-              <div className="desktop-table-wrap" style={{ ...tableStyles.scrollWrap, WebkitOverflowScrolling: 'touch' as const }}>
-                <table className="schedule-table" style={{ minWidth: 580 }}>
+              <div className="desktop-table-wrap" style={tableStyles.scrollWrap}>
+                <table className="schedule-table" style={tableStyles.table}>
                   <thead>
                     <tr>
                       <th>Номер</th>
@@ -626,11 +748,7 @@ export default function HomePage() {
                                   title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                   aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
                                 >
-                                  <span style={{
-                                    color: isFav ? 'var(--accent)' : 'var(--muted-d)',
-                                    fontSize: '1rem',
-                                    lineHeight: 1,
-                                  }}>
+                                  <span style={heartStyle(isFav)}>
                                     {isFav ? '♥' : '♡'}
                                   </span>
                                 </button>
@@ -656,64 +774,24 @@ export default function HomePage() {
                   const isFav = favoriteIds.has(t.id);
                   return (
                     <div key={t.id} className="train-card-mobile">
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        marginBottom: 10,
-                      }}>
+                      <div style={mobileCardStyles.header}>
                         <span style={tableStyles.numberBadge}>{t.trainNumber}</span>
-                        <div style={{
-                          flex: 1,
-                          minWidth: 0,
-                          overflow: 'hidden',
-                        }}>
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 5,
-                          }}>
-                            <span style={{
-                              fontFamily: 'var(--font-syne)',
-                              fontWeight: 700,
-                              fontSize: '0.9rem',
-                              color: 'var(--text-d)',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}>
-                              {from?.trim()}
-                            </span>
-                            <span style={{
-                              color: 'var(--accent)',
-                              fontWeight: 700,
-                              flexShrink: 0,
-                            }}>→</span>
-                            <span style={{
-                              fontFamily: 'var(--font-syne)',
-                              fontWeight: 700,
-                              fontSize: '0.9rem',
-                              color: 'var(--text-d)',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}>
-                              {to?.trim()}
-                            </span>
+                        <div style={mobileCardStyles.directionWrap}>
+                          <div style={mobileCardStyles.directionRow}>
+                            <span style={mobileCardStyles.cityText}>{from?.trim()}</span>
+                            <span style={mobileCardStyles.arrowSmall}>→</span>
+                            <span style={mobileCardStyles.cityText}>{to?.trim()}</span>
                           </div>
                         </div>
                         {isAuthenticated && (
-                          <div style={{
-                            display: 'flex',
-                            gap: 2,
-                            flexShrink: 0,
-                          }}>
-                            <button className="icon-btn" onClick={() => handleToggleFavorite(t.id)} title={isFav ? 'Видалити з обраних' : 'Додати до обраних'} aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}>
-                              <span style={{
-                                color: isFav ? 'var(--accent)' : 'var(--muted-d)',
-                                fontSize: '1rem',
-                                lineHeight: 1,
-                              }}>{isFav ? '♥' : '♡'}</span>
+                          <div style={mobileCardStyles.actionsRow}>
+                            <button
+                              className="icon-btn"
+                              onClick={() => handleToggleFavorite(t.id)}
+                              title={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                              aria-label={isFav ? 'Видалити з обраних' : 'Додати до обраних'}
+                            >
+                              <span style={heartStyle(isFav)}>{isFav ? '♥' : '♡'}</span>
                             </button>
                             {isAdmin && (
                               <>
@@ -724,70 +802,20 @@ export default function HomePage() {
                           </div>
                         )}
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 16,
-                        marginBottom: 8,
-                      }}>
+                      <div style={mobileCardStyles.timesRow}>
                         <div>
-                          <div style={{
-                            fontSize: '0.62rem',
-                            color: 'var(--muted-d)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: 2,
-                          }}>Відправлення</div>
-                          <div style={{
-                            fontWeight: 700,
-                            fontSize: '1rem',
-                            color: 'var(--text-d)',
-                            fontFamily: 'var(--font-sans)',
-                            letterSpacing: '-0.01em',
-                            lineHeight: 1,
-                          }}>{fmtTime(t.departureTime)}</div>
-                          <div style={{
-                            fontSize: '0.68rem',
-                            color: 'var(--muted-d)',
-                            marginTop: 3,
-                          }}>{fmtDate(t.departureTime)}</div>
+                          <div style={mobileCardStyles.timeLabel}>Відправлення</div>
+                          <div style={mobileCardStyles.timeValue}>{fmtTime(t.departureTime)}</div>
+                          <div style={mobileCardStyles.timeDate}>{fmtDate(t.departureTime)}</div>
                         </div>
-                        <span style={{
-                          color: 'var(--accent)',
-                          fontWeight: 700,
-                          fontSize: '1.1rem',
-                          alignSelf: 'center',
-                        }}>→</span>
+                        <span style={mobileCardStyles.arrowSep}>→</span>
                         <div>
-                          <div style={{
-                            fontSize: '0.62rem',
-                            color: 'var(--muted-d)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: 2,
-                          }}>Прибуття</div>
-                          <div style={{
-                            fontWeight: 700,
-                            fontSize: '1rem',
-                            color: 'var(--text-d)',
-                            fontFamily: 'var(--font-sans)',
-                            letterSpacing: '-0.01em',
-                            lineHeight: 1,
-                          }}>{fmtTime(t.arrivalTime)}</div>
-                          <div style={{
-                            fontSize: '0.68rem',
-                            color: 'var(--muted-d)',
-                            marginTop: 3,
-                          }}>{fmtDate(t.arrivalTime)}</div>
+                          <div style={mobileCardStyles.timeLabel}>Прибуття</div>
+                          <div style={mobileCardStyles.timeValue}>{fmtTime(t.arrivalTime)}</div>
+                          <div style={mobileCardStyles.timeDate}>{fmtDate(t.arrivalTime)}</div>
                         </div>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 5,
-                        fontSize: '0.75rem',
-                        color: 'var(--muted-d)',
-                      }}>
+                      <div style={mobileCardStyles.stationRow}>
                         <span>📍</span>
                         <span>{t.station}</span>
                       </div>
@@ -801,7 +829,7 @@ export default function HomePage() {
 
         {isAuthenticated && favoritedTrains.length > 0 && (
           <>
-            <div className="section-divider" style={{ margin: '40px auto 0' }} />
+            <div className="section-divider" style={favStyles.divider} />
             <section style={favStyles.section}>
               <p style={favStyles.sectionLabel}>
                 Збережені маршрути
@@ -824,13 +852,9 @@ export default function HomePage() {
                         onClick={() => handleToggleFavorite(t.id)}
                         title="Видалити з обраних"
                         aria-label="Видалити з обраних"
-                        style={{ flexShrink: 0 }}
+                        style={favStyles.unfavBtn}
                       >
-                        <span style={{
-                          color: 'var(--accent)',
-                          fontSize: '1rem',
-                          lineHeight: 1,
-                        }}>♥</span>
+                        <span style={heartStyle(true)}>♥</span>
                       </button>
                     </div>
                   );

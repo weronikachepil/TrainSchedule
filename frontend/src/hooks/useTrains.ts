@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { trainsApi } from '@/lib/api';
 import type { Train, TrainData } from '@/types';
 
-interface SearchParams {
+type SearchParams = {
   search: string;
   departureDate: string;
   arrivalDate: string;
 }
 
-interface UseTrainsReturn {
+type UseTrainsReturn = {
   trains: Train[];
   loading: boolean;
   error: string | null;

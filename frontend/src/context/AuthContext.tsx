@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-interface AuthContextType {
+type AuthContextType = {
   token: string | null;
   role: string | null;
   userId: number | null;

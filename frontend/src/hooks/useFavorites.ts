@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { favoritesApi } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 
-interface UseFavoritesReturn {
+type UseFavoritesReturn = {
   favoriteIds: Set<number>;
   toggle: (trainId: number) => Promise<void>;
   loading: boolean;

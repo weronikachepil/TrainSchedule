@@ -1,6 +1,6 @@
 'use client';
 
-interface Props {
+type Props = {
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
@@ -68,6 +68,11 @@ const deleteBtnStyles: React.CSSProperties = {
   transition: 'background 0.18s',
 };
 
+const cardStyles: React.CSSProperties = {
+  maxWidth: 400,
+  textAlign: 'center',
+};
+
 export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
   return (
     <div
@@ -76,7 +81,7 @@ export default function ConfirmModal({ message, onConfirm, onCancel }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="modal-card" style={{ maxWidth: 400, textAlign: 'center' }}>
+      <div className="modal-card" style={cardStyles}>
 
         <div style={iconStyles}>
           🗑️

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Train, TrainData } from '@/types';
 import { STATIONS } from '@/types';
 
-interface Props {
+type Props = {
   train: Train | null;
   onClose: () => void;
   onSave: (data: TrainData) => Promise<void>;
@@ -17,7 +17,7 @@ function toLocal(iso: string): string {
   return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
 }
 
-const focusField  = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+const focusField = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
   e.target.style.borderColor = 'var(--rose)';
   e.target.style.background  = 'rgba(255,255,255,0.7)';
 };
@@ -37,13 +37,13 @@ const lbl: React.CSSProperties = {
   fontFamily: 'var(--font-sans)',
 };
 
-const headerStyles = {
+const headerStyles: Record<string, React.CSSProperties> = {
   row: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 28,
-  } as React.CSSProperties,
+  },
   eyebrow: {
     fontSize: '0.7rem',
     fontWeight: 600,
@@ -52,7 +52,7 @@ const headerStyles = {
     textTransform: 'uppercase',
     margin: '0 0 3px',
     fontFamily: 'var(--font-sans)',
-  } as React.CSSProperties,
+  },
   title: {
     fontFamily: 'var(--font-syne)',
     fontWeight: 700,
@@ -60,7 +60,7 @@ const headerStyles = {
     color: 'var(--text-d)',
     margin: 0,
     letterSpacing: '-0.01em',
-  } as React.CSSProperties,
+  },
   closeBtn: {
     width: 36,
     height: 36,
@@ -75,33 +75,33 @@ const headerStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
-  } as React.CSSProperties,
+  },
 };
 
-const formStyles = {
+const formStyles: Record<string, React.CSSProperties> = {
   form: {
     display: 'flex',
     flexDirection: 'column',
     gap: 15,
-  } as React.CSSProperties,
+  },
   directionGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr auto 1fr',
     gap: 10,
     alignItems: 'end',
-  } as React.CSSProperties,
+  },
   directionArrow: {
     paddingBottom: 2,
-    color: 'var(--rose)',
+    color: 'var(--accent)',
     fontWeight: 700,
     fontSize: '1rem',
     textAlign: 'center',
-  } as React.CSSProperties,
+  },
   timesGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: 12,
-  } as React.CSSProperties,
+  },
   errorBox: {
     background: 'rgba(180,60,60,0.08)',
     border: '1px solid rgba(180,60,60,0.2)',
@@ -109,12 +109,12 @@ const formStyles = {
     padding: '10px 14px',
     color: '#8B3030',
     fontSize: '0.875rem',
-  } as React.CSSProperties,
+  },
   btnRow: {
     display: 'flex',
     gap: 10,
     marginTop: 4,
-  } as React.CSSProperties,
+  },
   cancelBtn: {
     flex: 1,
     padding: '13px',
@@ -126,21 +126,22 @@ const formStyles = {
     cursor: 'pointer',
     fontSize: '0.9rem',
     fontFamily: 'var(--font-sans)',
-  } as React.CSSProperties,
-  submitBtn: (saving: boolean): React.CSSProperties => ({
-    flex: 2,
-    padding: '13px',
-    border: 'none',
-    borderRadius: 12,
-    background: saving ? 'rgba(26,21,17,0.35)' : 'var(--dark)',
-    color: 'var(--cream)',
-    fontWeight: 600,
-    cursor: saving ? 'not-allowed' : 'pointer',
-    fontSize: '0.9rem',
-    fontFamily: 'var(--font-sans)',
-    transition: 'background 0.18s',
-  }),
+  },
 };
+
+const submitBtnStyle = (saving: boolean): React.CSSProperties => ({
+  flex: 2,
+  padding: '13px',
+  border: 'none',
+  borderRadius: 12,
+  background: saving ? 'rgba(26,21,17,0.35)' : 'var(--dark)',
+  color: 'var(--cream)',
+  fontWeight: 600,
+  cursor: saving ? 'not-allowed' : 'pointer',
+  fontSize: '0.9rem',
+  fontFamily: 'var(--font-sans)',
+  transition: 'background 0.18s',
+});
 
 export default function TrainModal({ train, onClose, onSave }: Props) {
   const [trainNumber, setTrainNumber] = useState('');
@@ -164,11 +165,11 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-    if (!trainNumber.trim())             { setError('Введіть номер поїзда'); return; }
-    if (from === to)                     { setError('Станції мають різнитись'); return; }
-    if (!dep)                            { setError('Оберіть час відправлення'); return; }
-    if (!arr)                            { setError('Оберіть час прибуття'); return; }
-    if (new Date(dep) >= new Date(arr))  { setError('Прибуття має бути пізніше відправлення'); return; }
+    if (!trainNumber.trim())            { setError('Введіть номер поїзда'); return; }
+    if (from === to)                    { setError('Станції мають різнитись'); return; }
+    if (!dep)                           { setError('Оберіть час відправлення'); return; }
+    if (!arr)                           { setError('Оберіть час прибуття'); return; }
+    if (new Date(dep) >= new Date(arr)) { setError('Прибуття має бути пізніше відправлення'); return; }
 
     setSaving(true);
     try {
@@ -260,7 +261,7 @@ export default function TrainModal({ train, onClose, onSave }: Props) {
             <button type="button" onClick={onClose} style={formStyles.cancelBtn}>
               Скасувати
             </button>
-            <button type="submit" disabled={saving} style={formStyles.submitBtn(saving)}>
+            <button type="submit" disabled={saving} style={submitBtnStyle(saving)}>
               {saving ? 'Збереження...' : train ? 'Зберегти' : 'Додати поїзд'}
             </button>
           </div>
