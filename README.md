@@ -1,30 +1,17 @@
-# Train Schedule Application
+# TrainSchedule
 
-A full-stack train schedule app with role-based access, server-side search, and saved favourite routes. Built with NestJS, Next.js, and PostgreSQL.
-
----
-
-## Features
-
-- View train schedule in a table without an account (read-only)
-- Register and log in with JWT authentication
-- **Server-side search** by train number, departure city, or arrival city
-- **Date filters** for departure and arrival dates
-- Time-of-day filters: morning / afternoon / evening
-- Role-based access control: Guest · User · Admin
-- **Users** can save favourite routes with a heart button; saved routes appear in a list below the table
-- **Admins** have full CRUD over all train entries
-- Custom confirm dialog for destructive actions
+TrainSchedule is a full-stack web application for browsing Ukrainian train timetables. Unauthenticated visitors can search and filter routes; registered users can bookmark favourites; administrators manage the schedule through a full CRUD interface. The application is split into two independent services — a NestJS REST API and a Next.js frontend — each deployed on its own platform.
 
 ---
 
 ## Tech Stack
 
-**Backend** — NestJS · TypeScript · TypeORM · PostgreSQL · Passport JWT · bcrypt · Swagger
-
-**Frontend** — Next.js 16 · TypeScript · Tailwind CSS v4
-
-**Database** — PostgreSQL hosted on [Neon](https://neon.tech)
+| Layer | Technologies |
+|-------|-------------|
+| Backend | NestJS · TypeScript · TypeORM · PostgreSQL · Passport JWT · bcrypt · Swagger |
+| Frontend | Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 |
+| Database | PostgreSQL (hosted on [Neon](https://neon.tech)) |
+| Deployment | Backend → Railway · Frontend → Vercel |
 
 ---
 
@@ -32,111 +19,98 @@ A full-stack train schedule app with role-based access, server-side search, and 
 
 ### Prerequisites
 
-- Node.js 18 or higher
-- npm 9 or higher
-- A PostgreSQL database (local or cloud)
+- Node.js 18+
+- npm 9+
+- A running PostgreSQL instance (local or cloud)
 
----
-
-### 1. Clone the repository
+### Clone
 
 ```bash
 git clone https://github.com/weronikachepil/TrainSchedule.git
 cd TrainSchedule
 ```
 
----
-
-### 2. Set up the Backend
+### Backend
 
 ```bash
 cd backend
 npm install
 ```
 
-Create a `.env` file inside the `backend/` folder:
+Create `backend/.env`:
 
 ```env
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
-JWT_SECRET=your_secret_key_here
+JWT_SECRET=your_secret_key
 ```
-
-> Replace `USER`, `PASSWORD`, `HOST`, and `DATABASE` with your PostgreSQL credentials.  
-> You can use a free cloud database from [Neon](https://neon.tech) or [Supabase](https://supabase.com).
-
-Start the backend server:
 
 ```bash
 npm run start:dev
 ```
 
-The backend runs on **http://localhost:3000**
+The API is available at `http://localhost:3000`. Interactive documentation is served at `http://localhost:3000/api`.
 
-Swagger API documentation is available at **http://localhost:3000/api**
+### Frontend
 
----
-
-### 3. Set up the Frontend
-
-Open a new terminal tab, then:
+Open a second terminal:
 
 ```bash
 cd frontend
 npm install
 ```
 
-Create a `.env.local` file inside the `frontend/` folder:
+Create `frontend/.env.local`:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-Start the frontend:
-
 ```bash
 npm run dev -- -p 3001
 ```
 
-The frontend runs on **http://localhost:3001**
+The application is available at `http://localhost:3001`.
 
 ---
 
-## API Endpoints
+## API Reference
 
-### Auth
+### Authentication
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|:----:|-------------|
-| POST | `/auth/register` | No | Create a new account |
-| POST | `/auth/login` | No | Log in and receive a JWT |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/auth/register` | Create a new account |
+| `POST` | `/auth/login` | Authenticate and receive a JWT |
 
 ### Trains
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|:----:|-------------|
-| GET | `/trains` | No | Get all trains (supports `?search=`, `?departureDate=`, `?arrivalDate=`) |
-| POST | `/trains` | Admin | Create a new train |
-| PATCH | `/trains/:id` | Admin | Update a train |
-| DELETE | `/trains/:id` | Admin | Delete a train |
+| Method | Endpoint | Role | Description |
+|--------|----------|------|-------------|
+| `GET` | `/trains` | Public | List trains. Accepts `?search=`, `?departureDate=`, `?arrivalDate=` |
+| `POST` | `/trains` | Admin | Create a train entry |
+| `PATCH` | `/trains/:id` | Admin | Update a train entry |
+| `DELETE` | `/trains/:id` | Admin | Delete a train entry |
 
-### Favorites
+### Favourites
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|:----:|-------------|
-| GET | `/favorites` | User | Get current user's saved trains |
-| POST | `/favorites/:trainId` | User | Toggle a train as favourite |
+| Method | Endpoint | Role | Description |
+|--------|----------|------|-------------|
+| `GET` | `/favorites` | User | Return the current user's saved trains |
+| `POST` | `/favorites/:trainId` | User | Toggle a train as saved or unsaved |
 
 ---
 
-## User Roles
+## Access Control
 
-| Role | Access |
-|------|--------|
-| Guest | View train schedule (read-only), search and filter |
-| User | Save and remove favourite routes |
-| Admin | Full CRUD over all trains |
+The application uses three roles.
 
-To grant Admin rights, run the following SQL query on your database:
+| Role | Permissions |
+|------|-------------|
+| **Guest** | Browse, search, and filter the schedule |
+| **User** | All of the above, plus save and remove favourite routes |
+| **Admin** | All of the above, plus create, edit, and delete trains |
+
+To elevate an account to Admin, run the following query directly on your database:
 
 ```sql
 UPDATE "user" SET role = 'admin' WHERE email = 'your@email.com';
@@ -150,16 +124,15 @@ UPDATE "user" SET role = 'admin' WHERE email = 'your@email.com';
 TrainSchedule/
 ├── backend/
 │   └── src/
-│       ├── auth/          # Authentication (JWT, guards, strategies)
-│       ├── favorites/     # Favourite routes (entity, service, controller)
-│       ├── trains/        # Train CRUD (entity, service, controller)
-│       └── users/         # User management
-├── frontend/
-│   └── src/
-│       ├── app/           # Pages: / · /login · /register
-│       ├── components/    # Navbar, TrainModal, ConfirmModal
-│       ├── context/       # AuthContext
-│       ├── hooks/         # useTrains, useFavorites
-│       └── lib/           # API client (trainsApi, favoritesApi, authApi)
-└── README.md
+│       ├── auth/        # JWT strategy, guards, login and register
+│       ├── trains/      # Train CRUD — entity, service, controller
+│       ├── favorites/   # Favourite routes — entity, service, controller
+│       └── users/       # User entity and service
+└── frontend/
+    └── src/
+        ├── app/         # Pages: / · /login · /register
+        ├── components/  # Navbar · TrainModal · ConfirmModal
+        ├── context/     # AuthContext · ThemeContext
+        ├── hooks/       # useTrains · useFavorites
+        └── lib/         # API client
 ```
